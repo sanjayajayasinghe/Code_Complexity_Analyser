@@ -1,10 +1,13 @@
 package coreFunctions;
 
-
+/**
+ * @author gisilk
+ *
+ */
 
 public final class JavaKeywords {
 
-	public static final String[] DATA_TYPES = new String[] {"boolean","char","byte","short","int","long","float","double"};
+	public static final String[] DATA_TYPES = new String[] {"void","boolean","char","byte","short","int","long","float","double"};
 	public static final String[] MODIFIERS = new String[] {"public","private","package","protected","final","static","default","abstract"};
 	public static final String[] CONDITIONAL_KEYWORDS = new String[] {"if","else","else if","switch","case"};
 	public static final String[] ITEARATIVE_KEYWORDS = new String[] {"for","while","do","foreach"};
