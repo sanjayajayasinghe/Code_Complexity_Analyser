@@ -3,4 +3,7 @@
 <?import javafx.scene.control.TreeView?>
 
 
-<TreeView id="fileTreeView" fx:id="fileTreeView" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.FileTreeViewController" />
+<TreeView id="fileTreeView" fx:id="fileTreeView"
+	xmlns="http://javafx.com/javafx/8.0.171"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="Controllers.FileTreeViewController" />
