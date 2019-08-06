@@ -16,10 +16,8 @@ import java.util.List;
  */
 public class FileUtils {
 
-	public static boolean isDirectory(File file) {
-		
-		return (file != null && !file.getName().startsWith(".") && file.isDirectory());
-		
+	public static boolean isDirectory(File file) {		
+		return (file != null && !file.getName().startsWith(".") && file.isDirectory());		
 	}
 	
 	public static List<String> convertToLisOfStrings(File file) throws IOException{		

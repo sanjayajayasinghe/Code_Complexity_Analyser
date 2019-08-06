@@ -1,1 +1,4 @@
 .settings/
+.metadata
+bin/
+tmp/
