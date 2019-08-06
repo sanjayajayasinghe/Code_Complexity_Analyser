@@ -1,4 +1,4 @@
-package Utill;
+package utilities;
 
 import javafx.scene.control.TreeItem;
 

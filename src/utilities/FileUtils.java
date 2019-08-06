@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import utilities.TreeUtill;
+import javafx.scene.control.TreeItem;
+
 /**
  * @author gisilk
  *
@@ -79,4 +82,34 @@ public class FileUtils {
 		}
 	
 	}
+	
+	
+	public static void listFilesForFolder(final File folder) {
+	    for (final File fileEntry : folder.listFiles()) {
+	    	//System.out.println(fileEntry.getParent());
+            System.out.println(fileEntry.getPath());
+	    	if (fileEntry.isDirectory()) {
+	            listFilesForFolder(fileEntry);
+	        } else {
+	        	
+	        }
+	    }
+	}
+	
+	public static void  listFilesForTreeView(final File folder,TreeItem<String> root) {
+	    for (final File fileEntry : folder.listFiles()) {
+	    	//System.out.println(fileEntry.getParent());
+	    	TreeUtill.makeBranch(fileEntry.getName(), root);
+            //System.out.println(fileEntry.getPath());
+	    	if (fileEntry.isDirectory()) {
+	    		TreeItem<String> children=new TreeItem<String>(fileEntry.getName());
+	    		listFilesForTreeView(fileEntry,children);
+	    		root.getChildren().add(children);
+	        } else {
+	        	
+	        }
+	    }
+	}
+	
+	
 }
