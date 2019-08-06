@@ -25,7 +25,9 @@ package utilities;
 public class TextUtils {
 
 	public static String[] getWordsDevidedFromSpaces(String line) {
-		return line.split(" ");
+		return line.replaceAll("\\t", "").replaceAll("\\n", "").replaceAll("\\r", "").split(" ");
+	
+		
 	}
 	
 	

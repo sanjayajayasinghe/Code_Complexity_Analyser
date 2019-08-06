@@ -32,4 +32,6 @@ public interface ComplexityBySize extends CodeComplexity {
 	boolean isAssignmentOperatorsAvailable(String word);
 	boolean isKeywordsAvailable(String word);
 	boolean isStringAvailable(String line);
+	
+    boolean isWordShouldBeConsidered(String word);
 }

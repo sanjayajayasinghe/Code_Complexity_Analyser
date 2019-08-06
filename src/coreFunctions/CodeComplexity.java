@@ -26,7 +26,7 @@ import java.io.File;
  */
 public interface CodeComplexity {
 
-	public int calculateComplexity(File file);
+	public int calculateComplexity();
 	
 	
 }

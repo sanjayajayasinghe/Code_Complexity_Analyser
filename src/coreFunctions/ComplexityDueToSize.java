@@ -19,7 +19,11 @@
 package coreFunctions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+
+import utilities.FileUtils;
+import utilities.TextUtils;
 
 /**
  * @author gisilk
@@ -30,15 +34,36 @@ public class ComplexityDueToSize implements ComplexityBySize{
 	private int Cs;
 	private File codeFile;
 	
-	public ComplexityDueToSize() {
-		
+	public ComplexityDueToSize(File codeFile) {
+		this.codeFile = codeFile;
 	}
 	
 	@Override
-	public int calculateComplexity(File file) {
-		// TODO Auto-generated method stub
+	public int calculateComplexity() {
+		
+		int i = 1;
+		try {
+			for(String line : FileUtils.convertToLisOfStrings(this.codeFile)) {
+				int lineCs = 0;
+				for(String word : TextUtils.getWordsDevidedFromSpaces(line)) {
+					if(isWordShouldBeConsidered(word)) {
+						lineCs += 1;
+					}
+				}
+				System.out.println("Line Score : " + i + " : " + lineCs);
+				i++;
+				this.Cs += lineCs;
+			}
+			System.out.println("Total Cs : " + this.Cs);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 		return 0;
 	}
+	
+	
 
 	@Override
 	public boolean isArethmaticOperatorAvailable(String word) {		
@@ -102,6 +127,16 @@ public class ComplexityDueToSize implements ComplexityBySize{
 	public boolean isStringAvailable(String line) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean isWordShouldBeConsidered(String word) {
+		return isArethmaticOperatorAvailable(word) 
+				|| isAssignmentOperatorsAvailable(word)
+				|| isKeywordsAvailable(word)
+				|| isLogicalOperatorAvailable(word)
+				|| isRelationalOperatorAvailable(word);
+				
 	}
 
 
