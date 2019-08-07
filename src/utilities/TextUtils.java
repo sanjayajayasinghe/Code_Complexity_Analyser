@@ -18,6 +18,8 @@
  
 package utilities;
 
+import javax.tools.JavaCompiler;
+
 /**
  * @author gisilk
  *
@@ -25,6 +27,7 @@ package utilities;
 public class TextUtils {
 
 	public static String[] getWordsDevidedFromSpaces(String line) {
+		
 		return line.replaceAll("\\t", "").replaceAll("\\n", "").replaceAll("\\r", "").split(" ");
 	
 		
