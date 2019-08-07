@@ -6,7 +6,7 @@ public class LocalState {
 	// private instance, so that it can be
 	// accessed by only by getInstance() method
 	private static LocalState instance;
-	private File LastProject=new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\Code_Complexity_Analyser\\.git\\logs");
+	private File LastProject;
 	
 	private LocalState() {
 		// private constructor

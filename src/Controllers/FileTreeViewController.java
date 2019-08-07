@@ -39,10 +39,12 @@ public class FileTreeViewController implements Initializable{
 	
 	public void loadTree() {
 		final File folder = LocalState.getInstance().getLastProject();
+		if(folder!=null) {
 		TreeItem<String> parent=new TreeItem<String>(folder.getName()) ;
 		FileUtils.listFilesForTreeView(folder,parent);
 		
 		fileTreeView.setRoot(parent);
+		}
 	}
 
 }

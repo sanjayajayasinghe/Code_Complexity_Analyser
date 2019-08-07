@@ -97,7 +97,8 @@ public class FileUtils {
 	}
 	
 	public static void  listFilesForTreeView(final File folder,TreeItem<String> root) {
-	    for (final File fileEntry : folder.listFiles()) {
+	   
+		for (final File fileEntry : folder.listFiles()) {
 	    
 //	    	TreeUtill.makeBranch(fileEntry.getName(), root);
            
@@ -109,6 +110,7 @@ public class FileUtils {
 	        	TreeUtill.makeBranch(fileEntry.getName(), root);
 	        }
 	    }
+	    
 	}
 	
 	
