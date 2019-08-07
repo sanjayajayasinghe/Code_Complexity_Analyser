@@ -98,9 +98,9 @@ public class FileUtils {
 	
 	public static void  listFilesForTreeView(final File folder,TreeItem<String> root) {
 	    for (final File fileEntry : folder.listFiles()) {
-	    	//System.out.println(fileEntry.getParent());
+	    
 	    	TreeUtill.makeBranch(fileEntry.getName(), root);
-            //System.out.println(fileEntry.getPath());
+           
 	    	if (fileEntry.isDirectory()) {
 	    		TreeItem<String> children=new TreeItem<String>(fileEntry.getName());
 	    		listFilesForTreeView(fileEntry,children);

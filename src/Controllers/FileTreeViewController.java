@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import Models.Data;
 import utilities.FileUtils;
+import utilities.LocalState;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
@@ -23,14 +24,10 @@ public class FileTreeViewController implements Initializable{
 		// TODO Auto-generated method stub
 		
 		System.out.println("tree view init");
-		//TreeItem<String> parent=Data.item;
-		//parent.getChildren().add(new TreeItem<String>("c1"));
-		//fileTreeView.setRoot(parent);
-		final File folder = new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\Code_Complexity_Analyser");
-		TreeItem<String> parent=Data.item;
-		FileUtils.listFilesForTreeView(folder,parent);
+	
+		loadTree();
 		
-		fileTreeView.setRoot(parent);
+	
 		
 		
 		
@@ -38,6 +35,14 @@ public class FileTreeViewController implements Initializable{
 	}
 	public void set(){
 		//fileTreeView.setRoot(new TreeItem<String>("c3"));
+	}
+	
+	public void loadTree() {
+		final File folder = LocalState.getInstance().getLastProject();
+		TreeItem<String> parent=new TreeItem<String>(folder.getName()) ;
+		FileUtils.listFilesForTreeView(folder,parent);
+		
+		fileTreeView.setRoot(parent);
 	}
 
 }

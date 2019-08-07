@@ -6,11 +6,11 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
-<MenuBar xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuBarController">
+<MenuBar fx:id="menuBarNav" id="menuBarNav"  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuBarController">
   <menus>
-    <Menu mnemonicParsing="false" text="File">
+    <Menu fx:id="menu" id="menu" mnemonicParsing="false" text="File" >
       <items>
-        <MenuItem mnemonicParsing="false" text="Open Project">
+        <MenuItem mnemonicParsing="false" text="Open Project" fx:id="openProject" id="openProject" >
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
