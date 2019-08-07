@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainWindowController">
    <top>
-   <fx:include fx:id="menuBarNav" id="menuBarNav" source="menuBarNav.fxml" />
+   <fx:include id="menuBarNav" fx:id="menuBarNav" source="menuBarNav.fxml" />
    </top>
    <left>
-       <fx:include fx:id="fileTreeView" id="fileTreeView" source="fileTreeView.fxml" />
+       <fx:include id="fileTreeView" fx:id="fileTreeView" source="fileTreeView.fxml" />
    </left>
    <bottom>
      <fx:include fx:id="resultView" source="resultView.fxml" />
    </bottom>
+   <center>
+      <fx:include fx:id="codeView" source="codeView.fxml"/>
+   </center>
 </BorderPane>

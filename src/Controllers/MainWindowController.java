@@ -8,7 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.MenuBar;
+import uiListners.FileSelectListner;
 import uiListners.FolderSelectListner;
+import utilities.LocalState;
 
 public class MainWindowController implements Initializable{
 	@FXML
@@ -19,6 +21,9 @@ public class MainWindowController implements Initializable{
 	
 	@FXML
 	private MenuBar menuBarNav;
+	
+	@FXML
+	private CodeViewController codeViewController;
 	
 	
 	
@@ -43,6 +48,25 @@ public class MainWindowController implements Initializable{
 			}
 		});
 		
+	
+		fileTreeViewController.setFileSelectListner(new FileSelectListner() {
+			
+			@Override
+			public void fileSelectFail(Exception e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterFileSelect(File file) {
+				// TODO Auto-generated method stub
+				codeViewController.setFileToView(file);
+				LocalState.getInstance().setCurrentOpenfile(file);
+			}
+		});
 	}
+	
+	
+	
 
 }

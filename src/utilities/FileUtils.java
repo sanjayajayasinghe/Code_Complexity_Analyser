@@ -3,8 +3,10 @@
  */
 package utilities;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -111,6 +113,27 @@ public class FileUtils {
 	        }
 	    }
 	    
+	}
+	
+	public static String filesToString(File file) {
+		StringBuilder code=new StringBuilder("");
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+
+			String line;
+	        while ((line = reader.readLine()) != null) {
+	           code.append(line+"\n"); 
+	       System.out.println(line);
+	        }
+	        
+	        
+	    	
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		
+		return code.toString();
+		
 	}
 	
 	
