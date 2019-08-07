@@ -19,7 +19,8 @@ public class JavaSyntaxChecker {
 	public static final String ANSI_RED = "\u001B[31m";
 	
 	public static void compileJava(String path) {
-		System.out.println(check(path));
+		
+	
 		for(SyntaxErrorsHolder ob : check(path)) {
 			
 			if(ob.getErrorType().equalsIgnoreCase("ERROR")){
@@ -31,6 +32,8 @@ public class JavaSyntaxChecker {
 			System.out.println("Line : " + ob.getLineNumber() + " Position : " + ob.getPosition() + " : " + ob.getMessage());;
 			
 		}
+		
+		System.out.println("\n");
 	}
 
 	private static List<SyntaxErrorsHolder> check(String file) {
