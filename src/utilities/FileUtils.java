@@ -99,14 +99,14 @@ public class FileUtils {
 	public static void  listFilesForTreeView(final File folder,TreeItem<String> root) {
 	    for (final File fileEntry : folder.listFiles()) {
 	    
-	    	TreeUtill.makeBranch(fileEntry.getName(), root);
+//	    	TreeUtill.makeBranch(fileEntry.getName(), root);
            
 	    	if (fileEntry.isDirectory()) {
 	    		TreeItem<String> children=new TreeItem<String>(fileEntry.getName());
 	    		listFilesForTreeView(fileEntry,children);
 	    		root.getChildren().add(children);
 	        } else {
-	        	
+	        	TreeUtill.makeBranch(fileEntry.getName(), root);
 	        }
 	    }
 	}
