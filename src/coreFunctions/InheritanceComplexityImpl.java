@@ -52,7 +52,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     }
 
     @Override
-    public void readAllFilesInPath() {
+    public void findInheritedClasses() {
 
         String str = this.codeFile.getAbsolutePath();
         int index = str.lastIndexOf('\\');
@@ -71,7 +71,8 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
                 System.out.println("Directory " + listOfFiles[i].getName());
             }
         }
-
+        System.out.println("Files scanned:"+listOfFiles.length);
+        System.out.println("inherited classes found:"+this.Cs);
     }
 
     //unused

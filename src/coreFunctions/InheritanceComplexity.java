@@ -6,5 +6,5 @@ public interface InheritanceComplexity extends CodeComplexity {
 
     public boolean wordMatchesInheritance(String word);
 
-    void readAllFilesInPath();
+    void findInheritedClasses();
 }
