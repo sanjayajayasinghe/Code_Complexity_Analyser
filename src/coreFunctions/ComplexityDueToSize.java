@@ -116,7 +116,7 @@ public class ComplexityDueToSize implements ComplexityBySize{
 				return true;
 			}
 			
-			if(Arrays.asList(JavaKeywords.ITEARATIVE_KEYWORDS).contains(word)) {
+			if(Arrays.asList(JavaKeywords.ITERATIVE_KEYWORDS).contains(word)) {
 				return true;
 			}
 		}		
