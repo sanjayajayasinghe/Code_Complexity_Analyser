@@ -7,15 +7,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     private int Cs;
     private File codeFile;
-
 
     public InheritanceComplexityImpl(File codeFile) {
         this.codeFile = codeFile;
@@ -28,7 +25,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
             for (String line : FileUtils.convertToLisOfStrings(this.codeFile)) {
                 int lineCs = 0;
                 for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
-                    if (isFileShowingInheritance(word)) {
+                    if (wordMatchesInheritance(word)) {
 
                         lineCs += 1;
 
@@ -42,67 +39,43 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        readAllFilesInPath(this.codeFile.getAbsolutePath());
         return 0;
 
     }
 
     @Override
-    public boolean isFileShowingInheritance(String word) {
+    public boolean wordMatchesInheritance(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.INHERITANCE_KEYWORDS).contains(word)) {
-                return true;
-            }
+            return (Arrays.asList(JavaKeywords.INHERITANCE_KEYWORDS).contains(word));
         }
         return false;
     }
 
+    @Override
+    public void findInheritedClasses() {
 
-    public  void readAllFilesInPath(String path){
-        String str=path;
-        int index=str.lastIndexOf('\\');
-        String dir_path=str.substring(0,index);
+        String str = this.codeFile.getAbsolutePath();
+        int index = str.lastIndexOf('\\');
+        String dir_path = str.substring(0, index);
 
         File folder = new File(dir_path);
         File[] listOfFiles = folder.listFiles();
-        List<File> analyzedFiles=new ArrayList<>();
 
-//TODO STOP ON ANALYSIS
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 System.out.println("File " + listOfFiles[i].getName());
-                if(listOfFiles[i].getName().endsWith(".java")){
-//                    this.codeFile=new File(listOfFiles[i].toString());
-//                    analyzedFiles.add(this.codeFile);
-//                    if(!(analyzedFiles.contains(this.codeFile))){
-//                        calculateComplexity();
-//                    }
-
-
+                if (listOfFiles[i].getName().endsWith(".java")) {
+                    calculateComplexity();
                 }
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("Directory " + listOfFiles[i].getName());
             }
         }
-
+        System.out.println("Files scanned:"+listOfFiles.length);
+        System.out.println("inherited classes found:"+this.Cs);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //unused
     public void close(String path) throws IOException {
         String fileName = path;// provide an absolute path here to be sure that file is found
         BufferedReader reader = null;
