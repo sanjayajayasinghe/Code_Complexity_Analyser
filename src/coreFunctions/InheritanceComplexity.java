@@ -1,6 +1,10 @@
 package coreFunctions;
 
+import java.io.File;
+
 public interface InheritanceComplexity extends CodeComplexity {
 
-    public boolean isFileShowingInheritance(String word);
+    public boolean wordMatchesInheritance(String word);
+
+    void readAllFilesInPath();
 }
