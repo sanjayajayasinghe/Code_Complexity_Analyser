@@ -77,6 +77,9 @@ public class MainWindowController implements Initializable{
 				// TODO Auto-generated method stub
 				String curentFile=LocalState.getInstance().getCurrentOpenfile()==null?"none file":LocalState.getInstance().getCurrentOpenfile().getName();
 				resultViewController.setSampletabContent("log.....\nlog2..........\nlog3\n"+curentFile);
+				resultViewController.setLuckytabContent("lucky:"+curentFile);
+				resultViewController.setGihantabContent("Gihan:"+curentFile);
+				resultViewController.setNishtabContent("nish:"+curentFile);
 				
 			}
 		});

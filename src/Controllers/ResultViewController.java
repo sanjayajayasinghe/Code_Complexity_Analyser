@@ -19,6 +19,10 @@ public class ResultViewController implements Initializable{
 	
 	private SampleTabController sampleTabController;
 	
+	private TextArea tab1TextArea=new TextArea();
+	private TextArea tab2TextArea=new TextArea();
+	private TextArea tab3TextArea=new TextArea();
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -34,6 +38,18 @@ public class ResultViewController implements Initializable{
 			Tab sampleTab =  loader.load(getClass().getResource("/UI/sampleTab.fxml").openStream());
 			sampleTabController=(SampleTabController)loader.getController();
 			resultView.getTabs().add(sampleTab);
+			Tab tab1=new Tab("tab gihan");
+			tab1.setContent(tab1TextArea);
+			
+			Tab tab2=new Tab("tab nishi");
+			tab2.setContent(tab2TextArea);
+			
+			Tab tab3=new Tab("tab lucku");
+			tab3.setContent(tab3TextArea);
+			
+			resultView.getTabs().addAll(tab1,tab2,tab3);
+			
+			
 			setSampletabContent("log init .....no file selected");
 			
 		} catch (IOException e) {
@@ -46,6 +62,20 @@ public class ResultViewController implements Initializable{
 	public void setSampletabContent(String content) {
 		sampleTabController.setText(content);
 	}
+	
+	public void setGihantabContent(String content) {
+		tab1TextArea.setText(content);
+	}
+	
+	public void setNishtabContent(String content) {
+		tab2TextArea.setText(content);
+	}
+	
+	public void setLuckytabContent(String content) {
+		tab3TextArea.setText(content);
+	}
+	
+	
 	
 	
 
