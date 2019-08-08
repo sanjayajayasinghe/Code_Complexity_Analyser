@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.MenuBar;
+import uiListners.ClickEventListner;
 import uiListners.FileSelectListner;
 import uiListners.FolderSelectListner;
 import utilities.LocalState;
@@ -24,6 +25,9 @@ public class MainWindowController implements Initializable{
 	
 	@FXML
 	private CodeViewController codeViewController;
+	
+	@FXML
+	private ResultViewController resultViewController;
 	
 	
 	
@@ -62,6 +66,18 @@ public class MainWindowController implements Initializable{
 				// TODO Auto-generated method stub
 				codeViewController.setFileToView(file);
 				LocalState.getInstance().setCurrentOpenfile(file);
+			}
+		});
+		
+		
+		menuBarNavController.setClickEventListner(new ClickEventListner() {
+			
+			@Override
+			public void click(String action) {
+				// TODO Auto-generated method stub
+				String curentFile=LocalState.getInstance().getCurrentOpenfile()==null?"none file":LocalState.getInstance().getCurrentOpenfile().getName();
+				resultViewController.setSampletabContent("log.....\nlog2..........\nlog3\n"+curentFile);
+				
 			}
 		});
 	}

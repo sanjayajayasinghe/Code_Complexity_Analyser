@@ -43,7 +43,7 @@
                      </image>
                   </ImageView>
                </graphic></MenuItem>
-        <MenuItem mnemonicParsing="false" text="Run on File">
+        <MenuItem mnemonicParsing="false" id="runOnFile" fx:id="runOnFile" text="Run on File">
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>

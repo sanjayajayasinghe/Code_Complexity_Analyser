@@ -10,16 +10,20 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import utilities.FileUtils;
 
 public class CodeViewController implements Initializable{
 	
 	@FXML
-	TextArea codeView;
+	WebView codeView;
+	
+	private WebEngine webEngine;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+		webEngine=codeView.getEngine();
 		//try (BufferedReader reader = new BufferedReader(new FileReader(new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX\\HelloWorld.java")))) {
 			
 		//codeView.setText();
@@ -27,7 +31,7 @@ public class CodeViewController implements Initializable{
 	}
 	
 	public void setText(String text) {
-		codeView.setText(text);
+		webEngine.loadContent("<html><body>"+"<pre>"+text+"</pre>"+"</body></html>");
 	}
 	
 	public void setFileToView(File file) {

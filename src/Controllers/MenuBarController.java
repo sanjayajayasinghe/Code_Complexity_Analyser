@@ -19,6 +19,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import uiListners.ClickEventListner;
 import uiListners.FolderSelectListner;
 import utilities.Dialog;
 import utilities.LocalState;
@@ -35,10 +36,13 @@ public class MenuBarController implements Initializable{
 	@FXML
 	private MenuItem openProject;
 	
+	@FXML
+	private MenuItem runOnFile;
+	
 	
 	
 	private FolderSelectListner FolderSelectListner;
-	
+	private ClickEventListner clickEventListner;
 	
 	
 	@Override
@@ -72,6 +76,17 @@ public class MenuBarController implements Initializable{
 			}
 		});
 		
+		
+		runOnFile.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				clickEventListner.click("runOnFile");
+			
+		}
+			});
+		
+		
 	}
 	
 	
@@ -80,6 +95,17 @@ public class MenuBarController implements Initializable{
 	}
 	
 	
+	
+	
+	
+	
+
+
+	public void setClickEventListner(ClickEventListner clickEventListner) {
+		this.clickEventListner = clickEventListner;
+	}
+
+
 	public void change() {
 		openProject.setText("open works");
 	}
