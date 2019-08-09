@@ -3,32 +3,26 @@ package coreFunctions;
 import utilities.FileUtils;
 import utilities.TextUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 
 public class InheritanceComplexityImpl implements InheritanceComplexity {
 
+    Map<String, List<String>> inheritanceMap = new HashMap<>();
     private int Cs;
-    private File codeFile;
 
-    public InheritanceComplexityImpl(File codeFile) {
-        this.codeFile = codeFile;
-    }
+    public int calculateComplexity(File file) {
 
-    @Override
-    public int calculateComplexity() {
         int i = 1;
         try {
-            for (String line : FileUtils.convertToLisOfStrings(this.codeFile)) {
+            for (String line : FileUtils.convertToLisOfStrings(file)) {
                 int lineCs = 0;
-                for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
-                    if (wordMatchesInheritance(word)) {
-
+                String[] strings = TextUtils.getWordsDevidedFromSpaces(line);
+                for (int j = 0; j < strings.length; j++) {
+                    if (wordMatchesInheritance(strings[j], file)) {
                         lineCs += 1;
-
+                        inheritanceMap.computeIfAbsent(strings[j - 1], k -> new ArrayList<>()).add(strings[j + 1]);
                     }
                 }
                 System.out.println("Line Score : " + i + " : " + lineCs);
@@ -39,22 +33,30 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return 0;
 
     }
 
+    public void scanInheritance() {
+        for (String string : inheritanceMap.keySet()) {
+            System.out.println("key=>" + string + " value=>" + inheritanceMap.get(string));
+        }
+    }
+
+
     @Override
-    public boolean wordMatchesInheritance(String word) {
-        if (codeFile.getName().endsWith(".java")) {
+    public boolean wordMatchesInheritance(String word, File file) {
+        if (file.getName().endsWith(".java")) {
             return (Arrays.asList(JavaKeywords.INHERITANCE_KEYWORDS).contains(word));
         }
         return false;
     }
 
     @Override
-    public void findInheritedClasses() {
+    public void findInheritedClasses(File file) {
 
-        String str = this.codeFile.getAbsolutePath();
+        String str = file.getAbsolutePath();
         int index = str.lastIndexOf('\\');
         String dir_path = str.substring(0, index);
 
@@ -63,40 +65,19 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-                System.out.println("File " + listOfFiles[i].getName());
+                System.out.println("====File==== " + listOfFiles[i].getName());
                 if (listOfFiles[i].getName().endsWith(".java")) {
-                    calculateComplexity();
+                    calculateComplexity(listOfFiles[i]);
+                    scanInheritance();
                 }
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("Directory " + listOfFiles[i].getName());
             }
         }
-        System.out.println("Files scanned:"+listOfFiles.length);
-        System.out.println("inherited classes found:"+this.Cs);
+        System.out.println("Files scanned:" + listOfFiles.length);
+        System.out.println("inherited classes found:" + this.Cs);
     }
 
-    //unused
-    public void close(String path) throws IOException {
-        String fileName = path;// provide an absolute path here to be sure that file is found
-        BufferedReader reader = null;
-        try {
-
-
-            reader = new BufferedReader(new FileReader(new File(fileName)));
-            //  }
-
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                System.out.println("Line read: " + line);
-            }
-        } catch (IOException e) {
-
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-        }
-    }
 
 }
 

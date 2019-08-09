@@ -2,9 +2,9 @@ package coreFunctions;
 
 import java.io.File;
 
-public interface InheritanceComplexity extends CodeComplexity {
+public interface InheritanceComplexity {
 
-    public boolean wordMatchesInheritance(String word);
+    boolean wordMatchesInheritance(String word, File file);
 
-    void findInheritedClasses();
+    void findInheritedClasses(File file);
 }
