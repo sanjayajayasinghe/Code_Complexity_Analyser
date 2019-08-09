@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
-<MenuBar fx:id="menuBarNav" id="menuBarNav"  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuBarController">
+<MenuBar id="menuBarNav" fx:id="menuBarNav" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuBarController">
   <menus>
-    <Menu fx:id="menu" id="menu" mnemonicParsing="false" text="File" >
+    <Menu id="menu" fx:id="menu" mnemonicParsing="false" text="File">
       <items>
-        <MenuItem mnemonicParsing="false" text="Open Project" fx:id="openProject" id="openProject" >
+        <MenuItem id="openProject" fx:id="openProject" mnemonicParsing="false" text="Open Project">
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -43,7 +46,7 @@
                      </image>
                   </ImageView>
                </graphic></MenuItem>
-        <MenuItem mnemonicParsing="false" id="runOnFile" fx:id="runOnFile" text="Run on File">
+        <MenuItem id="runOnFile" fx:id="runOnFile" mnemonicParsing="false" text="Analyze Selected File">
                <graphic>
                   <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
