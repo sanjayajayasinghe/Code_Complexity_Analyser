@@ -1,5 +1,6 @@
 package languageCheckers;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Formatter;
@@ -27,7 +28,7 @@ public class JavaSyntaxChecker {
 		}else {
 			result.append("Errors found...!!! \n");
 		}
-		
+		deleteCompiledFile(path);
 		
 		
 		for(SyntaxErrorsHolder ob : check(path)) {
@@ -43,6 +44,15 @@ public class JavaSyntaxChecker {
 		}
 		return result.toString();
 		//System.out.println("\n");
+	}
+	
+	private static void deleteCompiledFile(String path) {
+		
+		String classPath = path.substring(0,path.lastIndexOf(".")) + ".class";
+		File classFile = new File(classPath);
+		classFile.delete();
+		System.out.println(classPath);
+		
 	}
 
 	private static List<SyntaxErrorsHolder> check(String file) {
