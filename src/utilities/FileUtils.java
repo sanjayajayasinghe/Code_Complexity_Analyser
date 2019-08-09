@@ -8,12 +8,18 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.io.FilenameUtils;
 
 import utilities.TreeUtill;
 import javafx.scene.control.TreeItem;
@@ -98,22 +104,9 @@ public class FileUtils {
 	    }
 	}
 	
-	public static void  listFilesForTreeView(final File folder,TreeItem<String> root) {
-	   
-		for (final File fileEntry : folder.listFiles()) {
-	    
-//	    	TreeUtill.makeBranch(fileEntry.getName(), root);
-           
-	    	if (fileEntry.isDirectory()) {
-	    		TreeItem<String> children=new TreeItem<String>(fileEntry.getName());
-	    		listFilesForTreeView(fileEntry,children);
-	    		root.getChildren().add(children);
-	        } else {
-	        	TreeUtill.makeBranch(fileEntry.getName(), root);
-	        }
-	    }
-	    
-	}
+	
+	
+	
 	
 	public static String filesToString(File file) {
 		StringBuilder code=new StringBuilder("");
@@ -136,5 +129,59 @@ public class FileUtils {
 		
 	}
 	
+	public synchronized static void  listAllFilesInFolder(final File folder,List<File> fileList) {
+		   
+		for (final File fileEntry : folder.listFiles()) {
+           
+	    	if (fileEntry.isDirectory()) {
+	    		listAllFilesInFolder(fileEntry, fileList);
+	        }else {
+	        	fileList.add(fileEntry);
+	        }
+	    	
+	    }
+		
+		
+		
+//		try (Stream<Path> walk = Files.walk(Paths.get("C:\\projects"))) {
+//
+//			List<File> result = walk.filter(Files::isRegularFile).map((path)->new File(path.toString()))
+//					.collect(Collectors.toList());
+//
+//			result.forEach(System.out::println);
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+	    
+	}
+	
+	public static void listLeafFiles(final File folder,List<File> fileList) {
+		if (folder.isDirectory()) {
+			listAllFilesInFolder(folder, fileList);
+        }else {
+        	fileList.add(folder);
+        }
+	}
+	
+	
+	public static void main(String args[]) {
+		List<File> fileList=new ArrayList<>();
+		listLeafFiles(new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX"), fileList);
+		fileList.forEach(file->System.out.println("file:"+file.getName()));
+		
+	}
+	
+	public Boolean isValidExtention(File file,String ...extentions) {
+
+		
+		for(String extention:extentions) {
+		if(FilenameUtils.getExtension("/path/to/file/foo.txt").toString().equals(extention))
+			return true;
+		}
+		
+		return false;
+		
+	}
 	
 }

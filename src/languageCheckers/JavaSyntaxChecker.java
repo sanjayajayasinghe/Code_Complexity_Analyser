@@ -46,7 +46,7 @@ public class JavaSyntaxChecker {
 	}
 
 	private static List<SyntaxErrorsHolder> check(String file) {
-		System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_171");
+		System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_91");
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
 		StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
