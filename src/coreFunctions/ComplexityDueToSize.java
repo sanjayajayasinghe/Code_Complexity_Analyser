@@ -38,6 +38,37 @@ public class ComplexityDueToSize implements ComplexityBySize{
 		this.codeFile = codeFile;
 	}
 	
+	public String getComplexityAnalysisResult() {
+		
+		StringBuilder result = new StringBuilder();
+		
+		int i = 1;
+		try {
+			for(String line : FileUtils.convertToLisOfStrings(this.codeFile)) {
+				int lineCs = 0;
+				for(String word : TextUtils.getWordsDevidedFromSpaces(line)) {
+					if(isWordShouldBeConsidered(word)) {
+						lineCs += 1;
+					}
+				}
+				if(lineCs > 0) {
+					result.append("[ Line Number " + i + "] : " + lineCs +"\n");
+				}
+				
+				i++;
+				this.Cs += lineCs;
+			}
+			
+			result.append("\n\n");
+			result.append("[Total Complexity Score ] : " +this.Cs);
+			result.append("\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result.toString();
+	}
+	
 	@Override
 	public int calculateComplexity() {
 		

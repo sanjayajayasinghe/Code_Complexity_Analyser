@@ -18,22 +18,31 @@ public class JavaSyntaxChecker {
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_RED = "\u001B[31m";
 	
-	public static void compileJava(String path) {
+	public static String compileJava(String path) {
 		
-	
+		StringBuilder result = new StringBuilder();
+		
+		if(!(check(path).size() > 0)) {
+			return "No Syntax or Compilation Errors found...\n\n";
+		}else {
+			result.append("Errors found...!!! \n");
+		}
+		
+		
+		
 		for(SyntaxErrorsHolder ob : check(path)) {
 			
 			if(ob.getErrorType().equalsIgnoreCase("ERROR")){
-				System.out.print("ERROR : " );
+				//System.out.print("ERROR : " );
 			}else {
-				System.out.print(ob.getErrorType() + " : ");
+				//System.out.print(ob.getErrorType() + " : ");
 			}
 			
-			System.out.println("Line : " + ob.getLineNumber() + " Position : " + ob.getPosition() + " : " + ob.getMessage());;
-			
+			//System.out.println("Line : " + ob.getLineNumber() + " Position : " + ob.getPosition() + " : " + ob.getMessage());;
+			result.append("Line : " + ob.getLineNumber() + " Position : " + ob.getPosition() + " : " + ob.getMessage()+"\n");
 		}
-		
-		System.out.println("\n");
+		return result.toString();
+		//System.out.println("\n");
 	}
 
 	private static List<SyntaxErrorsHolder> check(String file) {
