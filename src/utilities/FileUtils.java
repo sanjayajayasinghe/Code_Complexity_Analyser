@@ -16,11 +16,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 
+import Models.FindData;
 import utilities.TreeUtill;
 import javafx.scene.control.TreeItem;
 
@@ -29,6 +32,7 @@ import javafx.scene.control.TreeItem;
  *
  */
 public class FileUtils {
+	static int  lineNo=0;
 
 		
 	public static boolean isDirectory(File file) {		
@@ -164,12 +168,56 @@ public class FileUtils {
         }
 	}
 	
+	public static List<FindData> findFilesByWords(String key,File folder){
+		List<File> foundFileList =new ArrayList<>();
+		List<File> leafFileList =new ArrayList<>();
+		List<FindData> findDataList=new ArrayList<>();
+		listLeafFiles(folder, leafFileList);
 	
-	public static void main(String args[]) {
-		List<File> fileList=new ArrayList<>();
-		listLeafFiles(new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX"), fileList);
-		fileList.forEach(file->System.out.println("file:"+file.getName()));
 		
+//		foundFileList=leafFileList.stream().filter((file)->{
+//			try {
+//				return convertToLisOfStrings(file).contains(keyWords);
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				return false;
+//			}
+//		}).collect(Collectors.toList());
+	
+		leafFileList.forEach(file->{
+				
+			try {
+				lineNo=1;
+				convertToLisOfStrings(file).forEach(line->{
+					System.out.println("c"+key);
+					 Pattern pattern = Pattern.compile(key);
+					 Matcher matcher = pattern.matcher(line);
+					if(matcher.find()) {
+						
+						findDataList.add(new FindData(file, lineNo));
+					}
+					lineNo++;
+				});
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		});
+		
+		return findDataList;
+		
+		
+	}
+	
+	
+	public static void main(String args[]) throws IOException {
+		List<FindData> fileList=new ArrayList<>();
+		fileList=findFilesByWords("c",new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX"));
+		fileList.forEach(file->System.out.println("file:"+file.getFile().getName()));
+		
+	//	System.out.println(convertToLisOfStrings(new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX\\HelloWorld.java")));
 	}
 	
 	public List<String> find(String keyWord){

@@ -37,6 +37,8 @@ public class MenuBarController implements Initializable {
 	
 	@FXML 
 	private MenuItem find;
+	
+	
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 

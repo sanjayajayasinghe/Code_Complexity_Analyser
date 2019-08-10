@@ -21,7 +21,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
                <children>
-                  <TextField HBox.hgrow="ALWAYS" />
+                  <TextField HBox.hgrow="ALWAYS" id="findText" fx:id="findText" />
                   <Button mnemonicParsing="false" text="find " id="find" fx:id="find" HBox.hgrow="ALWAYS" />
                </children>
                <padding>
@@ -32,7 +32,7 @@
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding></Label>
-            <ListView prefHeight="313.0" prefWidth="500.0">
+            <ListView id="listView" fx:id="listView" prefHeight="313.0" prefWidth="500.0">
                <padding>
                   <Insets left="20.0" />
                </padding>
