@@ -2,8 +2,11 @@ package test.coreFunctions;
 
 import coreFunctions.ComplexityDueToSize;
 import org.junit.jupiter.api.Test;
+import utilities.FileUtils;
+import utilities.TextUtils;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,12 +14,11 @@ public class ComplexityTest {
     public static final String JAVA_FILE_PATH = "F:\\SLIIT\\3rd yr 2nd sem\\SPM project\\spm\\src\\test\\resources\\ComplexityTestFile.java";
 
     File file = new File(JAVA_FILE_PATH);
+    ComplexityDueToSize complexityDueToSize = new ComplexityDueToSize(file);
 
     @Test
     public void testFindComplexityDueToSize() {
-        File file = new File(JAVA_FILE_PATH);
 
-        ComplexityDueToSize complexityDueToSize = new ComplexityDueToSize(file);
         assertEquals("[ Line Number 6] : 1\n" +
                 "[ Line Number 8] : 1\n" +
                 "[ Line Number 9] : 1\n" +
@@ -43,5 +45,40 @@ public class ComplexityTest {
                 "\n" +
                 "[Total Complexity Score ] : 37\n", complexityDueToSize.getComplexityAnalysisResult());
 
+    }
+
+    @Test
+    public void testArithmeticOperatorAvailable() {
+        int lineCs = 0;
+        try {
+            for (String line : FileUtils.convertToLisOfStrings(file)) {
+                for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
+                    if (complexityDueToSize.isArithmeticOperatorAvailable(word)) {
+                        lineCs += 1;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertEquals(4, lineCs);
+    }
+
+
+    @Test
+    public void testRelationalOperatorAvailable() {
+        int CS = 0;
+        try {
+            for (String line : FileUtils.convertToLisOfStrings(file)) {
+                for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
+                    if (complexityDueToSize.isRelationalOperatorAvailable(word)) {
+                        CS += 1;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertEquals(0, CS);
     }
 }
