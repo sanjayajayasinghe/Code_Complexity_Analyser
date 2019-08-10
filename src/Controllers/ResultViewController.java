@@ -41,7 +41,7 @@ public class ResultViewController implements Initializable{
 			Tab tab1=new Tab("tab gihan");
 			tab1.setContent(tab1TextArea);
 			
-			Tab tab2=new Tab("tab nishi");
+			Tab tab2=new Tab("Inheritance");
 			tab2.setContent(tab2TextArea);
 			
 			Tab tab3=new Tab("tab lucku");

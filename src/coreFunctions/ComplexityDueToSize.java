@@ -80,6 +80,10 @@ public class ComplexityDueToSize implements ComplexityBySize{
 					if(isWordShouldBeConsidered(word)) {
 						lineCs += 1;
 					}
+					if(isSpecialKeywordsAvailable(word)){
+						lineCs += 2;
+					}
+
 				}
 				System.out.println("Line Score : " + i + " : " + lineCs);
 				i++;
@@ -97,7 +101,7 @@ public class ComplexityDueToSize implements ComplexityBySize{
 	
 
 	@Override
-	public boolean isArethmaticOperatorAvailable(String word) {		
+	public boolean isArithmeticOperatorAvailable(String word) {
 		if(codeFile.getName().endsWith(".java")) {
 			if(Arrays.asList(JavaKeywords.ARITHMETIC_OPERATORS).contains(word)) {
 				return true;
@@ -161,8 +165,20 @@ public class ComplexityDueToSize implements ComplexityBySize{
 	}
 
 	@Override
+	public boolean isSpecialKeywordsAvailable(String word) {
+		if(codeFile.getName().endsWith(".java")) {
+			if(Arrays.asList(JavaKeywords.SPECIAL_KEYWORDS).contains(word)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+	@Override
 	public boolean isWordShouldBeConsidered(String word) {
-		return isArethmaticOperatorAvailable(word) 
+		return isArithmeticOperatorAvailable(word)
 				|| isAssignmentOperatorsAvailable(word)
 				|| isKeywordsAvailable(word)
 				|| isLogicalOperatorAvailable(word)
