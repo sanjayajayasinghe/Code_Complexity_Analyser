@@ -6,5 +6,5 @@ public interface InheritanceComplexity {
 
     boolean wordMatchesInheritance(String word, File file);
 
-    String findInheritedClasses(File file);
+    Map<String, Integer> findInheritedClasses(File file);
 }

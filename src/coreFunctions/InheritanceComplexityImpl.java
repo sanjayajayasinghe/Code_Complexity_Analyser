@@ -12,7 +12,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     Map<String, List<String>> inheritanceMap = new HashMap<>();
     private int Cs;
 
-    public int calculateComplexity(File file) {
+    private int calculateComplexity(File file) {
 
         int i = 1;
         try {
@@ -20,9 +20,16 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
                 int lineCs = 0;
                 String[] strings = TextUtils.getWordsDevidedFromSpaces(line);
                 for (int j = 0; j < strings.length; j++) {
-                    if (wordMatchesInheritance(strings[j], file)) {
-                        lineCs += 1;
-                        inheritanceMap.computeIfAbsent(strings[j - 1], k -> new ArrayList<>()).add(strings[j + 1]);
+                    if (file.getName().endsWith(".java")) {
+                        if (wordMatchesInheritance(strings[j], file)) {
+                            lineCs += 1;
+                            inheritanceMap.computeIfAbsent(strings[j - 1], k -> new ArrayList<>()).add(strings[j + 1]);
+                        }
+                    } else if (file.getName().endsWith(".cpp")) {
+                        if (wordMatchesInheritance(strings[j], file) && strings[j + 1].equals("public")) {
+                            lineCs += 1;
+                            inheritanceMap.computeIfAbsent(strings[j - 1], k -> new ArrayList<>()).add(strings[j + 2]);
+                        }
                     }
                 }
                 System.out.println("Line Score : " + i + " : " + lineCs);
@@ -38,23 +45,22 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     }
 
-    public void scanInheritance() {
+    private void scanInheritance() {
         for (String string : inheritanceMap.keySet()) {
-            System.out.println("key=>" + string + " value=>" + inheritanceMap.get(string));
+            System.out.println("\nClass showing inheritance : " + string + " \nParent class(es) : " + inheritanceMap.get(string) + "\n");
         }
     }
 
-
     @Override
     public boolean wordMatchesInheritance(String word, File file) {
-        if (file.getName().endsWith(".java")) {
+        if (file.getName().endsWith(".java") || file.getName().endsWith(".cpp")) {
             return (Arrays.asList(JavaKeywords.INHERITANCE_KEYWORDS).contains(word));
         }
         return false;
     }
 
     @Override
-    public String findInheritedClasses(File file) {
+    public Map<String, Integer> findInheritedClasses(File file) {
 
         String str = file.getAbsolutePath();
         int index = str.lastIndexOf('\\');
@@ -66,22 +72,23 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 System.out.println("====File==== " + listOfFiles[i].getName());
-                if (listOfFiles[i].getName().endsWith(".java")) {
+                if (listOfFiles[i].getName().endsWith(".java") || listOfFiles[i].getName().endsWith(".cpp")) {
                     calculateComplexity(listOfFiles[i]);
-                    scanInheritance();
                 }
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("Directory " + listOfFiles[i].getName());
             }
         }
-//        System.out.println("Files scanned:" + listOfFiles.length);
-//        System.out.println("inherited classes found:" + this.Cs);
-        StringBuilder result=new StringBuilder("");
-        result.append("Files scanned:" + listOfFiles.length+"\n");
-        result.append("inherited classes found:" + this.Cs+"\n");
-        
-        return result.toString();
-        
+        scanInheritance();
+
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("Files_scanned", listOfFiles.length);
+        resultMap.put("Inheritance_classes", this.Cs);
+
+        System.out.println("Files scanned:" + listOfFiles.length);
+        System.out.println("Total number of classes showing inheritance found :" + inheritanceMap.keySet().size());
+
+        return resultMap;
     }
 
 
