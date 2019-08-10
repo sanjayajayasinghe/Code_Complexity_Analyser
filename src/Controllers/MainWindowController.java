@@ -1,20 +1,38 @@
 package Controllers;
 
+
+
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.text.Format;
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import coreFunctions.ComplexityDueToSize;
+import coreFunctions.InheritanceComplexityImpl;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import languageCheckers.JavaSyntaxChecker;
 import uiListners.ClickEventListner;
 import uiListners.FileSelectListner;
 import uiListners.FolderSelectListner;
+import utilities.Dialog;
 import utilities.LocalState;
 
 public class MainWindowController implements Initializable {
@@ -93,6 +111,34 @@ public class MainWindowController implements Initializable {
 					LocalState.getInstance().getCurrentSelectedFiles().forEach(file->LOGGER.log(Level.INFO,"file:"+file.getName()));
 					LocalState.getInstance().getCurrentSelectedFiles().forEach(file->content.append(file.getName()+"\n"));
 					resultViewController.setGihantabContent(content.toString());
+					resultViewController.setNishtabContent(getFindInheritanceClassesAnalysedResult(LocalState.getInstance().getCurrentSelectedFiles().get(0)));
+					
+					break;
+					
+				case "find":
+					Stage dialogStage = new Stage();
+					dialogStage.initModality(Modality.WINDOW_MODAL);
+					AnchorPane dialog;
+//					try {
+//						FXMLLoader loader = FXMLLoader.load(getClass().getResource("/UI/findDialog.fxml"));
+//						dialog=loader.load();
+//						dialogStage.setScene(new Scene(dialog));
+//						dialogStage.show();
+//						loader.getController();
+//						
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//				}
+//					
+//					
+					
+					Dialog.findDialog(getClass());
+//					VBox vbox = new VBox(new Text("Hi"), new Button("Ok."));
+//					vbox.setAlignment(Pos.CENTER);
+//					vbox.setPadding(new Insets(15));
+
+					
 					break;
 
 				}
@@ -113,5 +159,19 @@ public class MainWindowController implements Initializable {
 		}
 
 	}
+	
+	private String getFindInheritanceClassesAnalysedResult(File folder) {
+
+		if (folder != null) {
+			InheritanceComplexityImpl inheritanceComplexityImpl =new InheritanceComplexityImpl();
+			StringBuilder result =new StringBuilder("");
+			inheritanceComplexityImpl.findInheritedClasses(folder).forEach((k,v)->result.append(MessageFormat.format("{0} : {1}\n",k,v)));
+			return result.toString() ;
+		} else {
+			return "Please open a valid file first...";
+		}
+
+	}
+	
 
 }
