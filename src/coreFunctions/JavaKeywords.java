@@ -22,5 +22,6 @@ public final class JavaKeywords {
 			"public","private","package","protected","final","static","default","abstract","if","else","else if",
 			"switch","case","for","while","do","foreach","extends","implements","throw","throws","exception","catch"};
 	
-	
+	public static final String[] SPECIAL_KEYWORDS=new String[] {"&","*","new","delete","throw","throws"};
+
 }

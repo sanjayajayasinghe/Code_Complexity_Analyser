@@ -80,6 +80,10 @@ public class ComplexityDueToSize implements ComplexityBySize{
 					if(isWordShouldBeConsidered(word)) {
 						lineCs += 1;
 					}
+					if(isSpecialKeywordsAvailable(word)){
+						lineCs += 2;
+					}
+
 				}
 				System.out.println("Line Score : " + i + " : " + lineCs);
 				i++;
@@ -159,6 +163,18 @@ public class ComplexityDueToSize implements ComplexityBySize{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean isSpecialKeywordsAvailable(String word) {
+		if(codeFile.getName().endsWith(".java")) {
+			if(Arrays.asList(JavaKeywords.SPECIAL_KEYWORDS).contains(word)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
 
 	@Override
 	public boolean isWordShouldBeConsidered(String word) {
