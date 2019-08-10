@@ -12,7 +12,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     Map<String, List<String>> inheritanceMap = new HashMap<>();
     private int Cs;
 
-    public int calculateComplexity(File file) {
+    private int calculateComplexity(File file) {
 
         int i = 1;
         try {
@@ -38,12 +38,11 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     }
 
-    public void scanInheritance() {
+    private void scanInheritance() {
         for (String string : inheritanceMap.keySet()) {
             System.out.println("\nClass showing inheritance : " + string + " \nParent class(es) : " + inheritanceMap.get(string)+"\n");
         }
     }
-
 
     @Override
     public boolean wordMatchesInheritance(String word, File file) {
@@ -54,7 +53,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     }
 
     @Override
-    public void findInheritedClasses(File file) {
+    public Map<String, Integer> findInheritedClasses(File file) {
 
         String str = file.getAbsolutePath();
         int index = str.lastIndexOf('\\');
@@ -74,8 +73,13 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
                 System.out.println("Directory " + listOfFiles[i].getName());
             }
         }
+        Map<String,Integer> resultMap=new HashMap<>();
+        resultMap.put("Files_scanned",listOfFiles.length);
+        resultMap.put("Inheritance_classes",this.Cs);
+
         System.out.println("Files scanned:" + listOfFiles.length);
         System.out.println("Total number of classes showing inheritance found :" + this.Cs);
+        return resultMap;
     }
 
 
