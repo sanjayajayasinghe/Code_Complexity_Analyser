@@ -13,7 +13,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     private int Cs;
 
     private int calculateComplexity(File file) {
-
+        this.Cs=0;
         int i = 1;
         try {
             for (String line : FileUtils.convertToLisOfStrings(file)) {
@@ -36,7 +36,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
                 i++;
                 this.Cs += lineCs;
             }
-            System.out.println("Total Cs : " + this.Cs);
+            System.out.println("Total Cs of file : "+file.getName()+" : " + (this.Cs+1));
         } catch (IOException e) {
             e.printStackTrace();
         }

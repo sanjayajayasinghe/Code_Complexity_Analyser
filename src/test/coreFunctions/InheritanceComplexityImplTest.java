@@ -17,7 +17,7 @@ public class InheritanceComplexityImplTest {
         InheritanceComplexityImpl inheritanceComplexity = new InheritanceComplexityImpl();
         Map<String, Integer> map = inheritanceComplexity.findInheritedClasses(file);
         assertEquals(4, map.get("Files_scanned"));
-        assertEquals(4, map.get("Inheritance_classes"));
+        assertEquals(2, map.get("Inheritance_classes"));
 
     }
 
