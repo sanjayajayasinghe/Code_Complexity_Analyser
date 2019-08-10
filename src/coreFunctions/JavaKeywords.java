@@ -14,7 +14,7 @@ public final class JavaKeywords {
 	public static final String[] INHERITANCE_KEYWORDS = new String[] {"extends","implements",":"};
 	public static final String[] EXCEPTION_KEYWORDS =  new String[] {"throw","throws","exception","catch"};
 	
-	public static final String[] ARITHMETIC_OPERATORS = new String[] {"+","-","*","/","%","^","++","--","+=","-=","*=","/="};
+	public static final String[] ARITHMETIC_OPERATORS = new String[] {"+","-","*","/","%","^","++","--"};
 	public static final String[] RELATIONAL_OPERATORS = new String[] {"==","=!","!=",">","<",">=","<=","=>","=<"};
 	public static final String[] LOGICAL_OPERATORS = new String[] {"&&","||","!"};
 	public static final String[] ASSIGNMENT_OPERATORS = new String[] {"+=", "-=","*=", "/=", "="};
