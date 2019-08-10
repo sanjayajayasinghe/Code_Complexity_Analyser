@@ -40,7 +40,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     public void scanInheritance() {
         for (String string : inheritanceMap.keySet()) {
-            System.out.println("key=>" + string + " value=>" + inheritanceMap.get(string));
+            System.out.println("\nClass showing inheritance : " + string + " \nParent class(es) : " + inheritanceMap.get(string)+"\n");
         }
     }
 
@@ -75,7 +75,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
             }
         }
         System.out.println("Files scanned:" + listOfFiles.length);
-        System.out.println("inherited classes found:" + this.Cs);
+        System.out.println("Total number of classes showing inheritance found :" + this.Cs);
     }
 
 
