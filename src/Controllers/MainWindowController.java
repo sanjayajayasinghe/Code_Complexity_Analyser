@@ -5,6 +5,8 @@ package Controllers;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.Format;
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -162,7 +164,9 @@ public class MainWindowController implements Initializable {
 
 		if (folder != null) {
 			InheritanceComplexityImpl inheritanceComplexityImpl =new InheritanceComplexityImpl();
-			return inheritanceComplexityImpl.findInheritedClasses(folder);
+			StringBuilder result =new StringBuilder("");
+			inheritanceComplexityImpl.findInheritedClasses(folder).forEach((k,v)->result.append(MessageFormat.format("{0} : {1}\n",k,v)));
+			return result.toString() ;
 		} else {
 			return "Please open a valid file first...";
 		}

@@ -1,6 +1,7 @@
 package coreFunctions;
 
 import java.io.File;
+import java.util.Map;
 
 public interface InheritanceComplexity {
 
