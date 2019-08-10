@@ -14,6 +14,10 @@ public class Test {
 		ComplexityDueToSize test = new ComplexityDueToSize(testFile);
 		test.calculateComplexity();
 
+//		File testFile = new File("C:\\Users\\Nishitha\\Desktop\\test\\test.java");
+//		InheritanceComplexityImpl inheritanceComplexity=new InheritanceComplexityImpl();
+//		inheritanceComplexity.findInheritedClasses(testFile);
+
 	}
 
 }
