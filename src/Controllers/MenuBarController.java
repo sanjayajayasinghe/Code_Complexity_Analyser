@@ -34,6 +34,9 @@ public class MenuBarController implements Initializable {
 
 	@FXML
 	private MenuItem runOnFileList;
+	
+	@FXML 
+	private MenuItem find;
 
 	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -68,6 +71,8 @@ public class MenuBarController implements Initializable {
 			}
 		});
 
+		
+		//set listners to the menu item
 		runOnFile.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -85,8 +90,18 @@ public class MenuBarController implements Initializable {
 
 			}
 		});
+		
+		find.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				clickEventListner.click("find");
+				
+			}
+		});
 
 	}
+	
 
 	public void setFolderSelectListner(FolderSelectListner folderSelectListner) {
 		FolderSelectListner = folderSelectListner;
