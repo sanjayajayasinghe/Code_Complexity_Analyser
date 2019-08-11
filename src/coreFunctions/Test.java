@@ -21,6 +21,9 @@ public class Test {
 		
 //		ComplexityTest complexityTest= new ComplexityTest();
 //		complexityTest.testFindComplexityDueToSize();
+//		complexityTest.testArithmeticOperatorAvailable();
+//		complexityTest.testRelationalOperatorAvailable();
+
 
 	}
 
