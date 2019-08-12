@@ -11,10 +11,10 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     Map<String, List<String>> inheritanceMap = new HashMap<>();
     private int fileComplexity;
-    private int fileListTotalComplexity=0;
+    private int fileListTotalComplexity = 0;
 
     private int calculateComplexity(File file) {
-        this.fileComplexity =0;
+        this.fileComplexity = 0;
         int i = 1;
         try {
             for (String line : FileUtils.convertToLisOfStrings(file)) {
@@ -40,8 +40,8 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
             }
 
-            System.out.println("\nTotal fileComplexity of file  "+file.getName()+" : " + (this.fileComplexity +1)+"\n");
-            fileListTotalComplexity+=(this.fileComplexity+1);
+            System.out.println("\nTotal fileComplexity of file  " + file.getName() + " : " + (this.fileComplexity + 1) + "\n");
+            fileListTotalComplexity += (this.fileComplexity + 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,7 +93,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
         System.out.println("Files scanned : " + listOfFiles.length);
         System.out.println("Total number of classes showing inheritance found : " + inheritanceMap.keySet().size());
-        System.out.println("Total file complexity of selected files "+this.fileListTotalComplexity);
+        System.out.println("Total file complexity of selected files " + this.fileListTotalComplexity);
         return resultMap;
     }
 

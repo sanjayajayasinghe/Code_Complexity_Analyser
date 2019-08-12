@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-commons-1.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-params-5.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opentest4j-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-5.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-platform-engine-1.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-engine-5.4.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/apiguardian-api-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/junit-jupiter-api-5.4.2.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-io-2.6-tests.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-io-2.6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/Downloads/commons-io-2.6-javadoc.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-io-2.6-bin.zip!/commons-io-2.6/docs" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Downloads/commons-io-2.6-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-io-2.6-test-sources.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/commons-io-2.6-src.zip!/commons-io-2.6-src/src/main/java" />
+      <root url="jar://$USER_HOME$/Downloads/commons-io-2.6-src.zip!/commons-io-2.6-src/src/test/java" />
+    </SOURCES>
+  </library>
+</component>

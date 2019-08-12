@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+
+<MenuBar fx:id="menuBarNav" id="menuBarNav" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="Controllers.MenuBarController">
+    <menus>
+        <Menu fx:id="menu" id="menu" mnemonicParsing="false" text="File">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Open Project" fx:id="openProject" id="openProject">
+                    <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../Icons/icons8-folder-96.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+                <MenuItem mnemonicParsing="false" text="Open File">
+                    <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../Icons/icons8-file-64.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Edit">
+            <items>
+                <MenuItem mnemonicParsing="false" text="find file by words" fx:id="find" id="find"/>
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Analyser">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Run on Project">
+                    <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../Icons/icons8-play-64.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+                <MenuItem mnemonicParsing="false" id="runOnFile" fx:id="runOnFile" text="Run on File">
+                    <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../Icons/icons8-play-64.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+                <MenuItem mnemonicParsing="false" id="runOnFileList" fx:id="runOnFileList"
+                          text="Run on Selected File List">
+                    <graphic>
+                        <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../../Icons/icons8-play-64.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </MenuItem>
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <items>
+                <MenuItem mnemonicParsing="false" text="About"/>
+            </items>
+        </Menu>
+    </menus>
+</MenuBar>

@@ -23,100 +23,99 @@ import utilities.LocalState;
 
 public class MenuBarController implements Initializable {
 
-	@FXML
-	public MenuBar menuBarNav;
+    @FXML
+    public MenuBar menuBarNav;
 
-	@FXML
-	private MenuItem openProject;
+    @FXML
+    private MenuItem openProject;
 
-	@FXML
-	private MenuItem runOnFile;
+    @FXML
+    private MenuItem runOnFile;
 
-	@FXML
-	private MenuItem runOnFileList;
-	
-	@FXML 
-	private MenuItem find;
-	
-	
+    @FXML
+    private MenuItem runOnFileList;
 
-	private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    @FXML
+    private MenuItem find;
 
-	private FolderSelectListner FolderSelectListner;
-	private ClickEventListner clickEventListner;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-		System.out.println("menu bar init");
+    private FolderSelectListner FolderSelectListner;
+    private ClickEventListner clickEventListner;
 
-		openProject.setOnAction(new EventHandler<ActionEvent>() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // TODO Auto-generated method stub
 
-			@Override
-			public void handle(ActionEvent event) {
-				// TODO Auto-generated method stub
+        System.out.println("menu bar init");
 
-				Stage stage = (Stage) menuBarNav.getScene().getWindow();
-				File file;
-				try {
-					file = Dialog.openFolder("Select Project", "C:\\", stage);
+        openProject.setOnAction(new EventHandler<ActionEvent>() {
 
-					LocalState.getInstance().setLastProject(file);
-					FolderSelectListner.afterFileSelect(file);
-				} catch (Exception e) {
-					FolderSelectListner.fileSelectFail(e);
-					e.printStackTrace();
-				}
-				// System.out.println("file "+file.getName());
-				//
-			}
-		});
+            @Override
+            public void handle(ActionEvent event) {
+                // TODO Auto-generated method stub
 
-		
-		//set listners to the menu item
-		runOnFile.setOnAction(new EventHandler<ActionEvent>() {
+                Stage stage = (Stage) menuBarNav.getScene().getWindow();
+                File file;
+                try {
+                    file = Dialog.openFolder("Select Project", "C:\\", stage);
 
-			@Override
-			public void handle(ActionEvent event) {
-				clickEventListner.click("runOnFile");
+                    LocalState.getInstance().setLastProject(file);
+                    FolderSelectListner.afterFileSelect(file);
+                } catch (Exception e) {
+                    FolderSelectListner.fileSelectFail(e);
+                    e.printStackTrace();
+                }
+                // System.out.println("file "+file.getName());
+                //
+            }
+        });
 
-			}
-		});
 
-		runOnFileList.setOnAction(new EventHandler<ActionEvent>() {
+        //set listners to the menu item
+        runOnFile.setOnAction(new EventHandler<ActionEvent>() {
 
-			@Override
-			public void handle(ActionEvent event) {
-				clickEventListner.click("runOnFileList");
+            @Override
+            public void handle(ActionEvent event) {
+                clickEventListner.click("runOnFile");
 
-			}
-		});
-		
-		find.setOnAction(new EventHandler<ActionEvent>() {
+            }
+        });
 
-			@Override
-			public void handle(ActionEvent event) {
-				clickEventListner.click("find");
-				
-			}
-		});
+        runOnFileList.setOnAction(new EventHandler<ActionEvent>() {
 
-	}
-	
+            @Override
+            public void handle(ActionEvent event) {
+                clickEventListner.click("runOnFileList");
 
-	public void setFolderSelectListner(FolderSelectListner folderSelectListner) {
-		FolderSelectListner = folderSelectListner;
-	}
+            }
+        });
 
-	public void setClickEventListner(ClickEventListner clickEventListner) {
-		this.clickEventListner = clickEventListner;
-	}
+        find.setOnAction(new EventHandler<ActionEvent>() {
 
-	public void change() {
-		openProject.setText("open works");
-	}
+            @Override
+            public void handle(ActionEvent event) {
+                clickEventListner.click("find");
 
-	//
+            }
+        });
+
+    }
+
+
+    public void setFolderSelectListner(FolderSelectListner folderSelectListner) {
+        FolderSelectListner = folderSelectListner;
+    }
+
+    public void setClickEventListner(ClickEventListner clickEventListner) {
+        this.clickEventListner = clickEventListner;
+    }
+
+    public void change() {
+        openProject.setText("open works");
+    }
+
+    //
 
 }

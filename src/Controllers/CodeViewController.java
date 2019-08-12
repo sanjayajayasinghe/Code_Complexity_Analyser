@@ -14,29 +14,48 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import utilities.FileUtils;
 
-public class CodeViewController implements Initializable{
-	
-	@FXML
-	WebView codeView;
-	
-	private WebEngine webEngine;
-	
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		webEngine=codeView.getEngine();
-		//try (BufferedReader reader = new BufferedReader(new FileReader(new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX\\HelloWorld.java")))) {
-			
-		//codeView.setText();
-		System.out.println("code view start");
-	}
-	
-	public void setText(String text) {
-		webEngine.loadContent("<html><body>"+"<pre>"+text+"</pre>"+"</body></html>");
-	}
-	
-	public void setFileToView(File file) {
-		setText(FileUtils.filesToString(file));
-		
-	}
+public class CodeViewController implements Initializable {
+
+    @FXML
+    WebView codeView;
+
+    private WebEngine webEngine;
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        webEngine = codeView.getEngine();
+        //try (BufferedReader reader = new BufferedReader(new FileReader(new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX\\HelloWorld.java")))) {
+
+        //codeView.setText();
+        System.out.println("code view start");
+    }
+
+    public void setText(String text) {
+
+        String htmlString = "<!DOCTYPE html>\n"
+                + "<html>\n"
+                + "<head>"
+                + "<link href=\"" + getClass().getResource("prism.css") + "\"" + " rel=\"stylesheet\"" + " type=\"text/css\"" + " />\n"
+                + "<script src=\"" + getClass().getResource("prism.js") + "\"" + " type=\"text/javascript\"" + "></script>\n"
+                + "</head>"
+                + "<body>\n"
+                + "<pre>"
+                + " <code class=\"language-java\">\n"
+                + text
+                + "</code>\n"
+                + "</pre>\n"
+                + "</body>\n"
+                + "</html>";
+
+
+
+
+        webEngine.loadContent(htmlString);
+    }
+
+    public void setFileToView(File file) {
+        setText(FileUtils.filesToString(file));
+
+    }
 
 }

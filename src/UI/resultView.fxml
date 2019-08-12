@@ -2,4 +2,6 @@
 
 <?import javafx.scene.control.TabPane?>
 
-<TabPane id="resultView" fx:id="resultView" minHeight="160" maxHeight="-Infinity" maxWidth="Infinity"  xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ResultViewController"/>
+<TabPane id="resultView" fx:id="resultView" minHeight="160" maxHeight="-Infinity" maxWidth="Infinity"
+         xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="Controllers.ResultViewController"/>
