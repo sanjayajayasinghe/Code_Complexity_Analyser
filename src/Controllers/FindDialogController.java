@@ -21,7 +21,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import uiListners.ClickEventListner;
 import uiListners.FileSelectListner;
-import utilities.FileUtils;
+import utilities.FileUtilities;
 import utilities.LocalState;
 
 public class FindDialogController implements Initializable {
@@ -52,7 +52,7 @@ public class FindDialogController implements Initializable {
                 String keyword = findText.getText();
                 LOGGER.log(Level.INFO, "find:", keyword);
                 List<FindData> fileList = new ArrayList<>();
-                fileList = FileUtils.findFilesByWords(keyword, LocalState.getInstance().getLastProject());
+                fileList = FileUtilities.findFilesByWords(keyword, LocalState.getInstance().getLastProject());
 
                 listView.getItems().addAll(fileList.stream().map((data) -> MessageFormat.format("{0}    line{1}", data.getFile().getName(), data.getLine())).collect(Collectors.toList()));
 

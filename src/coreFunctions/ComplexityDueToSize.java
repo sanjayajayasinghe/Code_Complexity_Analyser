@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import utilities.FileUtils;
+import utilities.FileUtilities;
 import utilities.TextUtils;
 
 /**
@@ -44,7 +44,7 @@ public class ComplexityDueToSize implements ComplexityBySize {
 
         int i = 1;
         try {
-            for (String line : FileUtils.convertToLisOfStrings(this.codeFile)) {
+            for (String line : FileUtilities.convertToLisOfStrings(this.codeFile)) {
                 int lineCs = 0;
                 for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
                     if (isWordShouldBeConsidered(word)) {
@@ -74,7 +74,7 @@ public class ComplexityDueToSize implements ComplexityBySize {
 
         int i = 1;
         try {
-            for (String line : FileUtils.convertToLisOfStrings(this.codeFile)) {
+            for (String line : FileUtilities.convertToLisOfStrings(this.codeFile)) {
                 int lineCs = 0;
                 for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
                     if (isWordShouldBeConsidered(word)) {

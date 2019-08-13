@@ -1,6 +1,6 @@
 package coreFunctions;
 
-import utilities.FileUtils;
+import utilities.FileUtilities;
 import utilities.TextUtils;
 
 import java.io.File;
@@ -17,7 +17,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         this.fileComplexity = 0;
         int i = 1;
         try {
-            for (String line : FileUtils.convertToLisOfStrings(file)) {
+            for (String line : FileUtilities.convertToLisOfStrings(file)) {
                 int lineCs = 0;
                 String[] strings = TextUtils.getWordsDevidedFromSpaces(line);
                 for (int j = 0; j < strings.length; j++) {

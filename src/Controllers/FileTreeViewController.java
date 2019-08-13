@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import Models.Data;
-import utilities.FileUtils;
+import utilities.FileUtilities;
 import utilities.LocalState;
 import utilities.TreeUtill;
 import javafx.beans.value.ChangeListener;
@@ -53,7 +53,7 @@ public class FileTreeViewController implements Initializable {
                 String path = TreeUtill.getItemFilepath(selectedItem, fileTreeView.getRoot(),
                         new String(LocalState.getInstance().getLastProject().getPath()));
 
-                if (!FileUtils.isDirectory(new File(path)))
+                if (!FileUtilities.isDirectory(new File(path)))
                     fileSelectListner.afterFileSelect(new File(path));
                 else
                     fileSelectListner.fileSelectFail(new Exception("not a file"));
@@ -83,7 +83,7 @@ public class FileTreeViewController implements Initializable {
 
                     List<File> selectedLeafFiles = new ArrayList<>();
                     selectedFiles.forEach(file -> {
-                        FileUtils.listLeafFiles(file, selectedLeafFiles);
+                        FileUtilities.listLeafFiles(file, selectedLeafFiles);
 
 
                     });

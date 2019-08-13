@@ -1,19 +1,22 @@
 package coreFunctions;
 
 import java.io.File;
+import java.io.IOException;
 
+import antlr_parser.JavaParser;
 import languageCheckers.JavaSyntaxChecker;
 import test.coreFunctions.ComplexityTest;
 
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
         File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
-        JavaSyntaxChecker.compileJava(testFile.getAbsolutePath());
-        ComplexityDueToSize test = new ComplexityDueToSize(testFile);
-        test.calculateComplexity();
+        JavaParser.parse(testFile);
+//        JavaSyntaxChecker.compileJava(testFile.getAbsolutePath());
+//        ComplexityDueToSize test = new ComplexityDueToSize(testFile);
+//        test.calculateComplexity();
 
 //		File testFile = new File("C:\\Users\\Nishitha\\Desktop\\test\\test.java");
 //		InheritanceComplexityImpl inheritanceComplexity=new InheritanceComplexityImpl();

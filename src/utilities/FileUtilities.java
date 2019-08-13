@@ -15,12 +15,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.nio.charset.*;
+import org.apache.commons.io.*;
 
 /**
  * @author gisilk
  *
  */
-public class FileUtils {
+public class FileUtilities {
     static int lineNo = 0;
 
 
@@ -35,6 +37,10 @@ public class FileUtils {
     public static String[] convertToArrayOfStrings(File file) throws IOException {
         List<String> list = convertToLisOfStrings(file);
         return list.toArray(new String[list.size()]);
+    }
+    
+    public static String getFileContent(File file) throws IOException {
+    	 return FileUtils.readFileToString(file, StandardCharsets.UTF_8);
     }
 
     public static List<File> getClassesOfProject(File projectRoot) {

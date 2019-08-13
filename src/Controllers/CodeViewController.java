@@ -12,7 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import utilities.FileUtils;
+import utilities.FileUtilities;
 
 public class CodeViewController implements Initializable {
 
@@ -54,7 +54,7 @@ public class CodeViewController implements Initializable {
     }
 
     public void setFileToView(File file) {
-        setText(FileUtils.filesToString(file));
+        setText(FileUtilities.filesToString(file));
 
     }
 
