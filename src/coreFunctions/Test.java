@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import antlr_parser.JavaParser;
 import languageCheckers.JavaSyntaxChecker;
-import test.coreFunctions.ComplexityTest;
+//import test.coreFunctions.ComplexityTest;
 
 public class Test {
 

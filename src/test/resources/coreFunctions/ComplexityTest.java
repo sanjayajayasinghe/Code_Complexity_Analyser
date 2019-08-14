@@ -1,22 +1,27 @@
-package test.coreFunctions;
+package test.resources.coreFunctions;
 
 import coreFunctions.ComplexityDueToSize;
-import org.junit.jupiter.api.Test;
-import utilities.FileUtils;
+import org.junit.Ignore;
+import org.junit.Test;
+import utilities.FileUtilities;
 import utilities.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
+//import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@Ignore
 public class ComplexityTest {
-    public static final String JAVA_FILE_PATH = "F:\\SLIIT\\3rd yr 2nd sem\\SPM project\\spm\\src\\test\\resources\\ComplexityTestFile.java";
+    public static final String JAVA_FILE_PATH = "C:\\Users\\Nishitha\\Desktop\\spm code complexity\\Code_Complexity_Analyser\\src\\test\\resources\\Dog.java";
 
     File file = new File(JAVA_FILE_PATH);
     ComplexityDueToSize complexityDueToSize = new ComplexityDueToSize(file);
 
     @Test
+    @Ignore
     public void testFindComplexityDueToSize() {
 
         assertEquals("[ Line Number 6] : 1\n" +
@@ -48,10 +53,11 @@ public class ComplexityTest {
     }
 
     @Test
+    @Ignore
     public void testArithmeticOperatorAvailable() {
         int lineCs = 0;
         try {
-            for (String line : FileUtils.convertToLisOfStrings(file)) {
+            for (String line : FileUtilities.convertToLisOfStrings(file)) {
                 for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
                     if (complexityDueToSize.isArithmeticOperatorAvailable(word)) {
                         lineCs += 1;
@@ -69,7 +75,7 @@ public class ComplexityTest {
     public void testRelationalOperatorAvailable() {
         int CS = 0;
         try {
-            for (String line : FileUtils.convertToLisOfStrings(file)) {
+            for (String line : FileUtilities.convertToLisOfStrings(file)) {
                 for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
                     if (complexityDueToSize.isRelationalOperatorAvailable(word)) {
                         CS += 1;

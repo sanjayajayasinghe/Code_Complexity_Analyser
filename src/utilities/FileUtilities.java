@@ -4,6 +4,7 @@
 package utilities;
 
 import Models.FindData;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
@@ -15,8 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.nio.charset.*;
-import org.apache.commons.io.*;
 
 /**
  * @author gisilk
@@ -40,7 +39,7 @@ public class FileUtilities {
     }
     
     public static String getFileContent(File file) throws IOException {
-    	 return FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+    	 return FileUtils.readFileToString(file, String.valueOf(StandardCharsets.UTF_8));
     }
 
     public static List<File> getClassesOfProject(File projectRoot) {
