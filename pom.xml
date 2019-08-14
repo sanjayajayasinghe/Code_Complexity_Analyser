@@ -17,7 +17,7 @@
 			<version>2.6</version>
 		</dependency>
 
-		<!-- added by nishitha97 -->
+
 		<!-- https://mvnrepository.com/artifact/org.eclipse.core/org.eclipse.core.runtime -->
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
@@ -45,7 +45,7 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
-		<!-- added by nishitha97 -->
+
 	</dependencies>
 
 
