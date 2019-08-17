@@ -10,66 +10,95 @@ import java.util.List;
 
 public class JavaParser {
 
-	public static List<String> getImplementedIntefaceNames(File file) throws IOException {
-		List<String> superInterfaces = new ArrayList<>();
-		List parse = parse(file);
-		TypeDeclaration p = (TypeDeclaration) parse.get(0);
-		if(p.superInterfaceTypes().size() > 0){
-			for( Object interf : p.superInterfaceTypes()){
-				superInterfaces.add(interf.toString());
-			}
+    public static List<String> getImplementedInterfaceNames(File file) throws IOException {
+        List<String> superInterfaces = new ArrayList<>();
+        List parse = parse(file);
+        TypeDeclaration p = (TypeDeclaration) parse.get(0);
+        if (p.superInterfaceTypes().size() > 0) {
+            for (Object interf : p.superInterfaceTypes()) {
+                superInterfaces.add(interf.toString());
+            }
+        }
+        return superInterfaces;
+    }
+
+    public static String getExtendedClassName(File file) throws IOException {
+        List parse = parse(file);
+        TypeDeclaration p = (TypeDeclaration) parse.get(0);
+        if (p.getSuperclassType() != null) {
+            return p.getSuperclassType().toString();
+        }
+
+        return "";
+    }
+
+    public static List<String> getAvailableClassNames(File file) throws IOException{
+
+    	List<String> classNames = new ArrayList<>();
+    	List parse = parse(file);
+    	for(Object p : parse){
+    		TypeDeclaration type = (TypeDeclaration) p;
+			classNames.add(type.getName().toString());
 		}
-		return superInterfaces;
+		return classNames;
 	}
 
-	public static String getExtendedClassName(File file) throws IOException {
+    public static MethodDeclaration[] getMethods(File file) throws IOException {
+        List parse = parse(file);
+        TypeDeclaration p = (TypeDeclaration) parse.get(0);
+        return p.getMethods();
+    }
+
+    public static FieldDeclaration[] getClassAttributes(File file) throws IOException{
 		List parse = parse(file);
 		TypeDeclaration p = (TypeDeclaration) parse.get(0);
-		if(p.getSuperclassType() != null){
-			 return p.getSuperclassType().toString();
+		return p.getFields();
+	}
+
+	public static List<String> getAttributeModifiers(FieldDeclaration field){
+    	List<String> modifierList = new ArrayList<>();
+    	for (Object ob : field.modifiers()){
+    		modifierList.add(ob.toString());
 		}
-
-		return "";
+    	return modifierList;
 	}
 
-	public static MethodDeclaration[] getMethods(File file) throws IOException {
-		List parse = parse(file);
-		TypeDeclaration p = (TypeDeclaration) parse.get(0);
-		MethodDeclaration[] methods = p.getMethods();
-		return methods;
+	public static String getAttributeDataType(FieldDeclaration field){
+    	return field.getType().toString();
 	}
 
-	public static List<String> getMrthodModifiers(MethodDeclaration method){
-		List<String> modifierList = new ArrayList<>();
-		for(Object ob : method.modifiers() ){
-			modifierList.add(ob.toString());
-		}
-		return modifierList;
-	}
+    public static List<String> getMrthodModifiers(MethodDeclaration method) {
+        List<String> modifierList = new ArrayList<>();
+        for (Object ob : method.modifiers()) {
+            modifierList.add(ob.toString());
+        }
+        return modifierList;
+    }
 
-	public static List parse(File file) throws IOException {
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
-		char[] fileContent = FileUtilities.getFileContent(file).toCharArray();
-		parser.setSource(fileContent);
-		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
-		return cu.types();
+    public static List parse(File file) throws IOException {
+        ASTParser parser = ASTParser.newParser(AST.JLS3);
+        char[] fileContent = FileUtilities.getFileContent(file).toCharArray();
+        parser.setSource(fileContent);
+        CompilationUnit cu = (CompilationUnit) parser.createAST(null);
+        return cu.types();
 
-	}
-	public static boolean isInterface(File file) throws IOException {
-		List parse = parse(file);
-		TypeDeclaration p = (TypeDeclaration) parse.get(0);
-		return p.isInterface();
-	}
+    }
 
-	public static List<String> getFileModifier(File file) throws IOException{
-		List<String> modifierList = new ArrayList<>();
-		List parse = parse(file);
-		TypeDeclaration p = (TypeDeclaration) parse.get(0);
-		final List modifiers = p.modifiers();
-		for(Object m : modifiers){
-			modifierList.add(m.toString());
-		}
-		return modifierList;
-	}
+    public static boolean isInterface(File file) throws IOException {
+        List parse = parse(file);
+        TypeDeclaration p = (TypeDeclaration) parse.get(0);
+        return p.isInterface();
+    }
+
+    public static List<String> getFileModifier(File file) throws IOException {
+        List<String> modifierList = new ArrayList<>();
+        List parse = parse(file);
+        TypeDeclaration p = (TypeDeclaration) parse.get(0);
+        final List modifiers = p.modifiers();
+        for (Object m : modifiers) {
+            modifierList.add(m.toString());
+        }
+        return modifierList;
+    }
 
 }

@@ -12,7 +12,8 @@ public class Test {
 
 
         File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
-        System.out.println(JavaParser.getFileModifier(testFile));
+        JavaParser.getAvailableClassNames(testFile);
+
 
 //        JavaSyntaxChecker.compileJava(testFile.getAbsolutePath());
 //        ComplexityDueToSize test = new ComplexityDueToSize(testFile);

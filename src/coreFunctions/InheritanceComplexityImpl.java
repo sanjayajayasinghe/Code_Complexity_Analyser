@@ -1,5 +1,6 @@
 package coreFunctions;
 
+import antlr_parser.JavaParser;
 import utilities.FileUtilities;
 import utilities.TextUtils;
 
@@ -13,7 +14,9 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     private int fileComplexity;
     private int fileListTotalComplexity = 0;
 
-    private int calculateComplexity(File file) {
+    private int calculateComplexity(File file) throws IOException {
+        String extendedClass = JavaParser.getExtendedClassName(file);
+        List<String> implementedInterfaces = JavaParser.getImplementedInterfaceNames(file);
         this.fileComplexity = 0;
         int i = 1;
         try {
@@ -78,7 +81,11 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
             if (listOfFiles[i].isFile()) {
                 System.out.println("====File==== " + listOfFiles[i].getName());
                 if (listOfFiles[i].getName().endsWith(".java") || listOfFiles[i].getName().endsWith(".cpp")) {
-                    calculateComplexity(listOfFiles[i]);
+                    try {
+                        calculateComplexity(listOfFiles[i]);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("Directory " + listOfFiles[i].getName());
