@@ -1,16 +1,16 @@
 package utilities;
 
 
+import javafx.collections.ObservableList;
+import javafx.scene.control.TreeItem;
+
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import javafx.collections.ObservableList;
-import javafx.scene.control.TreeItem;
 
 public class TreeUtill {
 
@@ -49,7 +49,26 @@ public class TreeUtill {
 
     public static void listFilesForTreeView(final File folder, TreeItem<String> root) {
 
-        for (final File fileEntry : folder.listFiles()) {
+        File[] files = folder.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                if (pathname.getName().startsWith(".")) {
+                    return false;
+                }
+
+                if (pathname.getName().equalsIgnoreCase("bin")) {
+                    return false;
+                }
+
+                if (pathname.getName().endsWith(".class")) {
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
+        for (final File fileEntry : files) {
 
             if (fileEntry.isDirectory()) {
                 TreeItem<String> children = new TreeItem<String>(fileEntry.getName());

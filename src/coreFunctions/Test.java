@@ -1,6 +1,7 @@
 package coreFunctions;
 
 import antlr_parser.JavaParser;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +13,8 @@ public class Test {
 
 
         File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
-        JavaParser.getAvailableClassNames(testFile);
+        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
+        System.out.println();
 
 
 //        JavaSyntaxChecker.compileJava(testFile.getAbsolutePath());
