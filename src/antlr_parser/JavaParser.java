@@ -10,6 +10,12 @@ import java.util.List;
 
 public class JavaParser {
 
+//	public static boolean isInterface(File file) throws IOException {
+//		List parse = parse(file);
+//		TypeDeclaration p = (TypeDeclaration) parse.get(0);
+//
+//	}
+
 	public static List<String> getImplementedIntefaceNames(File file) throws IOException {
 		List<String> superInterfaces = new ArrayList<>();
 		List parse = parse(file);
@@ -18,9 +24,7 @@ public class JavaParser {
 			for( Object interf : p.superInterfaceTypes()){
 				superInterfaces.add(interf.toString());
 			}
-
 		}
-
 		return superInterfaces;
 	}
 

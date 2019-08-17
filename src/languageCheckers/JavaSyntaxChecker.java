@@ -1,25 +1,15 @@
 package languageCheckers;
 
+import javax.tools.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Formatter;
-import java.util.List;
-import java.util.Locale;
-
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticCollector;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
+import java.util.*;
 
 public class JavaSyntaxChecker {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
 
-    public static String compileJava(String path) {
+    public static String compileJava(String path) throws Exception {
 
         StringBuilder result = new StringBuilder();
 
@@ -55,8 +45,8 @@ public class JavaSyntaxChecker {
 
     }
 
-    private static List<SyntaxErrorsHolder> check(String file) {
-        System.setProperty("java.home", "C:\\Program Files\\Java\\jdk1.8.0_91");
+    private static List<SyntaxErrorsHolder> check(String file) throws Exception {
+        System.setProperty("java.home", getJdkFolderPath());
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
@@ -76,6 +66,21 @@ public class JavaSyntaxChecker {
         }
 
         return checkers;
+    }
+
+    private static String getJdkFolderPath() throws Exception {
+        File javaFolder = new File("C:\\Program Files\\Java");
+        if(javaFolder.exists()){
+            File[] files = javaFolder.listFiles();
+            for(File f : files){
+                if(f.getName().startsWith("jdk")){
+                    return f.getAbsolutePath();
+                }
+            }
+        }else{
+            throw new Exception("Invalid JDK path");
+        }
+        return "";
     }
 
     private static class SyntaxErrorsHolder {

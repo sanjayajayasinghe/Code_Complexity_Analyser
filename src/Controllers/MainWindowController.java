@@ -1,30 +1,12 @@
 package Controllers;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.text.Format;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import coreFunctions.ComplexityDueToSize;
 import coreFunctions.InheritanceComplexityImpl;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import languageCheckers.JavaSyntaxChecker;
@@ -33,6 +15,13 @@ import uiListners.FileSelectListner;
 import uiListners.FolderSelectListner;
 import utilities.Dialog;
 import utilities.LocalState;
+
+import java.io.File;
+import java.net.URL;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainWindowController implements Initializable {
     @FXML
@@ -149,7 +138,12 @@ public class MainWindowController implements Initializable {
     private String getAnalyzedResult(File openedFile) {
 
         if (openedFile != null) {
-            String syntaxErors = JavaSyntaxChecker.compileJava(openedFile.getAbsolutePath());
+            String syntaxErors = null;
+            try {
+                syntaxErors = JavaSyntaxChecker.compileJava(openedFile.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             ComplexityDueToSize test = new ComplexityDueToSize(openedFile);
             String Cs = test.getComplexityAnalysisResult();
             return syntaxErors + Cs;

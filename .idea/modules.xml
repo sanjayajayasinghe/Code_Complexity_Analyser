@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Code_Complexity_Analyser.iml" filepath="$PROJECT_DIR$/Code_Complexity_Analyser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Code_Complexity_Analyser (1).iml" filepath="$PROJECT_DIR$/Code_Complexity_Analyser (1).iml" />
+      <module fileurl="file://$PROJECT_DIR$/Code_Complexity_Analyser(1).iml" filepath="$PROJECT_DIR$/Code_Complexity_Analyser(1).iml" />
     </modules>
   </component>
 </project>
