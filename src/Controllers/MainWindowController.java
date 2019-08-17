@@ -88,7 +88,6 @@ public class MainWindowController implements Initializable {
                         File currentlyOpenedFile = LocalState.getInstance().getCurrentOpenfile();
 
                         resultViewController.setSampletabContent(getAnalyzedResult(currentlyOpenedFile));
-
                         resultViewController.setLuckytabContent("lucky:" + curentFile);
                         resultViewController.setGihantabContent("Gihan:" + curentFile);
                         resultViewController.setNishtabContent("nish:" + curentFile);

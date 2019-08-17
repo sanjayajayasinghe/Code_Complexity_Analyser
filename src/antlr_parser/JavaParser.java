@@ -10,12 +10,6 @@ import java.util.List;
 
 public class JavaParser {
 
-//	public static boolean isInterface(File file) throws IOException {
-//		List parse = parse(file);
-//		TypeDeclaration p = (TypeDeclaration) parse.get(0);
-//
-//	}
-
 	public static List<String> getImplementedIntefaceNames(File file) throws IOException {
 		List<String> superInterfaces = new ArrayList<>();
 		List parse = parse(file);
@@ -45,6 +39,13 @@ public class JavaParser {
 		return methods;
 	}
 
+	public static List<String> getMrthodModifiers(MethodDeclaration method){
+		List<String> modifierList = new ArrayList<>();
+		for(Object ob : method.modifiers() ){
+			modifierList.add(ob.toString());
+		}
+		return modifierList;
+	}
 
 	public static List parse(File file) throws IOException {
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
@@ -53,6 +54,22 @@ public class JavaParser {
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 		return cu.types();
 
+	}
+	public static boolean isInterface(File file) throws IOException {
+		List parse = parse(file);
+		TypeDeclaration p = (TypeDeclaration) parse.get(0);
+		return p.isInterface();
+	}
+
+	public static List<String> getFileModifier(File file) throws IOException{
+		List<String> modifierList = new ArrayList<>();
+		List parse = parse(file);
+		TypeDeclaration p = (TypeDeclaration) parse.get(0);
+		final List modifiers = p.modifiers();
+		for(Object m : modifiers){
+			modifierList.add(m.toString());
+		}
+		return modifierList;
 	}
 
 }

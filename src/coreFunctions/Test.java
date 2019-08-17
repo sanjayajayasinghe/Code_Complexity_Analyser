@@ -1,10 +1,9 @@
 package coreFunctions;
 
+import antlr_parser.JavaParser;
+
 import java.io.File;
 import java.io.IOException;
-
-import antlr_parser.JavaParser;
-import languageCheckers.JavaSyntaxChecker;
 //import test.coreFunctions.ComplexityTest;
 
 public class Test {
@@ -12,8 +11,9 @@ public class Test {
     public static void main(String[] args) throws IOException {
 
 
-        File testFile = new File("C:\\Users\\Nishitha\\Desktop\\test\\test.java");
-        JavaParser.parse(testFile);
+        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
+        System.out.println(JavaParser.getFileModifier(testFile));
+
 //        JavaSyntaxChecker.compileJava(testFile.getAbsolutePath());
 //        ComplexityDueToSize test = new ComplexityDueToSize(testFile);
 //        test.calculateComplexity();
