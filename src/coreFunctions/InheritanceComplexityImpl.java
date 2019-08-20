@@ -17,7 +17,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     private int calculateComplexity(File file) throws IOException {
         String extendedClass = JavaParser.getExtendedClassName(file);
         List<String> implementedInterfaces = JavaParser.getImplementedInterfaceNames(file);
-        this.fileComplexity = 0;
+        this.fileComplexity = 2;
         int i = 1;
         try {
             for (String line : FileUtilities.convertToLisOfStrings(file)) {
@@ -43,8 +43,8 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
             }
 
-            System.out.println("\nTotal fileComplexity of file  " + file.getName() + " : " + (this.fileComplexity + 1) + "\n");
-            fileListTotalComplexity += (this.fileComplexity + 1);
+            System.out.println("\nTotal fileComplexity of file " + file.getName() + " ( including object class for java files ) : " + (this.fileComplexity) + "\n");
+            fileListTotalComplexity += (this.fileComplexity);
         } catch (IOException e) {
             e.printStackTrace();
         }
