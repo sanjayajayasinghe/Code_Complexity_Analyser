@@ -19,7 +19,7 @@ public class InheritanceComplexityImplTest {
 
         InheritanceComplexityImpl inheritanceComplexity = new InheritanceComplexityImpl();
         Map<String, Integer> map = inheritanceComplexity.findInheritedClasses(file);
-        assertEquals(Integer.valueOf(5), map.get("Files scanned "));
+        assertEquals(Integer.valueOf(6), map.get("Files scanned "));
         assertEquals(Integer.valueOf(4), map.get("Total number of classes with inheritance found "));
         assertEquals(Integer.valueOf(9), map.get("Total file complexity of selected files "));
 
