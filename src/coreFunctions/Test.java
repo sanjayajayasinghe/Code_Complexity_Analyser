@@ -24,9 +24,9 @@ public class Test {
 //        ComplexityDueToSize test = new ComplexityDueToSize(testFile);
 //        test.calculateComplexity();
 
-		File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
-		InheritanceComplexityImpl inheritanceComplexity=new InheritanceComplexityImpl();
-		inheritanceComplexity.findInheritedClasses(testFile);
+		//File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
+		//InheritanceComplexityImpl inheritanceComplexity=new InheritanceComplexityImpl();
+		//inheritanceComplexity.findInheritedClasses(testFile);
 		//ComplexityDueToRecursion complexityDueToRecursion=new ComplexityDueToRecursion(testFile);
 		//System.out.println(complexityDueToRecursion.isRecursionFound());
 
