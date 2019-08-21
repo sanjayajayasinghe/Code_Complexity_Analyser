@@ -11,40 +11,46 @@ import java.util.*;
 public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     Map<String, List<String>> inheritanceMap = new HashMap<>();
-    private int fileComplexity;
+    private int javaFileComplexity;
+    private int cPlusFileComplexity;
     private int fileListTotalComplexity = 0;
 
-    private int calculateComplexity(File file) throws IOException {
+    private void calculateComplexityForJava(File file) throws IOException {
         String extendedClass = JavaParser.getExtendedClassName(file);
-        List<String> implementedInterfaces = JavaParser.getImplementedInterfaceNames(file);
-        this.fileComplexity = 2;
+        //List<String> implementedInterfaces = JavaParser.getImplementedInterfaceNames(file);
+        this.javaFileComplexity = 2;
+
+        if (!(extendedClass.equals(""))) {
+            this.javaFileComplexity++;
+            inheritanceMap.computeIfAbsent(file.getName(), k -> new ArrayList<>()).add(extendedClass);
+        }
+
+        System.out.println("\nTotal File Complexity of file " + file.getName() + " ( including object class for java files ) : " + (this.javaFileComplexity) + "\n");
+        fileListTotalComplexity += (this.javaFileComplexity);
+    }
+
+    private int calculateComplexityForCPlus(File file) {
+        this.cPlusFileComplexity = 0;
         int i = 1;
         try {
             for (String line : FileUtilities.convertToLisOfStrings(file)) {
                 int lineCs = 0;
                 String[] strings = TextUtils.getWordsDevidedFromSpaces(line);
                 for (int j = 0; j < strings.length; j++) {
-                    if (file.getName().endsWith(".java")) {
-                        if (wordMatchesInheritance(strings[j], file)) {
-                            lineCs += 1;
-                            inheritanceMap.computeIfAbsent(strings[j - 1], k -> new ArrayList<>()).add(strings[j + 1]);
-                        }
-                    } else if (file.getName().endsWith(".cpp")) {
-                        if (wordMatchesInheritance(strings[j], file) && strings[j + 1].equals("public")) {
-                            lineCs += 1;
-                            inheritanceMap.computeIfAbsent(strings[j - 1], k -> new ArrayList<>()).add(strings[j + 2]);
-                        }
+                    if (wordMatchesInheritance(strings[j], file) && strings[j + 1].equals("public")) {
+                        lineCs += 1;
+                        inheritanceMap.computeIfAbsent(strings[j - 1], k -> new ArrayList<>()).add(strings[j + 2]);
                     }
                 }
                 System.out.println("Line Score : " + i + " : " + lineCs);
                 i++;
 
-                this.fileComplexity += lineCs;
+                this.cPlusFileComplexity += lineCs;
 
             }
 
-            System.out.println("\nTotal fileComplexity of file " + file.getName() + " ( including object class for java files ) : " + (this.fileComplexity) + "\n");
-            fileListTotalComplexity += (this.fileComplexity);
+            System.out.println("\nTotal File Complexity of file " + file.getName() + " : " + (this.cPlusFileComplexity) + "\n");
+            fileListTotalComplexity += (this.cPlusFileComplexity);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,12 +86,14 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 System.out.println("====File==== " + listOfFiles[i].getName());
-                if (listOfFiles[i].getName().endsWith(".java") || listOfFiles[i].getName().endsWith(".cpp")) {
+                if (listOfFiles[i].getName().endsWith(".java")) {
                     try {
-                        calculateComplexity(listOfFiles[i]);
+                        calculateComplexityForJava(listOfFiles[i]);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else if (listOfFiles[i].getName().endsWith(".cpp")) {
+                    calculateComplexityForCPlus(listOfFiles[i]);
                 }
             } else if (listOfFiles[i].isDirectory()) {
                 System.out.println("Directory " + listOfFiles[i].getName());
