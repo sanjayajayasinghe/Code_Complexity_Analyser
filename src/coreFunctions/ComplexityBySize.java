@@ -31,13 +31,22 @@ public interface ComplexityBySize extends CodeComplexity {
 
     boolean isLogicalOperatorAvailable(String word);
 
+    boolean isBitwiseOperatorAvailable(String word);
+
+    boolean isMiscellaneousOperatorAvailable(String word);
+
     boolean isAssignmentOperatorsAvailable(String word);
 
     boolean isKeywordsAvailable(String word);
 
-    boolean isStringAvailable(String line);
+    boolean isManipulatorKeywordsAvailable(String word);
 
+    boolean isTextWithinQuotes(String word);
+
+    //two points
     boolean isSpecialKeywordsAvailable(String word);
 
     boolean isWordShouldBeConsidered(String word);
+
+
 }

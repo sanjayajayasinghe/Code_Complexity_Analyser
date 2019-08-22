@@ -21,6 +21,8 @@ package coreFunctions;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import utilities.FileUtilities;
 import utilities.TextUtils;
@@ -130,6 +132,26 @@ public class ComplexityDueToSize implements ComplexityBySize {
     }
 
     @Override
+    public boolean isBitwiseOperatorAvailable(String word) {
+        if (codeFile.getName().endsWith(".java")) {
+            if (Arrays.asList(JavaKeywords.BITWISE_OPERATORS).contains(word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isMiscellaneousOperatorAvailable(String word) {
+        if (codeFile.getName().endsWith(".java")) {
+            if (Arrays.asList(JavaKeywords.MISCELLANEOUS_OPERATORS).contains(word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean isAssignmentOperatorsAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
             if (Arrays.asList(JavaKeywords.ASSIGNMENT_OPERATORS).contains(word)) {
@@ -142,15 +164,7 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isKeywordsAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.DATA_TYPES).contains(word)) {
-                return true;
-            }
-
-            if (Arrays.asList(JavaKeywords.CONDITIONAL_KEYWORDS).contains(word)) {
-                return true;
-            }
-
-            if (Arrays.asList(JavaKeywords.ITERATIVE_KEYWORDS).contains(word)) {
+            if (Arrays.asList(JavaKeywords.ALL_KEYWORDS).contains(word)) {
                 return true;
             }
         }
@@ -158,11 +172,22 @@ public class ComplexityDueToSize implements ComplexityBySize {
     }
 
     @Override
-    public boolean isStringAvailable(String line) {
-        // TODO Auto-generated method stub
+    public boolean isManipulatorKeywordsAvailable(String word) {
+        if (codeFile.getName().endsWith(".java")) {
+            if (Arrays.asList(JavaKeywords.MANIPULATOR_KEYWORDS).contains(word)) {
+                return true;
+            }
+        }
         return false;
     }
 
+    @Override
+    public boolean isTextWithinQuotes(String word) {
+        return Pattern.compile("\"([^\"]*)\"").matcher(word).matches();
+    }
+
+
+    //two points
     @Override
     public boolean isSpecialKeywordsAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
@@ -177,12 +202,14 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isWordShouldBeConsidered(String word) {
         return isArithmeticOperatorAvailable(word)
+                || isRelationalOperatorAvailable(word)
+                || isLogicalOperatorAvailable(word)
+                || isBitwiseOperatorAvailable(word)
+                || isMiscellaneousOperatorAvailable(word)
                 || isAssignmentOperatorsAvailable(word)
                 || isKeywordsAvailable(word)
-                || isLogicalOperatorAvailable(word)
-                || isRelationalOperatorAvailable(word);
-
+                || isManipulatorKeywordsAvailable(word)
+                || isTextWithinQuotes(word);
     }
-
 
 }
