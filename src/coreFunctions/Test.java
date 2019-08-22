@@ -24,10 +24,14 @@ public class Test {
 //        ComplexityDueToSize test = new ComplexityDueToSize(testFile);
 //        test.calculateComplexity();
 
-		//File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
-		//InheritanceComplexityImpl inheritanceComplexity=new InheritanceComplexityImpl();
-		//inheritanceComplexity.findInheritedClasses(testFile);
-		//ComplexityDueToRecursion complexityDueToRecursion=new ComplexityDueToRecursion(testFile);
+//		File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
+//		InheritanceComplexityImpl inheritanceComplexity=new InheritanceComplexityImpl();
+//		inheritanceComplexity.findInheritedClasses(testFile);
+//        for (String s:inheritanceComplexity.getComplexityDueToInheritanceMap().keySet()) {
+//            System.out.println(s+" "+inheritanceComplexity.getComplexityDueToInheritanceMap().get(s));
+//        }
+
+        //ComplexityDueToRecursion complexityDueToRecursion=new ComplexityDueToRecursion(testFile);
 		//System.out.println(complexityDueToRecursion.isRecursionFound());
 
 //		ComplexityTest complexityTest= new ComplexityTest();

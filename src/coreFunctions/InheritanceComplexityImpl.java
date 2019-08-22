@@ -11,31 +11,33 @@ import java.util.*;
 public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     private Map<String, List<String>> inheritanceMap = new HashMap<>();
+    private Map<String,Integer> complexityMap=new HashMap<>();
+
     private int fileListTotalComplexity = 0;
 
-    private void calculateComplexityForJava(File file) throws IOException {
-        String extendedClass = JavaParser.getExtendedClassName(file);
+    private void calculateComplexityForJava(File javaFile) throws IOException {
+        String extendedClass = JavaParser.getExtendedClassName(javaFile);
         //List<String> implementedInterfaces = JavaParser.getImplementedInterfaceNames(file);
         int javaFileComplexity = 2;
 
         if (!(extendedClass.equals(""))) {
             javaFileComplexity++;
-            inheritanceMap.computeIfAbsent(file.getName(), k -> new ArrayList<>()).add(extendedClass);
+            inheritanceMap.computeIfAbsent(javaFile.getName(), k -> new ArrayList<>()).add(extendedClass);
         }
-
-        System.out.println("\nTotal File Complexity of file " + file.getName() + " ( including object class for java files ) : " + (javaFileComplexity) + "\n");
+        complexityMap.put(javaFile.getName(),javaFileComplexity);
+        System.out.println("\nTotal File Complexity of file " + javaFile.getName() + " ( including object class for java files ) : " + (javaFileComplexity) + "\n");
         fileListTotalComplexity += (javaFileComplexity);
     }
 
-    private int calculateComplexityForCPlus(File file) {
+    private void calculateComplexityForCPlus(File cPlusFile) {
         int cPlusFileComplexity = 0;
         int i = 1;
         try {
-            for (String line : FileUtilities.convertToLisOfStrings(file)) {
+            for (String line : FileUtilities.convertToLisOfStrings(cPlusFile)) {
                 int lineCs = 0;
                 String[] strings = TextUtils.getWordsDevidedFromSpaces(line);
                 for (int j = 0; j < strings.length; j++) {
-                    if (wordMatchesInheritance(strings[j], file) && strings[j + 1].equals("public")) {
+                    if (wordMatchesInheritance(strings[j], cPlusFile) && strings[j + 1].equals("public")) {
                         lineCs += 1;
                         inheritanceMap.computeIfAbsent(strings[j - 1], k -> new ArrayList<>()).add(strings[j + 2]);
                     }
@@ -46,14 +48,12 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
                 cPlusFileComplexity += lineCs;
 
             }
-
-            System.out.println("\nTotal File Complexity of file " + file.getName() + " : " + (cPlusFileComplexity) + "\n");
+            complexityMap.put(cPlusFile.getName(),cPlusFileComplexity);
+            System.out.println("\nTotal File Complexity of file " + cPlusFile.getName() + " : " + (cPlusFileComplexity) + "\n");
             fileListTotalComplexity += (cPlusFileComplexity);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return 0;
 
     }
 
@@ -83,7 +83,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-                System.out.println("====File==== " + listOfFiles[i].getName());
+                System.out.println(" ==== File ==== " + listOfFiles[i].getName()+" ======== ");
                 if (listOfFiles[i].getName().endsWith(".java")) {
                     try {
                         calculateComplexityForJava(listOfFiles[i]);
@@ -110,6 +110,10 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         return resultMap;
     }
 
+
+    public Map<String,Integer> getComplexityDueToInheritanceMap(){
+        return this.complexityMap;
+    }
 
 }
 
