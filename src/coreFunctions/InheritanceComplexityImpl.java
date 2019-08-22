@@ -10,27 +10,25 @@ import java.util.*;
 
 public class InheritanceComplexityImpl implements InheritanceComplexity {
 
-    Map<String, List<String>> inheritanceMap = new HashMap<>();
-    private int javaFileComplexity;
-    private int cPlusFileComplexity;
+    private Map<String, List<String>> inheritanceMap = new HashMap<>();
     private int fileListTotalComplexity = 0;
 
     private void calculateComplexityForJava(File file) throws IOException {
         String extendedClass = JavaParser.getExtendedClassName(file);
         //List<String> implementedInterfaces = JavaParser.getImplementedInterfaceNames(file);
-        this.javaFileComplexity = 2;
+        int javaFileComplexity = 2;
 
         if (!(extendedClass.equals(""))) {
-            this.javaFileComplexity++;
+            javaFileComplexity++;
             inheritanceMap.computeIfAbsent(file.getName(), k -> new ArrayList<>()).add(extendedClass);
         }
 
-        System.out.println("\nTotal File Complexity of file " + file.getName() + " ( including object class for java files ) : " + (this.javaFileComplexity) + "\n");
-        fileListTotalComplexity += (this.javaFileComplexity);
+        System.out.println("\nTotal File Complexity of file " + file.getName() + " ( including object class for java files ) : " + (javaFileComplexity) + "\n");
+        fileListTotalComplexity += (javaFileComplexity);
     }
 
     private int calculateComplexityForCPlus(File file) {
-        this.cPlusFileComplexity = 0;
+        int cPlusFileComplexity = 0;
         int i = 1;
         try {
             for (String line : FileUtilities.convertToLisOfStrings(file)) {
@@ -45,12 +43,12 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
                 System.out.println("Line Score : " + i + " : " + lineCs);
                 i++;
 
-                this.cPlusFileComplexity += lineCs;
+                cPlusFileComplexity += lineCs;
 
             }
 
-            System.out.println("\nTotal File Complexity of file " + file.getName() + " : " + (this.cPlusFileComplexity) + "\n");
-            fileListTotalComplexity += (this.cPlusFileComplexity);
+            System.out.println("\nTotal File Complexity of file " + file.getName() + " : " + (cPlusFileComplexity) + "\n");
+            fileListTotalComplexity += (cPlusFileComplexity);
         } catch (IOException e) {
             e.printStackTrace();
         }
