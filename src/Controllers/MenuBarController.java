@@ -3,6 +3,7 @@ package Controllers;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -16,10 +17,13 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import org.eclipse.jgit.api.Git;
 import uiListners.ClickEventListner;
 import uiListners.FolderSelectListner;
 import utilities.Dialog;
 import utilities.LocalState;
+
+import javax.swing.*;
 
 public class MenuBarController implements Initializable {
 
@@ -38,6 +42,9 @@ public class MenuBarController implements Initializable {
     @FXML
     private MenuItem find;
 
+    @FXML
+    private MenuItem cloneFromUrl;
+
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -46,29 +53,45 @@ public class MenuBarController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // TODO Auto-generated method stub
 
-        System.out.println("menu bar init");
 
-        openProject.setOnAction(new EventHandler<ActionEvent>() {
-
+        cloneFromUrl.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                // TODO Auto-generated method stub
-
                 Stage stage = (Stage) menuBarNav.getScene().getWindow();
                 File file;
                 try {
-                    file = Dialog.openFolder("Select Project", "C:\\", stage);
-
+                    String repoUrl = JOptionPane.showInputDialog("Repository URL : ");
+                    file = Dialog.openFolder("Select location to clone", "C:\\", stage);
+                    LOGGER.log(Level.INFO, "Cloning from URL");
+                    Git.cloneRepository()
+                            .setURI(repoUrl)
+                            .setDirectory(file)
+                            .call();
+                    LOGGER.log(Level.INFO, "Cloning Completed");
                     LocalState.getInstance().setLastProject(file);
                     FolderSelectListner.afterFileSelect(file);
                 } catch (Exception e) {
                     FolderSelectListner.fileSelectFail(e);
                     e.printStackTrace();
                 }
-                // System.out.println("file "+file.getName());
-                //
+            }
+        });
+
+        openProject.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage = (Stage) menuBarNav.getScene().getWindow();
+                File file;
+                try {
+                    file = Dialog.openFolder("Select Project", "C:\\", stage);
+                    LocalState.getInstance().setLastProject(file);
+                    FolderSelectListner.afterFileSelect(file);
+                } catch (Exception e) {
+                    FolderSelectListner.fileSelectFail(e);
+                    e.printStackTrace();
+                }
+
             }
         });
 
