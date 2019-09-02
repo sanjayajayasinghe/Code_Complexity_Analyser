@@ -45,6 +45,8 @@ public class MenuBarController implements Initializable {
     @FXML
     private MenuItem cloneFromUrl;
 
+    @FXML
+    private MenuItem about;
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -120,6 +122,17 @@ public class MenuBarController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 clickEventListner.click("find");
+
+            }
+        });
+
+
+        about.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                JOptionPane.showMessageDialog(null, "Developed By : \n" +
+                        " \n Gihan Saranga \n Sanjaya Jayasinghe \n Nishitha De Silva \n Lakshitha Vithanage","Code Complexity Analyzer V1.0.0",JOptionPane.INFORMATION_MESSAGE);
 
             }
         });
