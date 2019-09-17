@@ -214,7 +214,7 @@ public class JavaParser {
         return caseList;
     }
 
-    public static List<String> getMrthodModifiers(MethodDeclaration method) {
+    public static List<String> getMethodModifiers(MethodDeclaration method) {
         List<String> modifierList = new ArrayList<>();
         for (Object ob : method.modifiers()) {
             modifierList.add(ob.toString());
