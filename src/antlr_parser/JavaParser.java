@@ -10,6 +10,9 @@ import java.util.List;
 
 public class JavaParser {
 
+
+
+
     public static List<String> getImplementedInterfaceNames(File file) throws IOException {
         List<String> superInterfaces = new ArrayList<>();
         List parse = parse(file);
@@ -66,6 +69,44 @@ public class JavaParser {
 	public static String getAttributeDataType(FieldDeclaration field){
     	return field.getType().toString();
 	}
+
+	public static List<IfStatement> getInnerIfStatements(IfStatement ifStatement){
+        List<IfStatement> ifStatements = new ArrayList<>() ;
+        Block thenStatement = (Block) ((IfStatement) ifStatement).getThenStatement();
+        for(Object thenstate : thenStatement.statements()){
+            if(thenstate instanceof IfStatement){
+                ifStatements.add((IfStatement) thenstate);
+                ifStatements.addAll(getInnerIfStatements((IfStatement) thenstate));
+            }
+        }
+      return ifStatements;
+    }
+
+	public static List<IfStatement> getIfConditionsRecursively(MethodDeclaration method){
+        List<IfStatement> ifStatements = new ArrayList<>() ;
+        List statements = method.getBody().statements();
+        for(Object statement : statements){
+            Statement s = (Statement) statement;
+            if(s instanceof IfStatement){
+                ifStatements.add((IfStatement) s);
+                ifStatements.addAll(getInnerIfStatements((IfStatement) s));
+            }
+        }
+        return ifStatements;
+    }
+
+	public static List<IfStatement> getIfConditions(MethodDeclaration method){
+        List<IfStatement> ifStatements = new ArrayList<>() ;
+        List statements = method.getBody().statements();
+        for(Object st : statements){
+            Statement s = (Statement) st;
+            if(s instanceof IfStatement){
+                ifStatements.add((IfStatement) s);
+            }
+        }
+        return ifStatements;
+    }
+
 
     public static List<String> getMrthodModifiers(MethodDeclaration method) {
         List<String> modifierList = new ArrayList<>();

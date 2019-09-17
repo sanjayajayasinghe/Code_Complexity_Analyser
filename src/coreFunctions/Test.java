@@ -1,10 +1,12 @@
 package coreFunctions;
 
 import antlr_parser.JavaParser;
+import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static utilities.TestFileConstants.FIBONACCI_MAIN;
 import static utilities.TestFileConstants.RELATIVE_DIR_PATH;
@@ -15,9 +17,13 @@ public class Test {
     public static void main(String[] args) throws IOException {
 
 
-//        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
-//        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
-//        System.out.println();
+        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
+        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
+        for(MethodDeclaration m : methods){
+            final List<IfStatement> ifConditions = JavaParser.getIfConditionsRecursively(m);
+            System.out.println();
+        }
+
 
 
 //        JavaSyntaxChecker.compileJava(testFile.getAbsolutePath());
