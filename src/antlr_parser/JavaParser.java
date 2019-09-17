@@ -178,6 +178,18 @@ public class JavaParser {
         return whileLoopList;
     }
 
+    public static List<DoStatement> getDoWhileBlocks(Block body) {
+        List<DoStatement> whileLoopList = new ArrayList<>();
+        List statements = body.statements();
+        for (Object st : statements) {
+            Statement s = (Statement) st;
+            if (s instanceof DoStatement) {
+                whileLoopList.add((DoStatement) s);
+            }
+        }
+        return whileLoopList;
+    }
+
     public static List<ForStatement> getForLoopBlocks(Block body) {
         List<ForStatement> forLoops = new ArrayList<>();
         List statements = body.statements();
