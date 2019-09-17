@@ -156,7 +156,15 @@ public class JavaParser {
         return switchStatementList;
     }
 
-    
+    public static List<String> getWhileLoopConditionOperators(WhileStatement whileStatement){
+        List<String> operators = new ArrayList<>();
+        if (whileStatement.getExpression() != null) {
+            InfixExpression expression = (InfixExpression) whileStatement.getExpression();
+            operators.add(expression.getOperator().toString());
+            operators.addAll(getInnerOperators(expression));
+        }
+        return operators;
+    }
 
     public static List<WhileStatement> getWhileLoopBlocks(Block body) {
         List<WhileStatement> whileLoopList = new ArrayList<>();
