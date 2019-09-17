@@ -166,6 +166,18 @@ public class JavaParser {
         return operators;
     }
 
+    public static List<TryStatement> getTryBlocks(Block body){
+        List<TryStatement> tryStatementList = new ArrayList<>();
+        List statements = body.statements();
+        for (Object st : statements) {
+            Statement s = (Statement) st;
+            if (s instanceof TryStatement) {
+                tryStatementList.add((TryStatement) s);
+            }
+        }
+        return tryStatementList;
+    }
+
     public static List<String> getDoWhileLoopConditionOperators(DoStatement doStatement){
         List<String> operators = new ArrayList<>();
         if (doStatement.getExpression() != null) {
