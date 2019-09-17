@@ -178,6 +178,11 @@ public class JavaParser {
         return tryStatementList;
     }
 
+    public static List<CatchClause> getCatchClauses(TryStatement tryStatement){
+         return tryStatement.catchClauses();
+
+    }
+
     public static List<String> getDoWhileLoopConditionOperators(DoStatement doStatement){
         List<String> operators = new ArrayList<>();
         if (doStatement.getExpression() != null) {
