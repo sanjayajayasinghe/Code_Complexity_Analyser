@@ -95,7 +95,7 @@ public class JavaParser {
     	return field.getType().toString();
 	}
 
-	public static List<IfStatement> getInnerIfStatements(IfStatement ifStatement){
+	private static List<IfStatement> getInnerIfStatements(IfStatement ifStatement){
         List<IfStatement> ifStatements = new ArrayList<>() ;
         Block thenStatement = (Block) ((IfStatement) ifStatement).getThenStatement();
         for(Object thenstate : thenStatement.statements()){
@@ -132,6 +132,28 @@ public class JavaParser {
         return ifStatements;
     }
 
+    public static  List<SwitchStatement> getSwitchBlocks(MethodDeclaration method){
+        List<SwitchStatement> switchStatementList = new ArrayList<>();
+        List statements = method.getBody().statements();
+        for(Object st : statements){
+            Statement s = (Statement) st;
+            if(s instanceof SwitchStatement){
+                switchStatementList.add((SwitchStatement) s);
+            }
+        }
+        return switchStatementList;
+    }
+
+    public static List<SwitchCase> getCaseStatements(SwitchStatement switchStatement){
+        List<SwitchCase> caseList = new ArrayList<>();
+        List statements = switchStatement.statements();
+        for(Object ob : statements){
+            if(ob instanceof SwitchCase){
+                caseList.add((SwitchCase) ob);
+            }
+        }
+        return caseList;
+    }
 
     public static List<String> getMrthodModifiers(MethodDeclaration method) {
         List<String> modifierList = new ArrayList<>();

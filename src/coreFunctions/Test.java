@@ -3,6 +3,7 @@ package coreFunctions;
 import antlr_parser.JavaParser;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.SwitchStatement;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,16 +17,18 @@ public class Test {
 
     public static void main(String[] args) throws IOException {
 
-
-        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
-        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
-        for(MethodDeclaration m : methods){
-            final List<IfStatement> ifConditions = JavaParser.getIfConditionsRecursively(m);
-            for(IfStatement ifs : ifConditions){
-                JavaParser.getOperatorsInsideIfCondition(ifs);
-            }
-            System.out.println();
-        }
+//
+//        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
+//        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
+//        for(MethodDeclaration m : methods){
+//            final List<SwitchStatement> switchStatements = JavaParser.getSwitchBlocks(m);
+//
+//            for(SwitchStatement ifs : switchStatements){
+//                JavaParser.getCaseStatements(ifs);
+//                System.out.println();
+//            }
+//            System.out.println();
+//        }
 
 
 
