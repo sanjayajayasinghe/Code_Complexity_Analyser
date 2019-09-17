@@ -156,6 +156,20 @@ public class JavaParser {
         return switchStatementList;
     }
 
+    
+
+    public static List<WhileStatement> getWhileLoopBlocks(Block body) {
+        List<WhileStatement> whileLoopList = new ArrayList<>();
+        List statements = body.statements();
+        for (Object st : statements) {
+            Statement s = (Statement) st;
+            if (s instanceof WhileStatement) {
+                whileLoopList.add((WhileStatement) s);
+            }
+        }
+        return whileLoopList;
+    }
+
     public static List<ForStatement> getForLoopBlocks(Block body) {
         List<ForStatement> forLoops = new ArrayList<>();
         List statements = body.statements();
