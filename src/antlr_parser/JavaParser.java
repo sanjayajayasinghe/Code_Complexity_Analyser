@@ -11,8 +11,6 @@ import java.util.List;
 public class JavaParser {
 
 
-
-
     public static List<String> getImplementedInterfaceNames(File file) throws IOException {
         List<String> superInterfaces = new ArrayList<>();
         List parse = parse(file);
@@ -35,16 +33,16 @@ public class JavaParser {
         return "";
     }
 
-    public static List<String> getAvailableClassNames(File file) throws IOException{
+    public static List<String> getAvailableClassNames(File file) throws IOException {
 
-    	List<String> classNames = new ArrayList<>();
-    	List parse = parse(file);
-    	for(Object p : parse){
-    		TypeDeclaration type = (TypeDeclaration) p;
-			classNames.add(type.getName().toString());
-		}
-		return classNames;
-	}
+        List<String> classNames = new ArrayList<>();
+        List parse = parse(file);
+        for (Object p : parse) {
+            TypeDeclaration type = (TypeDeclaration) p;
+            classNames.add(type.getName().toString());
+        }
+        return classNames;
+    }
 
     public static MethodDeclaration[] getMethods(File file) throws IOException {
         List parse = parse(file);
@@ -52,37 +50,47 @@ public class JavaParser {
         return p.getMethods();
     }
 
-    public static FieldDeclaration[] getClassAttributes(File file) throws IOException{
-		List parse = parse(file);
-		TypeDeclaration p = (TypeDeclaration) parse.get(0);
-		return p.getFields();
-	}
+    public static FieldDeclaration[] getClassAttributes(File file) throws IOException {
+        List parse = parse(file);
+        TypeDeclaration p = (TypeDeclaration) parse.get(0);
+        return p.getFields();
+    }
 
-	public static List<String> getAttributeModifiers(FieldDeclaration field){
-    	List<String> modifierList = new ArrayList<>();
-    	for (Object ob : field.modifiers()){
-    		modifierList.add(ob.toString());
-		}
-    	return modifierList;
-	}
+    public static List<String> getAttributeModifiers(FieldDeclaration field) {
+        List<String> modifierList = new ArrayList<>();
+        for (Object ob : field.modifiers()) {
+            modifierList.add(ob.toString());
+        }
+        return modifierList;
+    }
 
-	private static List<String> getInnerOperators(InfixExpression exp){
-        List<String> op = new ArrayList<>();        
-        if(exp.getLeftOperand() instanceof InfixExpression){
+    public static List<String> getOperatorsInForLoopCondition(ForStatement forStatement) {
+        List<String> operators = new ArrayList<>();
+        if (forStatement.getExpression() != null) {
+            InfixExpression expression = (InfixExpression) forStatement.getExpression();
+            operators.add(expression.getOperator().toString());
+            operators.addAll(getInnerOperators(expression));
+        }
+        return operators;
+    }
+
+    private static List<String> getInnerOperators(InfixExpression exp) {
+        List<String> op = new ArrayList<>();
+        if (exp.getLeftOperand() instanceof InfixExpression) {
             InfixExpression leftOperand = (InfixExpression) exp.getLeftOperand();
             op.add(leftOperand.getOperator().toString());
             op.addAll(getInnerOperators(leftOperand));
         }
 
-        if(exp.getRightOperand() instanceof  InfixExpression){
-            InfixExpression rightOperand = (InfixExpression)exp.getRightOperand();
+        if (exp.getRightOperand() instanceof InfixExpression) {
+            InfixExpression rightOperand = (InfixExpression) exp.getRightOperand();
             op.add(rightOperand.getOperator().toString());
             op.addAll(getInnerOperators(rightOperand));
         }
         return op;
     }
-	
-	public static List<String> getOperatorsInsideIfCondition(IfStatement ifStatement){
+
+    public static List<String> getOperatorsInsideIfCondition(IfStatement ifStatement) {
 
         List<String> operators = new ArrayList<>();
         InfixExpression expression = (InfixExpression) ifStatement.getExpression();
@@ -91,28 +99,28 @@ public class JavaParser {
         return operators;
     }
 
-	public static String getAttributeDataType(FieldDeclaration field){
-    	return field.getType().toString();
-	}
+    public static String getAttributeDataType(FieldDeclaration field) {
+        return field.getType().toString();
+    }
 
-	private static List<IfStatement> getInnerIfStatements(IfStatement ifStatement){
-        List<IfStatement> ifStatements = new ArrayList<>() ;
+    private static List<IfStatement> getInnerIfStatements(IfStatement ifStatement) {
+        List<IfStatement> ifStatements = new ArrayList<>();
         Block thenStatement = (Block) ((IfStatement) ifStatement).getThenStatement();
-        for(Object thenstate : thenStatement.statements()){
-            if(thenstate instanceof IfStatement){
+        for (Object thenstate : thenStatement.statements()) {
+            if (thenstate instanceof IfStatement) {
                 ifStatements.add((IfStatement) thenstate);
                 ifStatements.addAll(getInnerIfStatements((IfStatement) thenstate));
             }
         }
-      return ifStatements;
+        return ifStatements;
     }
 
-	public static List<IfStatement> getIfConditionsRecursively(MethodDeclaration method){
-        List<IfStatement> ifStatements = new ArrayList<>() ;
+    public static List<IfStatement> getIfConditionsRecursively(MethodDeclaration method) {
+        List<IfStatement> ifStatements = new ArrayList<>();
         List statements = method.getBody().statements();
-        for(Object statement : statements){
+        for (Object statement : statements) {
             Statement s = (Statement) statement;
-            if(s instanceof IfStatement){
+            if (s instanceof IfStatement) {
                 ifStatements.add((IfStatement) s);
                 ifStatements.addAll(getInnerIfStatements((IfStatement) s));
             }
@@ -120,35 +128,48 @@ public class JavaParser {
         return ifStatements;
     }
 
-	public static List<IfStatement> getIfConditions(MethodDeclaration method){
-        List<IfStatement> ifStatements = new ArrayList<>() ;
+    public static List<IfStatement> getIfConditions(MethodDeclaration method) {
+        List<IfStatement> ifStatements = new ArrayList<>();
         List statements = method.getBody().statements();
-        for(Object st : statements){
+        for (Object st : statements) {
             Statement s = (Statement) st;
-            if(s instanceof IfStatement){
+            if (s instanceof IfStatement) {
                 ifStatements.add((IfStatement) s);
             }
         }
         return ifStatements;
     }
 
-    public static  List<SwitchStatement> getSwitchBlocks(MethodDeclaration method){
+    public static List<SwitchStatement> getSwitchBlocks(MethodDeclaration method) {
         List<SwitchStatement> switchStatementList = new ArrayList<>();
         List statements = method.getBody().statements();
-        for(Object st : statements){
+        for (Object st : statements) {
             Statement s = (Statement) st;
-            if(s instanceof SwitchStatement){
+            if (s instanceof SwitchStatement) {
                 switchStatementList.add((SwitchStatement) s);
             }
         }
         return switchStatementList;
     }
 
-    public static List<SwitchCase> getCaseStatements(SwitchStatement switchStatement){
+    public static List<ForStatement> getForLoopBlocks(MethodDeclaration method) {
+        List<ForStatement> forLoops = new ArrayList<>();
+        List statements = method.getBody().statements();
+        for (Object st : statements) {
+            Statement s = (Statement) st;
+            if (s instanceof ForStatement) {
+                forLoops.add((ForStatement) s);
+            }
+        }
+        return forLoops;
+    }
+
+
+    public static List<SwitchCase> getCaseStatements(SwitchStatement switchStatement) {
         List<SwitchCase> caseList = new ArrayList<>();
         List statements = switchStatement.statements();
-        for(Object ob : statements){
-            if(ob instanceof SwitchCase){
+        for (Object ob : statements) {
+            if (ob instanceof SwitchCase) {
                 caseList.add((SwitchCase) ob);
             }
         }
