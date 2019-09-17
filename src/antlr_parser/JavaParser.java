@@ -115,9 +115,13 @@ public class JavaParser {
         return ifStatements;
     }
 
-    public static List<IfStatement> getIfConditionsRecursively(MethodDeclaration method) {
+    /**
+     * @param body will return all the if conditions including the if conditions inside another condition
+     * @return List<IfStatement>
+     */
+    public static List<IfStatement> getIfConditionsRecursively(Block body) {
         List<IfStatement> ifStatements = new ArrayList<>();
-        List statements = method.getBody().statements();
+        List statements = body.statements();
         for (Object statement : statements) {
             Statement s = (Statement) statement;
             if (s instanceof IfStatement) {
@@ -128,9 +132,9 @@ public class JavaParser {
         return ifStatements;
     }
 
-    public static List<IfStatement> getIfConditions(MethodDeclaration method) {
+    public static List<IfStatement> getIfConditions(Block body) {
         List<IfStatement> ifStatements = new ArrayList<>();
-        List statements = method.getBody().statements();
+        List statements = body.statements();
         for (Object st : statements) {
             Statement s = (Statement) st;
             if (s instanceof IfStatement) {
@@ -140,9 +144,9 @@ public class JavaParser {
         return ifStatements;
     }
 
-    public static List<SwitchStatement> getSwitchBlocks(MethodDeclaration method) {
+    public static List<SwitchStatement> getSwitchBlocks(Block body) {
         List<SwitchStatement> switchStatementList = new ArrayList<>();
-        List statements = method.getBody().statements();
+        List statements = body.statements();
         for (Object st : statements) {
             Statement s = (Statement) st;
             if (s instanceof SwitchStatement) {
@@ -152,9 +156,9 @@ public class JavaParser {
         return switchStatementList;
     }
 
-    public static List<ForStatement> getForLoopBlocks(MethodDeclaration method) {
+    public static List<ForStatement> getForLoopBlocks(Block body) {
         List<ForStatement> forLoops = new ArrayList<>();
-        List statements = method.getBody().statements();
+        List statements = body.statements();
         for (Object st : statements) {
             Statement s = (Statement) st;
             if (s instanceof ForStatement) {
@@ -190,7 +194,6 @@ public class JavaParser {
         parser.setSource(fileContent);
         CompilationUnit cu = (CompilationUnit) parser.createAST(null);
         return cu.types();
-
     }
 
     public static boolean isInterface(File file) throws IOException {
