@@ -166,6 +166,16 @@ public class JavaParser {
         return operators;
     }
 
+    public static List<String> getDoWhileLoopConditionOperators(DoStatement doStatement){
+        List<String> operators = new ArrayList<>();
+        if (doStatement.getExpression() != null) {
+            InfixExpression expression = (InfixExpression) doStatement.getExpression();
+            operators.add(expression.getOperator().toString());
+            operators.addAll(getInnerOperators(expression));
+        }
+        return operators;
+    }
+
     public static List<WhileStatement> getWhileLoopBlocks(Block body) {
         List<WhileStatement> whileLoopList = new ArrayList<>();
         List statements = body.statements();
