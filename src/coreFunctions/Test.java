@@ -21,6 +21,9 @@ public class Test {
         MethodDeclaration[] methods = JavaParser.getMethods(testFile);
         for(MethodDeclaration m : methods){
             final List<IfStatement> ifConditions = JavaParser.getIfConditionsRecursively(m);
+            for(IfStatement ifs : ifConditions){
+                JavaParser.getOperatorsInsideIfCondition(ifs);
+            }
             System.out.println();
         }
 

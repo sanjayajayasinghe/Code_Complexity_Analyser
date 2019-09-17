@@ -66,6 +66,31 @@ public class JavaParser {
     	return modifierList;
 	}
 
+	private static List<String> getInnerOperators(InfixExpression exp){
+        List<String> op = new ArrayList<>();        
+        if(exp.getLeftOperand() instanceof InfixExpression){
+            InfixExpression leftOperand = (InfixExpression) exp.getLeftOperand();
+            op.add(leftOperand.getOperator().toString());
+            op.addAll(getInnerOperators(leftOperand));
+        }
+
+        if(exp.getRightOperand() instanceof  InfixExpression){
+            InfixExpression rightOperand = (InfixExpression)exp.getRightOperand();
+            op.add(rightOperand.getOperator().toString());
+            op.addAll(getInnerOperators(rightOperand));
+        }
+        return op;
+    }
+	
+	public static List<String> getOperatorsInsideIfCondition(IfStatement ifStatement){
+
+        List<String> operators = new ArrayList<>();
+        InfixExpression expression = (InfixExpression) ifStatement.getExpression();
+        operators.add(expression.getOperator().toString());
+        operators.addAll(getInnerOperators(expression));
+        return operators;
+    }
+
 	public static String getAttributeDataType(FieldDeclaration field){
     	return field.getType().toString();
 	}
