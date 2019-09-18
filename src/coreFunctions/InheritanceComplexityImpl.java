@@ -11,11 +11,11 @@ import java.util.*;
 public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     private Map<String, List<String>> inheritanceMap = new HashMap<>();
-    private Map<String,Integer> complexityMap=new HashMap<>();
+    private Map<String, Integer> complexityMap = new HashMap<>();
 
     private int fileListTotalComplexity = 0;
 
-    private void calculateComplexityForJava(File javaFile) throws IOException {
+    private int calculateComplexityForJava(File javaFile) throws IOException {
         String extendedClass = JavaParser.getExtendedClassName(javaFile);
         //List<String> implementedInterfaces = JavaParser.getImplementedInterfaceNames(file);
         int javaFileComplexity = 2;
@@ -24,12 +24,13 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
             javaFileComplexity++;
             inheritanceMap.computeIfAbsent(javaFile.getName(), k -> new ArrayList<>()).add(extendedClass);
         }
-        complexityMap.put(javaFile.getName(),javaFileComplexity);
+        complexityMap.put(javaFile.getName(), javaFileComplexity);
         System.out.println("\nTotal File Complexity of file " + javaFile.getName() + " ( including object class for java files ) : " + (javaFileComplexity) + "\n");
         fileListTotalComplexity += (javaFileComplexity);
+        return fileListTotalComplexity;
     }
 
-    private void calculateComplexityForCPlus(File cPlusFile) {
+    private int calculateComplexityForCPlus(File cPlusFile) {
         int cPlusFileComplexity = 0;
         int i = 1;
         try {
@@ -48,13 +49,14 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
                 cPlusFileComplexity += lineCs;
 
             }
-            complexityMap.put(cPlusFile.getName(),cPlusFileComplexity);
+            complexityMap.put(cPlusFile.getName(), cPlusFileComplexity);
             System.out.println("\nTotal File Complexity of file " + cPlusFile.getName() + " : " + (cPlusFileComplexity) + "\n");
             fileListTotalComplexity += (cPlusFileComplexity);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return fileListTotalComplexity;
     }
 
     private void scanInheritance() {
@@ -72,9 +74,9 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     }
 
     @Override
-    public Map<String, Integer> findInheritedClasses(File file) {
+    public Map<String, Integer> findInheritedClassesForFileList(File baseFile) {
 
-        String str = file.getAbsolutePath();
+        String str = baseFile.getAbsolutePath();
         int index = str.lastIndexOf('\\');
         String dir_path = str.substring(0, index);
 
@@ -83,7 +85,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-                System.out.println(" ==== File ==== " + listOfFiles[i].getName()+" ======== ");
+                System.out.println(" ==== File ==== " + listOfFiles[i].getName() + " ======== ");
                 if (listOfFiles[i].getName().endsWith(".java")) {
                     try {
                         calculateComplexityForJava(listOfFiles[i]);
@@ -111,9 +113,25 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     }
 
 
-    public Map<String,Integer> getComplexityDueToInheritanceMap(){
+    public Map<String, Integer> getComplexityDueToInheritanceMap() {
         return this.complexityMap;
     }
+
+    @Override
+    public int findInheritanceComplexityForFile(File file) {
+        int inheritanceComplexity = 0;
+        if (file.getName().endsWith(".java")) {
+            try {
+                inheritanceComplexity = calculateComplexityForJava(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (file.getName().endsWith(".cpp")) {
+            inheritanceComplexity = calculateComplexityForCPlus(file);
+        }
+        return inheritanceComplexity;
+    }
+
 
 }
 

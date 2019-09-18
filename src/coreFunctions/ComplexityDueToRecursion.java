@@ -15,46 +15,13 @@ import java.util.List;
 public class ComplexityDueToRecursion implements ComplexityByRecursion {
 
     @Override
-    public boolean isRecursionFound(MethodDeclaration method) throws IOException {
-
-            String methodName = method.getName().toString();
-            int noOfParameters = method.parameters().size();
-
-            final List<MethodInvocation> methodInvocations = new ArrayList<>();
-
-
-            method.getBody().accept(new ASTVisitor() {
-                @Override
-                public boolean visit(MethodInvocation node) {
-                    methodInvocations.add(node);
-                    return super.visit(node);
-                }
-            });
-
-
-            for(MethodInvocation methodInvocation : methodInvocations){
-                if(methodInvocation.getName().toString().equalsIgnoreCase(methodName)){
-                    if (methodInvocation.arguments().size() == noOfParameters){
-                        System.out.println("Recursion found for line number" + method.getStartPosition());
-                        return true;
-                    }
-                }
-            }
-
-        return false;
-
-
-    }
-
-    @Override
     public int getRecursionLines(File file) throws IOException {
         int no=0;
         MethodDeclaration[] methods = JavaParser.getMethods(file);
 
         for(MethodDeclaration method:methods) {
-            if (isRecursionFound(method)) {
+            if (JavaParser.isRecursionAvailable(method)) {
                     no = JavaParser.getNumberOfLinesInBlock(method.getBody());
-                    System.out.println(no);
                 }
             }
 
