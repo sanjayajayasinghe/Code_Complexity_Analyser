@@ -10,8 +10,20 @@ import java.util.List;
 
 public class JavaParser {
 
-    public static int getNumberOfLinesInBlock(Block body){
-        return  body.statements().size();
+    public static void getArithmaticOperators(Block body) {
+        System.out.println();
+        List<Statement> statements = body.statements();
+        for (Statement st : statements) {
+            if (st instanceof VariableDeclarationStatement) {
+                List fragments = ((VariableDeclarationStatement) st).fragments();
+            }
+        }
+    }
+
+    public static int getNumberOfLinesInBlock(Block body) {
+
+        String[] split = body.toString().replaceAll("\\{", "").replaceAll("\\}", "").trim().split("\n");
+        return split.length;
     }
 
     public static boolean isRecursionAvailable(MethodDeclaration method) {
