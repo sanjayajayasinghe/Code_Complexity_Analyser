@@ -4,6 +4,7 @@ import antlr_parser.JavaParser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jdt.core.dom.*;
@@ -14,18 +15,38 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
 
     @Override
     public int calculateComplexityForControlStructuresForIfBlockAndConditions(File file) throws IOException {
-        int complexityTotal=-1;
+
+        int complexityTotal=0;
+        int nestingComplexity=0;
+
         MethodDeclaration[] methods = JavaParser.getMethods(file);
+
         for(MethodDeclaration m : methods) {
             List<IfStatement> ifBlocks = JavaParser.getIfConditionsRecursively(m.getBody());
-            //need to get these recursively like if condition
-            List<ForStatement> forStatements=JavaParser.getForLoopBlocks(m.getBody());
-            List<WhileStatement> whileStatements=JavaParser.getWhileLoopBlocks(m.getBody());
+           //need to get these recursively like if condition
+            List<ForStatement> forStatements=JavaParser.getForBlocksRecursively(m.getBody());
+            List<WhileStatement> whileStatements=JavaParser.getWhileBlocksRecursively(m.getBody());
             List<DoStatement> doWhileStatements=JavaParser.getDoWhileBlocks(m.getBody());
 
 
             List<TryStatement>  tryClauses=JavaParser.getTryBlocks(m.getBody());
             List<SwitchStatement> switchStatments=JavaParser.getSwitchBlocks(m.getBody());
+
+            for(int i=0;i<ifBlocks.size();i++){
+                nestingComplexity+=i;
+            }
+
+            for(int i=0;i<forStatements.size();i++){
+                nestingComplexity+=i;
+            }
+
+            for(int i=0;i<whileStatements.size();i++){
+                nestingComplexity+=i;
+            }
+
+            for(int i=0;i<doWhileStatements.size();i++){
+                nestingComplexity+=i;
+            }
 
 
            //if
@@ -94,8 +115,8 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
 
             //switch
             for(SwitchStatement switchStatement:switchStatments){
-                List <SwitchCase> switchcases=JavaParser.getCaseStatements(switchStatement);
-                for(SwitchCase casestatement:switchcases)
+                List <SwitchCase> switchCases=JavaParser.getCaseStatements(switchStatement);
+                for(SwitchCase caseStatement:switchCases)
                     complexityTotal+=1;
             }
 
@@ -103,7 +124,7 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
 
 
 
-        return complexityTotal;
+        return complexityTotal+nestingComplexity;
 
     }
 
