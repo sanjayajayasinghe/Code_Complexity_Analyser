@@ -52,6 +52,9 @@ public class ComplexityDueToSize implements ComplexityBySize {
                     if (isWordShouldBeConsidered(word)) {
                         lineCs += 1;
                     }
+                    if (isSpecialKeywordsAvailable(word)) {
+                        lineCs += 2;
+                    }
                 }
                 if (lineCs > 0) {
                     result.append("[ Line Number " + i + "] : " + lineCs + "\n");

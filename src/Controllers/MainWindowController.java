@@ -159,7 +159,7 @@ public class MainWindowController implements Initializable {
         if (folder != null) {
             InheritanceComplexityImpl inheritanceComplexityImpl = new InheritanceComplexityImpl();
             StringBuilder result = new StringBuilder("");
-            inheritanceComplexityImpl.findInheritedClasses(folder).forEach((k, v) -> result.append(MessageFormat.format("{0} : {1}\n", k, v)));
+            inheritanceComplexityImpl.findInheritedClassesForFileList(folder).forEach((k, v) -> result.append(MessageFormat.format("{0} : {1}\n", k, v)));
             return result.toString();
         } else {
             return "Please open a valid file first...";

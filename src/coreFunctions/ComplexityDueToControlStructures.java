@@ -14,7 +14,7 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
     private File file;
 
     @Override
-    public int calculateComplexityForControlStructuresForIfBlockAndConditions(File file) throws IOException {
+    public int calculateComplexityForControlStructuresForRecursiveConditions(File file) throws IOException {
 
         int complexityTotal=0;
         int nestingComplexity=0;
