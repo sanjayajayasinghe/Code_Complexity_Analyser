@@ -4,6 +4,7 @@ import antlr_parser.JavaParser;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SwitchStatement;
+import org.eclipse.jdt.core.dom.WhileStatement;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,17 +25,16 @@ public class Test {
 
 
 //
-//        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
-//        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
-//        for(MethodDeclaration m : methods){
-//            final List<SwitchStatement> switchStatements = JavaParser.getSwitchBlocks(m);
-//
-//            for(SwitchStatement ifs : switchStatements){
-//                JavaParser.getCaseStatements(ifs);
-//                System.out.println();
-//            }
-//            System.out.println();
-//        }
+        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
+        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
+        for(MethodDeclaration m : methods){
+            final List<WhileStatement> switchStatements = JavaParser.getWhileBlocksRecursively(m.getBody());
+            for(WhileStatement ifs : switchStatements){
+                int lineNumber = JavaParser.getLineNumber(ifs,testFile);
+                System.out.println();
+            }
+            System.out.println();
+        }
 
 
 

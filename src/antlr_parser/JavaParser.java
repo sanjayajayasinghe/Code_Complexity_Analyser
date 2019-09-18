@@ -10,6 +10,16 @@ import java.util.List;
 
 public class JavaParser {
 
+    public static int getLineNumber(Statement statement, File sourceFile) {
+        ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+        String fileText = FileUtilities.filesToString(sourceFile);
+        parser.setSource(fileText.toCharArray());
+        parser.setResolveBindings(true);
+        CompilationUnit compilationUnit = (CompilationUnit) parser.createAST(null);
+        int lineNumber = compilationUnit.getLineNumber(statement.getStartPosition());
+        return lineNumber - 1;
+    }
 
     public static List<String> getImplementedInterfaceNames(File file) throws IOException {
         List<String> superInterfaces = new ArrayList<>();
@@ -63,7 +73,8 @@ public class JavaParser {
         }
         return modifierList;
     }
-//here
+
+    //here
     public static List<String> getOperatorsInForLoopCondition(ForStatement forStatement) {
         List<String> operators = new ArrayList<>();
         if (forStatement.getExpression() != null) {
@@ -115,7 +126,7 @@ public class JavaParser {
         return ifStatements;
     }
 
-    public static List<ForStatement> getForBlocksRecursively(Block body){
+    public static List<ForStatement> getForBlocksRecursively(Block body) {
         List<ForStatement> forStatements = new ArrayList<>();
         List statements = body.statements();
         for (Object statement : statements) {
@@ -128,10 +139,7 @@ public class JavaParser {
         return forStatements;
     }
 
-
-
-
-    public static List<WhileStatement> getWhileBlocksRecursively(Block body){
+    public static List<WhileStatement> getWhileBlocksRecursively(Block body) {
         List<WhileStatement> whileStatements = new ArrayList<>();
         List statements = body.statements();
         for (Object statement : statements) {
@@ -141,7 +149,6 @@ public class JavaParser {
                 whileStatements.addAll(getWhileBlocksRecursively((Block) ((WhileStatement) s).getBody()));
             }
         }
-
         return whileStatements;
     }
 
@@ -182,7 +189,7 @@ public class JavaParser {
         return switchStatementList;
     }
 
-    public static List<String> getWhileLoopConditionOperators(WhileStatement whileStatement){
+    public static List<String> getWhileLoopConditionOperators(WhileStatement whileStatement) {
         List<String> operators = new ArrayList<>();
         if (whileStatement.getExpression() != null) {
             InfixExpression expression = (InfixExpression) whileStatement.getExpression();
@@ -192,7 +199,7 @@ public class JavaParser {
         return operators;
     }
 
-    public static List<TryStatement> getTryBlocks(Block body){
+    public static List<TryStatement> getTryBlocks(Block body) {
         List<TryStatement> tryStatementList = new ArrayList<>();
         List statements = body.statements();
         for (Object st : statements) {
@@ -204,12 +211,12 @@ public class JavaParser {
         return tryStatementList;
     }
 
-    public static List<CatchClause> getCatchClauses(TryStatement tryStatement){
-         return tryStatement.catchClauses();
+    public static List<CatchClause> getCatchClauses(TryStatement tryStatement) {
+        return tryStatement.catchClauses();
 
     }
 
-    public static List<String> getDoWhileLoopConditionOperators(DoStatement doStatement){
+    public static List<String> getDoWhileLoopConditionOperators(DoStatement doStatement) {
         List<String> operators = new ArrayList<>();
         if (doStatement.getExpression() != null) {
             InfixExpression expression = (InfixExpression) doStatement.getExpression();
