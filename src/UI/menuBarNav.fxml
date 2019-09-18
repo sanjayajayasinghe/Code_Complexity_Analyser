@@ -6,25 +6,24 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
-<MenuBar fx:id="menuBarNav" id="menuBarNav" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-         fx:controller="Controllers.MenuBarController">
+<MenuBar id="menuBarNav" fx:id="menuBarNav" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuBarController">
     <menus>
-        <Menu fx:id="menu" id="menu" mnemonicParsing="false" text="File">
+        <Menu id="menu" fx:id="menu" mnemonicParsing="false" text="File">
             <items>
-                <MenuItem mnemonicParsing="false" text="Open Project" fx:id="openProject" id="openProject">
+                <MenuItem id="openProject" fx:id="openProject" mnemonicParsing="false" text="Open Project">
                     <graphic>
                         <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../Icons/icons8-folder-96.png"/>
+                                <Image url="@../../../Icons/icons8-folder-96.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </MenuItem>
-                <MenuItem mnemonicParsing="false" text="Clone from Repository" fx:id="cloneFromUrl" id="cloneFromUrl">
+                <MenuItem id="cloneFromUrl" fx:id="cloneFromUrl" mnemonicParsing="false" text="Clone from Repository">
                     <graphic>
                         <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../Icons/icons8-folder-96.png"/>
+                                <Image url="@../../../Icons/icons8-folder-96.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -33,7 +32,7 @@
                     <graphic>
                         <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../Icons/icons8-file-64.png"/>
+                                <Image url="@../../../Icons/icons8-file-64.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -42,7 +41,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
             <items>
-                <MenuItem mnemonicParsing="false" text="find file by words" fx:id="find" id="find"/>
+                <MenuItem id="find" fx:id="find" mnemonicParsing="false" text="find file by words" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Analyser">
@@ -51,35 +50,40 @@
                     <graphic>
                         <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../Icons/icons8-play-64.png"/>
+                                <Image url="@../../../Icons/icons8-play-64.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </MenuItem>
-                <MenuItem mnemonicParsing="false" id="runOnFile" fx:id="runOnFile" text="Run on File">
+                <MenuItem id="runOnFile" fx:id="runOnFile" mnemonicParsing="false" text="Run on File">
                     <graphic>
                         <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../Icons/icons8-play-64.png"/>
+                                <Image url="@../../../Icons/icons8-play-64.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </MenuItem>
-                <MenuItem mnemonicParsing="false" id="runOnFileList" fx:id="runOnFileList"
-                          text="Run on Selected File List">
+                <MenuItem id="runOnFileList" fx:id="runOnFileList" mnemonicParsing="false" text="Run on Selected File List">
                     <graphic>
                         <ImageView fitHeight="15.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../Icons/icons8-play-64.png"/>
+                                <Image url="@../../../Icons/icons8-play-64.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </MenuItem>
             </items>
         </Menu>
+      <Menu mnemonicParsing="false" text="Reports">
+        <items>
+          <MenuItem fx:id="generateReport" mnemonicParsing="false" text="Generate Report" />
+            <MenuItem mnemonicParsing="false" text="GeneratePDF" />
+        </items>
+      </Menu>
         <Menu mnemonicParsing="false" text="Help">
             <items>
-                <MenuItem mnemonicParsing="false" text="About" id="about" fx:id="about"/>
+                <MenuItem id="about" fx:id="about" mnemonicParsing="false" text="About" />
             </items>
         </Menu>
     </menus>

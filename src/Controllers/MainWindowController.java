@@ -96,38 +96,22 @@ public class MainWindowController implements Initializable {
                         break;
                     case "runOnFileList":
                         LOGGER.log(Level.INFO, "run on file selected");
-                        StringBuilder content = new StringBuilder("");
-                        LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> LOGGER.log(Level.INFO, "file:" + file.getName()));
-                        LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> content.append(file.getName() + "\n"));
-                        resultViewController.setGihantabContent(content.toString());
-                        resultViewController.setNishtabContent(getFindInheritanceClassesAnalysedResult(LocalState.getInstance().getCurrentSelectedFiles().get(0)));
-
+                        if (LocalState.getInstance().getCurrentSelectedFiles() != null) {
+                            StringBuilder content = new StringBuilder("");
+                            LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> LOGGER.log(Level.INFO, "file:" + file.getName()));
+                            LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> content.append(file.getName() + "\n"));
+                            resultViewController.setGihantabContent(content.toString());
+                            resultViewController.setNishtabContent(getFindInheritanceClassesAnalysedResult(LocalState.getInstance().getCurrentSelectedFiles().get(0)));
+                        } else {
+                            System.out.println("alert file list");
+                        }
                         break;
 
                     case "find":
                         Stage dialogStage = new Stage();
                         dialogStage.initModality(Modality.WINDOW_MODAL);
                         AnchorPane dialog;
-//					try {
-//						FXMLLoader loader = FXMLLoader.load(getClass().getResource("/UI/findDialog.fxml"));
-//						dialog=loader.load();
-//						dialogStage.setScene(new Scene(dialog));
-//						dialogStage.show();
-//						loader.getController();
-//						
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//				}
-//					
-//					
-
                         Dialog.findDialog(getClass());
-//					VBox vbox = new VBox(new Text("Hi"), new Button("Ok."));
-//					vbox.setAlignment(Pos.CENTER);
-//					vbox.setPadding(new Insets(15));
-
-
                         break;
 
                 }

@@ -52,10 +52,13 @@ public class FindDialogController implements Initializable {
                 String keyword = findText.getText();
                 LOGGER.log(Level.INFO, "find:", keyword);
                 List<FindData> fileList = new ArrayList<>();
-                fileList = FileUtilities.findFilesByWords(keyword, LocalState.getInstance().getLastProject());
+                if(LocalState.getInstance().getLastProject()!=null) {
+                    fileList = FileUtilities.findFilesByWords(keyword, LocalState.getInstance().getLastProject());
 
-                listView.getItems().addAll(fileList.stream().map((data) -> MessageFormat.format("{0}    line{1}", data.getFile().getName(), data.getLine())).collect(Collectors.toList()));
-
+                    listView.getItems().addAll(fileList.stream().map((data) -> MessageFormat.format("{0}    line{1}", data.getFile().getName(), data.getLine())).collect(Collectors.toList()));
+                }else{
+                    System.out.println("no project selected!!");
+                }
             }
         });
     }
