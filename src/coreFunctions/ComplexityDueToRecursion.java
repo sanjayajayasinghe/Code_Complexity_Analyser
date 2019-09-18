@@ -14,15 +14,9 @@ import java.util.List;
 
 public class ComplexityDueToRecursion implements ComplexityByRecursion {
 
-    File codeFile;
-
-    public ComplexityDueToRecursion(File file) {
-        this.codeFile = file;
-    }
-
     @Override
-    public boolean isRecursionFound() throws IOException {
-        MethodDeclaration[] methods = JavaParser.getMethods(codeFile);
+    public boolean isRecursionFound(File file) throws IOException {
+        MethodDeclaration[] methods = JavaParser.getMethods(file);
         for (MethodDeclaration method : methods) {
             String methodName = method.getName().toString();
             int noOfParameters = method.parameters().size();
@@ -52,6 +46,21 @@ public class ComplexityDueToRecursion implements ComplexityByRecursion {
         return false;
 
 
+    }
+
+    @Override
+    public int getRecursionLines(File file) throws IOException {
+        int no=0;
+        MethodDeclaration[] methods = JavaParser.getMethods(file);
+        for (MethodDeclaration method : methods) {
+            if (isRecursionFound(file)) {
+
+                //TODO:get lines
+
+                //  no += JavaParser.getNumberOfLinesInBlock(method.getBody());
+            }
+        }
+        return 1;
     }
 
     @Override
