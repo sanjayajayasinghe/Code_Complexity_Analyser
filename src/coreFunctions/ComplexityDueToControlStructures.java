@@ -30,7 +30,7 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
 
 
             List<TryStatement>  tryClauses=JavaParser.getTryBlocks(m.getBody());
-            List<SwitchStatement> switchStatments=JavaParser.getSwitchBlocks(m.getBody());
+            List<SwitchStatement> switchStatements=JavaParser.getSwitchBlocks(m.getBody());
 
             for(int i=0;i<ifBlocks.size();i++){
                 nestingComplexity+=i;
@@ -114,7 +114,7 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
             }
 
             //switch
-            for(SwitchStatement switchStatement:switchStatments){
+            for(SwitchStatement switchStatement:switchStatements){
                 List <SwitchCase> switchCases=JavaParser.getCaseStatements(switchStatement);
                 for(SwitchCase caseStatement:switchCases)
                     complexityTotal+=1;
