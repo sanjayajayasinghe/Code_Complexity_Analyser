@@ -10,6 +10,32 @@ import java.util.List;
 
 public class JavaParser {
 
+    public static int getNumberOfLinesInBlock(Block body){
+        return  body.statements().size();
+    }
+
+    public static boolean isRecursionAvailable(MethodDeclaration method) {
+        String methodName = method.getName().toString();
+        int noOfParameters = method.parameters().size();
+
+        final List<MethodInvocation> methodInvocations = new ArrayList<>();
+        method.getBody().accept(new ASTVisitor() {
+            @Override
+            public boolean visit(MethodInvocation node) {
+                methodInvocations.add(node);
+                return super.visit(node);
+            }
+        });
+        for (MethodInvocation methodInvocation : methodInvocations) {
+            if (methodInvocation.getName().toString().equalsIgnoreCase(methodName)) {
+                if (methodInvocation.arguments().size() == noOfParameters) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static int getLineNumber(Statement statement, File sourceFile) {
         ASTParser parser = ASTParser.newParser(AST.JLS3);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
