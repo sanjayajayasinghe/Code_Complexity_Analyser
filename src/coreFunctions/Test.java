@@ -17,6 +17,12 @@ public class Test {
 
     public static void main(String[] args) throws IOException {
 
+//        File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
+//        ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
+//        System.out.println(complexityDueToControlStructures
+//                .calculateComplexityForControlStructuresForIfBlockAndConditions(testFile));
+
+
 //
 //        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
 //        MethodDeclaration[] methods = JavaParser.getMethods(testFile);

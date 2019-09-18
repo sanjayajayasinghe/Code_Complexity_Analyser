@@ -63,7 +63,7 @@ public class JavaParser {
         }
         return modifierList;
     }
-
+//here
     public static List<String> getOperatorsInForLoopCondition(ForStatement forStatement) {
         List<String> operators = new ArrayList<>();
         if (forStatement.getExpression() != null) {
