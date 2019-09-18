@@ -110,10 +110,13 @@ public class MainWindowController implements Initializable {
                     case "find":
                         Stage dialogStage = new Stage();
                         dialogStage.initModality(Modality.WINDOW_MODAL);
-                        AnchorPane dialog;
-                        Dialog.findDialog(getClass());
+                        Dialog.findDialog(getClass(),"/UI/findDialog.fxml");
                         break;
-
+                    case "generateReport":
+                        Stage dialogStage2 = new Stage();
+                        dialogStage2.initModality(Modality.WINDOW_MODAL);
+                        Dialog.findDialog(getClass(),"/UI/reportView.fxml");
+                        break;
                 }
 
             }

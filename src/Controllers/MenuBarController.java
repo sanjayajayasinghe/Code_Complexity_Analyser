@@ -143,7 +143,7 @@ public class MenuBarController implements Initializable {
         generateReport.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                clickEventListner.click("generateReport");
             }
         });
 

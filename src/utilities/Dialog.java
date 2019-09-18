@@ -20,12 +20,12 @@ public class Dialog {
         return selectedDirectory;
     }
 
-    public static Object findDialog(Class context) {
+    public static Object findDialog(Class context,String uiPath) {
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.WINDOW_MODAL);
         AnchorPane dialog;
         try {
-            FXMLLoader loader = new FXMLLoader(context.getResource("/UI/findDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(context.getResource(uiPath));
             dialog = (AnchorPane) loader.load();
 
 
