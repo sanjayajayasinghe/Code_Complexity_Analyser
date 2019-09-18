@@ -73,6 +73,8 @@ public class MainWindowController implements Initializable {
                 // TODO Auto-generated method stub
                 codeViewController.setFileToView(file);
                 LocalState.getInstance().setCurrentOpenfile(file);
+                LocalState.getInstance().loadToFile();
+                LocalState.getInstance().loadFromFile();
             }
         });
 
