@@ -10,6 +10,10 @@ import java.util.List;
 
 public class JavaParser {
 
+    public static int getNumberOfLinesInBlock(Block body){
+        return  body.statements().size();
+    }
+
     public static boolean isRecursionAvailable(MethodDeclaration method) {
         String methodName = method.getName().toString();
         int noOfParameters = method.parameters().size();
@@ -30,7 +34,6 @@ public class JavaParser {
             }
         }
         return false;
-
     }
 
     public static int getLineNumber(Statement statement, File sourceFile) {
