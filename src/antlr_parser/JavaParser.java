@@ -115,10 +115,21 @@ public class JavaParser {
         return ifStatements;
     }
 
-    /**
-     * @param body will return all the if conditions including the if conditions inside another condition
-     * @return List<IfStatement>
-     */
+    public static List<ForStatement> getForBlocksRecursively(Block body){
+        List<ForStatement> forStatements = new ArrayList<>();
+        List statements = body.statements();
+        for (Object statement : statements) {
+            Statement s = (Statement) statement;
+            if (s instanceof ForStatement) {
+                forStatements.add((ForStatement) s);
+                forStatements.addAll(getForBlocksRecursively((Block) ((ForStatement) s).getBody()));
+            }
+        }
+        return forStatements;
+    }
+
+
+
 
     public static List<WhileStatement> getWhileBlocksRecursively(Block body){
         List<WhileStatement> whileStatements = new ArrayList<>();
