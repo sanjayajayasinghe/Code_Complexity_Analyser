@@ -27,7 +27,7 @@ public class Test {
 //        ComplexityDueToRecursion complexityDueToRecursion=new ComplexityDueToRecursion();
 //        System.out.println(complexityDueToRecursion.getRecursionLines(testFile));
         CheckOverallCodeComplexityAction checkOverallCodeComplexityAction=new CheckOverallCodeComplexityAction(testFile);
-        checkOverallCodeComplexityAction.getOverallFileComplexity();
+        checkOverallCodeComplexityAction.getTW();
 
 //
 //        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
