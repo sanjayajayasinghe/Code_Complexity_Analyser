@@ -3,6 +3,7 @@ package antlr_parser;
 import org.eclipse.jdt.core.dom.*;
 import utilities.FileUtilities;
 
+import javax.jws.soap.SOAPBinding;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,47 +12,80 @@ import java.util.List;
 public class JavaParser {
 
 
-    public static List<String> getUsedVariableNames(Statement statement) {
+    public static UsedItems getUsedVariableNames(Statement statement) {
 
-        List<String> variablesUsedInStatement = new ArrayList<>();
+        UsedItems usedItems = new UsedItems();
+
         if (statement instanceof VariableDeclarationStatement) {
             List fragments = ((VariableDeclarationStatement) statement).fragments();
             for (Object vdf : fragments) {
                 if (vdf instanceof VariableDeclarationFragment) {
                     String variableName = ((VariableDeclarationFragment) vdf).getName().toString();
-                    variablesUsedInStatement.add(variableName);
+                    usedItems.getUsedVariables().add(variableName);
+                    Expression initializer = ((VariableDeclarationFragment) vdf).getInitializer();
+                    if(initializer != null){
+                        if(initializer instanceof NumberLiteral ){
+                            usedItems.getUsedNumericValues().add(((NumberLiteral) initializer).getToken());
+                        }
+                        if(initializer instanceof InfixExpression){
+                            usedItems.getUsedVariables().addAll(getInnerVariables((InfixExpression) initializer));
+                            usedItems.getUsedNumericValues().addAll(getInnerNumerals((InfixExpression) initializer));
+                        }
+                    }
                 }
             }
         } else if(statement instanceof ExpressionStatement){
             Expression expression = ((ExpressionStatement) statement).getExpression();
             if(expression instanceof Assignment){
-                variablesUsedInStatement.addAll(getInnerVariablesForAssignement((Assignment) expression));
+                usedItems.getUsedNumericValues().addAll(getInnerNumeralsForAssignement((Assignment) expression));
+                usedItems.getUsedVariables().addAll(getInnerVariablesForAssignement((Assignment) expression));
             }
 
         }else if (statement instanceof IfStatement) {
             Expression expression = ((IfStatement) statement).getExpression();
             if (expression instanceof InfixExpression) {
-                variablesUsedInStatement.addAll(getInnerVariables((InfixExpression) expression));
+                usedItems.getUsedVariables().addAll(getInnerVariables((InfixExpression) expression));
+                usedItems.getUsedNumericValues().addAll(getInnerNumerals((InfixExpression) expression));
             }
         }else if (statement instanceof WhileStatement) {
             Expression expression = ((WhileStatement) statement).getExpression();
             if (expression instanceof InfixExpression) {
-                variablesUsedInStatement.addAll(getInnerVariables((InfixExpression) expression));
+                usedItems.getUsedVariables().addAll(getInnerVariables((InfixExpression) expression));
+                usedItems.getUsedNumericValues().addAll(getInnerNumerals((InfixExpression) expression));
             }
         }else if (statement instanceof ForStatement) {
             Expression expression = ((ForStatement) statement).getExpression();
             if (expression instanceof InfixExpression) {
-                variablesUsedInStatement.addAll(getInnerVariables((InfixExpression) expression));
+                usedItems.getUsedVariables().addAll(getInnerVariables((InfixExpression) expression));
+                usedItems.getUsedNumericValues().addAll(getInnerNumerals((InfixExpression) expression));
             }
         }else if (statement instanceof DoStatement) {
             Expression expression = ((DoStatement) statement).getExpression();
             if (expression instanceof InfixExpression) {
-                variablesUsedInStatement.addAll(getInnerVariables((InfixExpression) expression));
+                usedItems.getUsedVariables().addAll(getInnerVariables((InfixExpression) expression));
+                usedItems.getUsedNumericValues().addAll(getInnerNumerals((InfixExpression) expression));
             }
         }
-        return variablesUsedInStatement;
+        return usedItems;
     }
 
+    private static List<String> getInnerNumeralsForAssignement(Assignment exp) {
+        List<String> op = new ArrayList<>();
+        if (exp.getLeftHandSide() instanceof InfixExpression) {
+            InfixExpression leftOperand = (InfixExpression) exp.getLeftHandSide();
+            op.addAll(getInnerNumerals(leftOperand));
+        } else if (exp.getLeftHandSide() instanceof NumberLiteral) {
+            op.add(exp.getLeftHandSide().toString());
+        }
+
+        if (exp.getRightHandSide() instanceof InfixExpression) {
+            InfixExpression rightOperand = (InfixExpression) exp.getRightHandSide();
+            op.addAll(getInnerNumerals(rightOperand));
+        } else if (exp.getRightHandSide() instanceof NumberLiteral) {
+            op.add(exp.getRightHandSide().toString());
+        }
+        return op;
+    }
     private static List<String> getInnerVariablesForAssignement(Assignment exp) {
         List<String> op = new ArrayList<>();
         if (exp.getLeftHandSide() instanceof InfixExpression) {
@@ -69,6 +103,35 @@ public class JavaParser {
         }
         return op;
     }
+    private static List<String> getInnerNumerals(InfixExpression exp) {
+        List<String> op = new ArrayList<>();
+        if (exp.getLeftOperand() instanceof InfixExpression) {
+            InfixExpression leftOperand = (InfixExpression) exp.getLeftOperand();
+            op.addAll(getInnerNumerals(leftOperand));
+        } else if (exp.getLeftOperand() instanceof NumberLiteral) {
+            op.add(exp.getLeftOperand().toString());
+        }
+
+        if (exp.getRightOperand() instanceof InfixExpression) {
+            InfixExpression rightOperand = (InfixExpression) exp.getRightOperand();
+            op.addAll(getInnerNumerals(rightOperand));
+        } else if (exp.getRightOperand() instanceof NumberLiteral) {
+            op.add(exp.getRightOperand().toString());
+        }
+
+        if(exp.hasExtendedOperands()){
+            List list = exp.extendedOperands();
+            for(Object o : list){
+                if(o instanceof InfixExpression){
+                    op.addAll(getInnerNumerals((InfixExpression) o));
+                }else if(o instanceof NumberLiteral){
+                    op.add(o.toString());
+                }
+            }
+        }
+
+        return op;
+    }
 
     private static List<String> getInnerVariables(InfixExpression exp) {
         List<String> op = new ArrayList<>();
@@ -84,6 +147,17 @@ public class JavaParser {
             op.addAll(getInnerVariables(rightOperand));
         } else if (exp.getRightOperand() instanceof SimpleName) {
             op.add(exp.getRightOperand().toString());
+        }
+
+        if(exp.hasExtendedOperands()){
+            List list = exp.extendedOperands();
+            for(Object o : list){
+                if(o instanceof InfixExpression){
+                    op.addAll(getInnerVariables((InfixExpression) o));
+                }else if(o instanceof SimpleName){
+                    op.add(o.toString());
+                }
+            }
         }
         return op;
     }
@@ -452,6 +526,19 @@ public class JavaParser {
             modifierList.add(m.toString());
         }
         return modifierList;
+    }
+
+    public static class UsedItems{
+        List<String> usedVariables = new ArrayList<>();
+        List<String> usedNumericValues = new ArrayList<>();
+
+        public List<String> getUsedVariables() {
+            return usedVariables;
+        }
+
+        public List<String> getUsedNumericValues() {
+            return usedNumericValues;
+        }
     }
 
 }
