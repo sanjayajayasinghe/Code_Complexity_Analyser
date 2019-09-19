@@ -19,6 +19,7 @@
 package coreFunctions;
 
 import antlr_parser.JavaParser;
+import com.sun.xml.internal.txw2.output.DumpSerializer;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
 import utilities.FileUtilities;
@@ -112,13 +113,7 @@ public class ComplexityDueToSize implements ComplexityBySize {
             List statements = methodDeclaration.getBody().statements();
             for (Object st : statements) {
                 JavaParser.UsedItems usedItems = JavaParser.getUsedVariableNames((Statement) st);
-
-                for(String numericVariable:usedItems.getUsedNumericValues()){
-                    this.Cs+=1;
-                }
-                for(String variable:usedItems.getUsedVariables()){
-                    this.Cs+=1;
-                }
+                this.Cs+= usedItems.getUsedNumericValues().size()+ usedItems.getUsedNumericValues().size();
 
             }
 
