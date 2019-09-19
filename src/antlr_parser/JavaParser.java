@@ -10,14 +10,45 @@ import java.util.List;
 
 public class JavaParser {
 
-    public static void getArithmaticOperators(Block body) {
-        System.out.println();
+    public static List<String> getOperators(Block body) {
+
+        List<String> operators = new ArrayList<>();
         List<Statement> statements = body.statements();
         for (Statement st : statements) {
             if (st instanceof VariableDeclarationStatement) {
                 List fragments = ((VariableDeclarationStatement) st).fragments();
+                for(Object vs : fragments){
+                   VariableDeclarationFragment variableDeclarationFragment = (VariableDeclarationFragment) vs;
+                    Expression initializer = variableDeclarationFragment.getInitializer();
+                    if (initializer != null) {
+                        if(initializer instanceof InfixExpression){
+                            String operator = ((InfixExpression) initializer).getOperator().toString();
+                            operators.add(operator);
+                            operators.addAll(getInnerOperators((InfixExpression) initializer));
+                        }
+                    }
+                }
+            }
+            if(st instanceof ExpressionStatement){
+                Expression expression = ((ExpressionStatement) st).getExpression();
+                if(expression != null){
+                    if(expression instanceof PostfixExpression){
+                        String operator = ((PostfixExpression) expression).getOperator().toString();
+                        operators.add(operator);
+                    }
+                    if(expression instanceof PrefixExpression){
+                        String operator = ((PrefixExpression) expression).getOperator().toString();
+                        operators.add(operator);
+                    }
+                    if(expression instanceof Assignment){
+                        String operator = ((Assignment) expression).getOperator().toString();
+                        operators.add(operator);
+                    }
+                }
+
             }
         }
+        return operators;
     }
 
     public static int getNumberOfLinesInBlock(Block body) {
