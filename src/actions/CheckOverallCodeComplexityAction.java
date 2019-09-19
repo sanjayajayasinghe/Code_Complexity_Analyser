@@ -54,7 +54,8 @@ public class CheckOverallCodeComplexityAction {
         this.inheritanceComplexity = innheritanceComplexity;
     }
 
-    public int getOverallFileComplexity() throws IOException {
+    //return (ctc+cnc+ci) - the total weight(TW)
+    public int getTW() throws IOException {
         ComplexityDueToSize complexityDueToSize = new ComplexityDueToSize(this.file);
         ComplexityDueToControlStructures complexityDueToControlStructures = new ComplexityDueToControlStructures();
         InheritanceComplexityImpl inheritanceComplexityimpl = new InheritanceComplexityImpl();
@@ -64,9 +65,14 @@ public class CheckOverallCodeComplexityAction {
         sizeComplexity = complexityDueToSize.calculateComplexity();
         inheritanceComplexity = inheritanceComplexityimpl.findInheritanceComplexityForFile(this.file);
 
-        return controlStructureComplexity + sizeComplexity + inheritanceComplexity;
+        return controlStructureComplexity + inheritanceComplexity;
 
 
+    }
+
+    //return (tw*cs)-the CPS value
+    public int getCPS() throws IOException {
+        return getTW() * getSizeComplexity();
     }
 
 }
