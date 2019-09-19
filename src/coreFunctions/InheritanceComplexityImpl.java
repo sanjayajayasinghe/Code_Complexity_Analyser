@@ -31,7 +31,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
     }
 
     private int calculateComplexityForCPlus(File cPlusFile) {
-        int cPlusFileComplexity = 0;
+        int cPlusFileComplexity = 1;
         int i = 1;
         try {
             for (String line : FileUtilities.convertToLisOfStrings(cPlusFile)) {
@@ -65,8 +65,8 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         }
     }
 
-    @Override
-    public boolean wordMatchesInheritance(String word, File file) {
+
+    private boolean wordMatchesInheritance(String word, File file) {
         if (file.getName().endsWith(".java") || file.getName().endsWith(".cpp")) {
             return (Arrays.asList(JavaKeywords.INHERITANCE_KEYWORDS).contains(word));
         }
@@ -129,6 +129,7 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         } else if (file.getName().endsWith(".cpp")) {
             inheritanceComplexity = calculateComplexityForCPlus(file);
         }
+        scanInheritance();
         return inheritanceComplexity;
     }
 
