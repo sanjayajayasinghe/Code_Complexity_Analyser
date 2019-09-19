@@ -10,16 +10,10 @@ import java.io.IOException;
 public class CheckOverallCodeComplexityAction {
 
     private File file;
-    private int controlStructureComplexity;
-    private int sizeComplexity;
-    private int inheritanceComplexity;
+
 
     public CheckOverallCodeComplexityAction(File file) {
         this.file = file;
-        this.controlStructureComplexity = 0;
-        this.sizeComplexity = 0;
-        this.inheritanceComplexity = 0;
-
     }
 
     public File getFile() {
@@ -30,42 +24,27 @@ public class CheckOverallCodeComplexityAction {
         this.file = file;
     }
 
-    public int getControlStructureComplexity() {
-        return controlStructureComplexity;
+    public int getControlStructureComplexity() throws IOException {
+        return new ComplexityDueToControlStructures().calculateComplexityForControlStructuresForRecursiveConditions(this.file);
     }
 
-    public void setControlStructureComplexity(int controlStructureComplexity) {
-        this.controlStructureComplexity = controlStructureComplexity;
+
+
+    public int getSizeComplexity() throws IOException {
+        return new ComplexityDueToSize(this.file).calculateComplexity();
     }
 
-    public int getSizeComplexity() {
-        return sizeComplexity;
-    }
-
-    public void setSizeComplexity(int sizeComplexity) {
-        this.sizeComplexity = sizeComplexity;
-    }
 
     public int getInheritanceComplexity() {
-        return inheritanceComplexity;
+        return new InheritanceComplexityImpl().findInheritanceComplexityForFile(this.file);
     }
 
-    public void setInheritanceComplexity(int innheritanceComplexity) {
-        this.inheritanceComplexity = innheritanceComplexity;
-    }
+
 
     //return (ctc+cnc+ci) - the total weight(TW)
     public int getTW() throws IOException {
-        ComplexityDueToSize complexityDueToSize = new ComplexityDueToSize(this.file);
-        ComplexityDueToControlStructures complexityDueToControlStructures = new ComplexityDueToControlStructures();
-        InheritanceComplexityImpl inheritanceComplexityimpl = new InheritanceComplexityImpl();
 
-
-        controlStructureComplexity = complexityDueToControlStructures.calculateComplexityForControlStructuresForRecursiveConditions(this.file);
-        sizeComplexity = complexityDueToSize.calculateComplexity();
-        inheritanceComplexity = inheritanceComplexityimpl.findInheritanceComplexityForFile(this.file);
-
-        return controlStructureComplexity + inheritanceComplexity;
+        return getControlStructureComplexity() + getInheritanceComplexity();
 
 
     }

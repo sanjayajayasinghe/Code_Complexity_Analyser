@@ -19,6 +19,7 @@
 package coreFunctions;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author gisilk
@@ -26,7 +27,7 @@ import java.io.File;
  */
 public interface CodeComplexity {
 
-    public int calculateComplexity();
+    public int calculateComplexity() throws IOException;
 
 
 }

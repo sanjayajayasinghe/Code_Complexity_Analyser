@@ -21,9 +21,12 @@ package coreFunctions;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import antlr_parser.JavaParser;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import utilities.FileUtilities;
 import utilities.TextUtils;
 
@@ -75,9 +78,11 @@ public class ComplexityDueToSize implements ComplexityBySize {
     }
 
     @Override
-    public int calculateComplexity() {
+    public int calculateComplexity() throws IOException {
 
         int i = 1;
+
+
         try {
             for (String line : FileUtilities.convertToLisOfStrings(this.codeFile)) {
                 int lineCs = 0;
@@ -98,9 +103,18 @@ public class ComplexityDueToSize implements ComplexityBySize {
         } catch (IOException e) {
             e.printStackTrace();
         }
+              List<String> classNames=JavaParser.getAvailableClassNames(this.codeFile);
+                for(String className:classNames){
+                    this.Cs+=1;
+                }
+
+              MethodDeclaration [] methodDeclarations= JavaParser.getMethods(this.codeFile);
+                for(MethodDeclaration methodDeclaration:methodDeclarations){
+                    this.Cs+=1;
+                }
 
 
-        return 0;
+        return this.Cs;
     }
 
 
