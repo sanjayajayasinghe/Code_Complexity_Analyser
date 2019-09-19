@@ -10,6 +10,84 @@ import java.util.List;
 
 public class JavaParser {
 
+
+    public static List<String> getUsedVariableNames(Statement statement) {
+
+        List<String> variablesUsedInStatement = new ArrayList<>();
+        if (statement instanceof VariableDeclarationStatement) {
+            List fragments = ((VariableDeclarationStatement) statement).fragments();
+            for (Object vdf : fragments) {
+                if (vdf instanceof VariableDeclarationFragment) {
+                    String variableName = ((VariableDeclarationFragment) vdf).getName().toString();
+                    variablesUsedInStatement.add(variableName);
+                }
+            }
+        } else if(statement instanceof ExpressionStatement){
+            Expression expression = ((ExpressionStatement) statement).getExpression();
+            if(expression instanceof Assignment){
+                variablesUsedInStatement.addAll(getInnerVariablesForAssignement((Assignment) expression));
+            }
+
+        }else if (statement instanceof IfStatement) {
+            Expression expression = ((IfStatement) statement).getExpression();
+            if (expression instanceof InfixExpression) {
+                variablesUsedInStatement.addAll(getInnerVariables((InfixExpression) expression));
+            }
+        }else if (statement instanceof WhileStatement) {
+            Expression expression = ((WhileStatement) statement).getExpression();
+            if (expression instanceof InfixExpression) {
+                variablesUsedInStatement.addAll(getInnerVariables((InfixExpression) expression));
+            }
+        }else if (statement instanceof ForStatement) {
+            Expression expression = ((ForStatement) statement).getExpression();
+            if (expression instanceof InfixExpression) {
+                variablesUsedInStatement.addAll(getInnerVariables((InfixExpression) expression));
+            }
+        }else if (statement instanceof DoStatement) {
+            Expression expression = ((DoStatement) statement).getExpression();
+            if (expression instanceof InfixExpression) {
+                variablesUsedInStatement.addAll(getInnerVariables((InfixExpression) expression));
+            }
+        }
+        return variablesUsedInStatement;
+    }
+
+    private static List<String> getInnerVariablesForAssignement(Assignment exp) {
+        List<String> op = new ArrayList<>();
+        if (exp.getLeftHandSide() instanceof InfixExpression) {
+            InfixExpression leftOperand = (InfixExpression) exp.getLeftHandSide();
+            op.addAll(getInnerVariables(leftOperand));
+        } else if (exp.getLeftHandSide() instanceof SimpleName) {
+            op.add(exp.getLeftHandSide().toString());
+        }
+
+        if (exp.getRightHandSide() instanceof InfixExpression) {
+            InfixExpression rightOperand = (InfixExpression) exp.getRightHandSide();
+            op.addAll(getInnerVariables(rightOperand));
+        } else if (exp.getRightHandSide() instanceof SimpleName) {
+            op.add(exp.getRightHandSide().toString());
+        }
+        return op;
+    }
+
+    private static List<String> getInnerVariables(InfixExpression exp) {
+        List<String> op = new ArrayList<>();
+        if (exp.getLeftOperand() instanceof InfixExpression) {
+            InfixExpression leftOperand = (InfixExpression) exp.getLeftOperand();
+            op.addAll(getInnerVariables(leftOperand));
+        } else if (exp.getLeftOperand() instanceof SimpleName) {
+            op.add(exp.getLeftOperand().toString());
+        }
+
+        if (exp.getRightOperand() instanceof InfixExpression) {
+            InfixExpression rightOperand = (InfixExpression) exp.getRightOperand();
+            op.addAll(getInnerVariables(rightOperand));
+        } else if (exp.getRightOperand() instanceof SimpleName) {
+            op.add(exp.getRightOperand().toString());
+        }
+        return op;
+    }
+
     public static List<String> getOperators(Block body) {
 
         List<String> operators = new ArrayList<>();
@@ -17,11 +95,11 @@ public class JavaParser {
         for (Statement st : statements) {
             if (st instanceof VariableDeclarationStatement) {
                 List fragments = ((VariableDeclarationStatement) st).fragments();
-                for(Object vs : fragments){
-                   VariableDeclarationFragment variableDeclarationFragment = (VariableDeclarationFragment) vs;
+                for (Object vs : fragments) {
+                    VariableDeclarationFragment variableDeclarationFragment = (VariableDeclarationFragment) vs;
                     Expression initializer = variableDeclarationFragment.getInitializer();
                     if (initializer != null) {
-                        if(initializer instanceof InfixExpression){
+                        if (initializer instanceof InfixExpression) {
                             String operator = ((InfixExpression) initializer).getOperator().toString();
                             operators.add(operator);
                             operators.addAll(getInnerOperators((InfixExpression) initializer));
@@ -29,18 +107,18 @@ public class JavaParser {
                     }
                 }
             }
-            if(st instanceof ExpressionStatement){
+            if (st instanceof ExpressionStatement) {
                 Expression expression = ((ExpressionStatement) st).getExpression();
-                if(expression != null){
-                    if(expression instanceof PostfixExpression){
+                if (expression != null) {
+                    if (expression instanceof PostfixExpression) {
                         String operator = ((PostfixExpression) expression).getOperator().toString();
                         operators.add(operator);
                     }
-                    if(expression instanceof PrefixExpression){
+                    if (expression instanceof PrefixExpression) {
                         String operator = ((PrefixExpression) expression).getOperator().toString();
                         operators.add(operator);
                     }
-                    if(expression instanceof Assignment){
+                    if (expression instanceof Assignment) {
                         String operator = ((Assignment) expression).getOperator().toString();
                         operators.add(operator);
                     }
