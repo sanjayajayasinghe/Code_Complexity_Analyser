@@ -18,21 +18,20 @@
 
 package coreFunctions;
 
+import antlr_parser.JavaParser;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Statement;
+import utilities.FileUtilities;
+import utilities.TextUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import antlr_parser.JavaParser;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import utilities.FileUtilities;
-import utilities.TextUtils;
 
 /**
  * @author gisilk
- *
  */
 public class ComplexityDueToSize implements ComplexityBySize {
 
@@ -103,16 +102,24 @@ public class ComplexityDueToSize implements ComplexityBySize {
         } catch (IOException e) {
             e.printStackTrace();
         }
-              List<String> classNames=JavaParser.getAvailableClassNames(this.codeFile);
-                for(String className:classNames){
-                    this.Cs+=1;
-                }
+        List<String> classNames = JavaParser.getAvailableClassNames(this.codeFile);
+        for (String className : classNames) {
+            this.Cs += 1;
+        }
 
-              MethodDeclaration [] methodDeclarations= JavaParser.getMethods(this.codeFile);
-                for(MethodDeclaration methodDeclaration:methodDeclarations){
-                    this.Cs+=1;
-                }
+        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(this.codeFile);
+        for (MethodDeclaration methodDeclaration : methodDeclarations) {
+            this.Cs += 1;
 
+            List statements = methodDeclaration.getBody().statements();
+            for (Object st : statements) {
+                List<String> variables = JavaParser.getUsedVariableNames((Statement) st);
+                for (String variable : variables) {
+                    this.Cs += 1;
+                }
+            }
+
+        }
 
         return this.Cs;
     }
