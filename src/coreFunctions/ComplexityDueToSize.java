@@ -94,11 +94,9 @@ public class ComplexityDueToSize implements ComplexityBySize {
                     }
 
                 }
-                System.out.println("Line Score : " + i + " : " + lineCs);
                 i++;
                 this.Cs += lineCs;
             }
-            System.out.println("Total Cs : " + this.Cs);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,10 +111,15 @@ public class ComplexityDueToSize implements ComplexityBySize {
 
             List statements = methodDeclaration.getBody().statements();
             for (Object st : statements) {
-                List<String> variables = JavaParser.getUsedVariableNames((Statement) st);
-                for (String variable : variables) {
-                    this.Cs += 1;
+                JavaParser.UsedItems usedItems = JavaParser.getUsedVariableNames((Statement) st);
+
+                for(String numericVariable:usedItems.getUsedNumericValues()){
+                    this.Cs+=1;
                 }
+                for(String variable:usedItems.getUsedVariables()){
+                    this.Cs+=1;
+                }
+
             }
 
         }
