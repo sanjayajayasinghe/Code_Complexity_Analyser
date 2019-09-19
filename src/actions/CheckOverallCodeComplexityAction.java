@@ -46,11 +46,11 @@ public class CheckOverallCodeComplexityAction {
         this.sizeComplexity = sizeComplexity;
     }
 
-    public int getInnhertanceComplexity() {
+    public int getInheritanceComplexity() {
         return inheritanceComplexity;
     }
 
-    public void setInnhertanceComplexity(int innheritanceComplexity) {
+    public void setInheritanceComplexity(int innheritanceComplexity) {
         this.inheritanceComplexity = innheritanceComplexity;
     }
 
