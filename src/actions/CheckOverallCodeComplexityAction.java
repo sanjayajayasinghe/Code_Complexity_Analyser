@@ -1,11 +1,16 @@
 package actions;
 
+import antlr_parser.JavaParser;
 import coreFunctions.ComplexityDueToControlStructures;
 import coreFunctions.ComplexityDueToSize;
 import coreFunctions.InheritanceComplexityImpl;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Statement;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CheckOverallCodeComplexityAction {
 
@@ -25,9 +30,8 @@ public class CheckOverallCodeComplexityAction {
     }
 
     public int getControlStructureComplexity() throws IOException {
-        return new ComplexityDueToControlStructures().calculateComplexityForControlStructuresForRecursiveConditions(this.file);
+        return new ComplexityDueToControlStructures().calculateComplexityForControlStructures(this.file);
     }
-
 
 
     public int getSizeComplexity() throws IOException {
@@ -35,23 +39,60 @@ public class CheckOverallCodeComplexityAction {
     }
 
 
-    public int getInheritanceComplexity() {
+    public int getInheritanceComplexity() throws IOException {
         return new InheritanceComplexityImpl().findInheritanceComplexityForFile(this.file);
     }
 
 
+    public Map<Integer,Integer> getTWScoreMap() throws IOException {
 
-    //return (ctc+cnc+ci) - the total weight(TW)
-    public int getTW() throws IOException {
+        Map<Integer, Integer> totalComplexityMap = new HashMap<>();
+        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(getFile());
 
-        return getControlStructureComplexity() + getInheritanceComplexity();
+        ComplexityDueToControlStructures complexityDueToControlStructures = new ComplexityDueToControlStructures();
+        Map<Integer, Integer> complexityScoreMap = complexityDueToControlStructures.getCreatedScoreMap(getFile());
 
+        InheritanceComplexityImpl inheritanceComplexity = new InheritanceComplexityImpl();
+        Map<Integer, Integer> inheritanceScoreMap = inheritanceComplexity.getCreatedScoreMap(getFile());
+
+
+        for (MethodDeclaration methodDeclaration : methodDeclarations) {
+            for (Object statement : methodDeclaration.getBody().statements()) {
+                Statement s = (Statement) statement;
+                    totalComplexityMap
+                            .put(JavaParser.getLineNumber(
+                                    s,getFile()),(complexityScoreMap.get(s)+inheritanceScoreMap.get(s)));
+            }
+
+        }
+            return totalComplexityMap;
+    }
+
+    public  Map<Integer, Integer> getCPSScoreMap() throws IOException {
+
+        Map<Integer, Integer> CPSComplexityMap = new HashMap<>();
+        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(getFile());
+
+        ComplexityDueToSize complexityDueToSize = new ComplexityDueToSize(getFile());
+
+        Map<Integer, Integer> sizeScoreMap = complexityDueToSize.getCreatedScoreMap();
+        Map<Integer,Integer>  totalComplexityMap= getTWScoreMap();
+
+        for (MethodDeclaration methodDeclaration : methodDeclarations) {
+            for (Object statement : methodDeclaration.getBody().statements()) {
+                Statement s = (Statement) statement;
+
+                CPSComplexityMap
+                        .put(JavaParser.getLineNumber(
+                                s,getFile()),(sizeScoreMap.get(s)*totalComplexityMap.get(s)));
+
+            }
+
+        }
+
+        return CPSComplexityMap;
 
     }
 
-    //return (tw*cs)-the CPS value
-    public int getCPS() throws IOException {
-        return getTW() * getSizeComplexity();
-    }
 
 }

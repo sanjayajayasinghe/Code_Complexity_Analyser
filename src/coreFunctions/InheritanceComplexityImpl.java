@@ -1,6 +1,8 @@
 package coreFunctions;
 
 import antlr_parser.JavaParser;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Statement;
 import utilities.FileUtilities;
 import utilities.TextUtils;
 
@@ -10,9 +12,9 @@ import java.util.*;
 
 public class InheritanceComplexityImpl implements InheritanceComplexity {
 
+    private Map<Integer, Integer> scoremap = new HashMap<>();
     private Map<String, List<String>> inheritanceMap = new HashMap<>();
     private Map<String, Integer> complexityMap = new HashMap<>();
-
     private int fileListTotalComplexity = 0;
 
     private int calculateComplexityForJava(File javaFile) throws IOException {
@@ -112,13 +114,12 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         return resultMap;
     }
 
-
     public Map<String, Integer> getComplexityDueToInheritanceMap() {
         return this.complexityMap;
     }
 
     @Override
-    public int findInheritanceComplexityForFile(File file) {
+    public int findInheritanceComplexityForFile(File file) throws IOException {
         int inheritanceComplexity = 0;
         if (file.getName().endsWith(".java")) {
             try {
@@ -129,10 +130,28 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
         } else if (file.getName().endsWith(".cpp")) {
             inheritanceComplexity = calculateComplexityForCPlus(file);
         }
+
         scanInheritance();
         return inheritanceComplexity;
     }
 
+    public Map<Integer, Integer> getCreatedScoreMap(File file) throws IOException {
+
+        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(file);
+        for (MethodDeclaration methodDeclaration : methodDeclarations) {
+
+
+            List statements = methodDeclaration.getBody().statements();
+
+            for (Object st : statements) {
+                scoremap.put(JavaParser.getLineNumber((Statement) st, file), findInheritanceComplexityForFile(file));
+            }
+
+        }
+
+        return scoremap;
+
+    }
 
 }
 

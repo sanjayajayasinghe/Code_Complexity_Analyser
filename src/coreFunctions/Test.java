@@ -6,13 +6,21 @@ import org.eclipse.jdt.core.dom.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import static utilities.TestFileConstants.*;
 //import test.coreFunctions.ComplexityTest;
 
 public class Test {
 
     public static void main(String[] args) throws IOException {
 
-//        File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
+       File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
+       ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
+       complexityDueToControlStructures.getCreatedScoreMap(testFile);
+       for(int lineno: complexityDueToControlStructures.getCreatedScoreMap(testFile).keySet()){
+           System.out.println(lineno);
+       }
+
 ////        ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
 ////        System.out.println(complexityDueToControlStructures
 ////                .calculateComplexityForControlStructuresForIfBlockAndConditions(testFile));
@@ -23,15 +31,15 @@ public class Test {
 //        checkOverallCodeComplexityAction.getTW();
 //
 ////
-        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
-        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
-        for(MethodDeclaration m : methods){
-            List statements = m.getBody().statements();
-            for(Object st : statements){
-                JavaParser.getUsedVariableNames((Statement) st);
-            }
-
-        }
+//        File testFile = new File("C:\\Users\\gisilk\\Downloads\\abc.java");
+//        MethodDeclaration[] methods = JavaParser.getMethods(testFile);
+//        for(MethodDeclaration m : methods){
+//            List statements = m.getBody().statements();
+//            for(Object st : statements){
+//                JavaParser.getUsedVariableNames((Statement) st);
+//            }
+//
+//        }
 
 
 

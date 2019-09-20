@@ -5,6 +5,6 @@ import java.io.IOException;
 
 public interface ComplexityByControlStructures extends CodeComplexity {
 
-    int calculateComplexityForControlStructuresForRecursiveConditions(File file) throws IOException;
+    int calculateComplexityForControlStructures(File file) throws IOException;
 
 }

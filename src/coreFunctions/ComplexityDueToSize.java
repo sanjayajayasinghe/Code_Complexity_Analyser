@@ -28,7 +28,9 @@ import utilities.TextUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -38,6 +40,7 @@ public class ComplexityDueToSize implements ComplexityBySize {
 
     private int Cs;
     private File codeFile;
+    Map<Integer,Integer> scoremap=new HashMap<>();
 
     public ComplexityDueToSize(File codeFile) {
         this.codeFile = codeFile;
@@ -77,6 +80,59 @@ public class ComplexityDueToSize implements ComplexityBySize {
         return result.toString();
     }
 
+    public Map<Integer, Integer> getCreatedScoreMap() throws IOException {
+
+        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(this.codeFile);
+        for (MethodDeclaration methodDeclaration : methodDeclarations) {
+            List statements = methodDeclaration.getBody().statements();
+
+            for (Object st : statements) {
+                Statement s = (Statement) st;
+                int lineCs = 0;
+                for(String word : TextUtils.getWordsDevidedFromSpaces(st.toString())){
+                    if (isWordShouldBeConsidered(word)) {
+                        lineCs += 1;
+                        scoremap.put(JavaParser.getLineNumber(s, this.codeFile), lineCs);
+                    }
+                    if (isSpecialKeywordsAvailable(word)) {
+                        lineCs += 2;
+                        scoremap.put(JavaParser.getLineNumber(s, this.codeFile), lineCs);
+                    }
+                }
+                this.Cs += lineCs;
+
+                JavaParser.UsedItems usedItems=JavaParser.getUsedVariableNames((Statement) st);
+                scoremap.put(JavaParser.getLineNumber(s, this.codeFile),this.Cs=+usedItems.getUsedVariables().size());
+                scoremap.put(JavaParser.getLineNumber(s, this.codeFile),this.Cs=+usedItems.getUsedNumericValues().size());
+
+            }
+
+              //TODO get class names statement by statement
+//            List<String> classNames = JavaParser.getAvailableClassNames(this.codeFile);
+//            for (String className : classNames) {
+//                this.Cs += 1;
+//            }
+//
+//            MethodDeclaration[] methodDeclarations = JavaParser.getMethods(this.codeFile);
+//            for (MethodDeclaration methodDeclaration : methodDeclarations) {
+//                this.Cs += 1;
+//
+//                List statements = methodDeclaration.getBody().statements();
+//                for (Object st : statements) {
+//                    JavaParser.UsedItems usedItems = JavaParser.getUsedVariableNames((Statement) st);
+//                    this.Cs+= usedItems.getUsedNumericValues().size()+ usedItems.getUsedNumericValues().size();
+//
+//                }
+//
+//            }
+        }
+
+
+        return scoremap;
+    }
+
+
+    //numeric
     @Override
     public int calculateComplexity() throws IOException {
 
@@ -113,7 +169,7 @@ public class ComplexityDueToSize implements ComplexityBySize {
             List statements = methodDeclaration.getBody().statements();
             for (Object st : statements) {
                 JavaParser.UsedItems usedItems = JavaParser.getUsedVariableNames((Statement) st);
-                this.Cs+= usedItems.getUsedNumericValues().size()+ usedItems.getUsedNumericValues().size();
+                this.Cs+= usedItems.getUsedNumericValues().size()+ usedItems.getUsedVariables().size();
 
             }
 
