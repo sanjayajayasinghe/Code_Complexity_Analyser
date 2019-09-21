@@ -15,7 +15,7 @@
           </Tab>
             <Tab text="Calculation">
                 <content>
-                    <fx:include id="totalView" fx:id="calculationView" source="totalView.fxml" />
+                    <fx:include id="calculationView" fx:id="calculationView" source="calculationView.fxml" />
                 </content>
             </Tab>
         </tabs>

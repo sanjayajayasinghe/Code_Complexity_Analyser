@@ -11,7 +11,7 @@
    <children>
       <VBox layoutX="4.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="3000.0" prefWidth="3000.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
          <children>
-            <Text fx:id="titleView" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="600.9830722808838" />
+            <Text fx:id="titleView" strokeType="OUTSIDE" strokeWidth="0.0" text="Calculation" wrappingWidth="600.9830722808838" />
             <TableView fx:id="classTable" maxHeight="2000.0" maxWidth="2000.0" prefHeight="700.0" prefWidth="3000.0">
               <columns>
                 <TableColumn fx:id="className" prefWidth="320.0" text="Class Name" />
