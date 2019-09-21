@@ -1,5 +1,6 @@
 package coreFunctions;
 
+import Models.ScoreObject;
 import actions.CheckOverallCodeComplexityAction;
 import antlr_parser.JavaParser;
 import org.eclipse.jdt.core.dom.*;
@@ -7,6 +8,7 @@ import org.eclipse.jdt.core.dom.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static utilities.TestFileConstants.*;
 //import test.coreFunctions.ComplexityTest;
@@ -18,9 +20,9 @@ public class Test {
        File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
 
 
-        CheckOverallCodeComplexityAction c = new CheckOverallCodeComplexityAction(testFile);
-        c.getScoreMap();
-        System.out.println();
+      CheckOverallCodeComplexityAction c = new CheckOverallCodeComplexityAction(testFile);
+        Map<Integer, ScoreObject> scoreMap = c.getScoreMap();
+        System.out.println(scoreMap);
 
 
 

@@ -2,9 +2,7 @@ package actions;
 
 import Models.ScoreObject;
 import antlr_parser.JavaParser;
-import coreFunctions.ComplexityDueToControlStructures;
-import coreFunctions.ComplexityDueToSize;
-import coreFunctions.InheritanceComplexityImpl;
+import coreFunctions.*;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
 import utilities.FileUtilities;
@@ -83,6 +81,9 @@ public class CheckOverallCodeComplexityAction {
         InheritanceComplexityImpl inheritanceComplexity = new InheritanceComplexityImpl();
         final Map<Integer, Integer> inheritanceCompMap = inheritanceComplexity.getCreatedScoreMap(getFile());
 
+        ComplexityByRecursion complexityByRecursion = new ComplexityDueToRecursion();
+        Map<Integer, Boolean> recursionLinesMap = complexityByRecursion.getRecursionLines(getFile());
+
         initializeMap();
 
         for(Integer line : controlStructures.keySet()){
@@ -102,12 +103,18 @@ public class CheckOverallCodeComplexityAction {
             scoreObject.setCI(inheritanceCompMap.get(line));
             scoreMap.put(line,scoreObject);
         }
-
         for(Integer line : scoreMap.keySet()){
             ScoreObject scoreObject = scoreMap.get(line);
             scoreObject.setTW(scoreObject.getCI() + scoreObject.getCNC());
             scoreObject.setCPS(scoreObject.getCS() * scoreObject.getTW());
             scoreMap.put(line,scoreObject);
+        }
+        for(Integer line : recursionLinesMap.keySet() ){
+            if(recursionLinesMap.get(line)){
+                ScoreObject scoreObject = scoreMap.get(line);
+                scoreObject.setCR(scoreObject.getCPS() * 2);
+                scoreMap.put(line,scoreObject);
+            }
         }
 
     return scoreMap;

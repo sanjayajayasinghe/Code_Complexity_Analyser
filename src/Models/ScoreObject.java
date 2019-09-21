@@ -2,12 +2,12 @@ package Models;
 
 public class ScoreObject {
 
-    private int CS;
-    private int CNC;
-    private int CI;
-    private int TW;
-    private int CPS;
-    private int CR;
+    private int CS = 0;
+    private int CNC = 0;
+    private int CI = 0 ;
+    private int TW = 0;
+    private int CPS = 0;
+    private int CR = 0;
     int lineNo;
 
     public int getCS() {
