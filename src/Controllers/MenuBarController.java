@@ -1,6 +1,7 @@
 package Controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -38,6 +39,9 @@ public class MenuBarController implements Initializable {
 
     @FXML
     private MenuItem runOnFileList;
+
+    @FXML
+    private MenuItem runOnProject;
 
     @FXML
     private MenuItem find;
@@ -106,8 +110,26 @@ public class MenuBarController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-                clickEventListner.click("runOnFile");
+                try {
+                    clickEventListner.click("runOnFile");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+            }
+        });
+
+        runOnProject.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                try {
+                    clickEventListner.click("runOnProject");
+                    File project=LocalState.getInstance().getLastProject();
+                    System.out.println(project.getName());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -115,7 +137,11 @@ public class MenuBarController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-                clickEventListner.click("runOnFileList");
+                try {
+                    clickEventListner.click("runOnFileList");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -124,7 +150,11 @@ public class MenuBarController implements Initializable {
 
             @Override
             public void handle(ActionEvent event) {
-                clickEventListner.click("find");
+                try {
+                    clickEventListner.click("find");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -143,7 +173,11 @@ public class MenuBarController implements Initializable {
         generateReport.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                clickEventListner.click("generateReport");
+                try {
+                    clickEventListner.click("generateReport");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
