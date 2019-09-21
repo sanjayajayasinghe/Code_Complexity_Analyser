@@ -17,12 +17,15 @@ import uiListners.ClickEventListner;
 import uiListners.FileSelectListner;
 import uiListners.FolderSelectListner;
 import utilities.Dialog;
+import utilities.FileUtilities;
 import utilities.LocalState;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -111,25 +114,22 @@ public class MainWindowController implements Initializable {
                         break;
                     case "runOnFileList":
                         LOGGER.log(Level.INFO, "run on file selected");
-                        if (LocalState.getInstance().getCurrentSelectedFiles() != null) {
-                           totalTab=new StringBuilder();
-                            resultViewController.createCalculationtab();
-                                finalTotalComplexity=0;
-                            StringBuilder content = new StringBuilder("");
-                            LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> LOGGER.log(Level.INFO, "file:" + file.getName()));
-                            LocalState.getInstance().getCurrentSelectedFiles().stream().filter(file -> {if (file.getName().endsWith(".java")) return true; else return false;}).forEach(file -> {
-                                System.out.println(file.getName());
-                                int complexity =getCalcualationForFile(file,content);
-                                appendToTotal(file.getName(),complexity,totalTab);
-                                finalTotalComplexity+=complexity;
-                            });
-                            setTotalComplexity(null,finalTotalComplexity,totalTab);
+                        List<File> fileList=LocalState.getInstance().getCurrentSelectedFiles();
+                        if (fileList != null) {
+                           runOnFileList(fileList);
                         } else {
                             System.out.println("alert file list");
                         }
                         break;
 
                     case "runOnProject":
+                        List<File> projectFiles =new ArrayList<>();
+                                FileUtilities.listLeafFiles(LocalState.getInstance().getLastProject(),projectFiles);
+                        if (LocalState.getInstance().getLastProject()!= null) {
+                            runOnFileList(projectFiles);
+                        } else {
+                            System.out.println("alert file list");
+                        }
                         System.out.println("run on project");
                         break;
 
@@ -223,4 +223,20 @@ public class MainWindowController implements Initializable {
         totalTabText.append(String.format("\t\t%s:\t%d\n",fileName,complexity));
     }
 
+
+    public void runOnFileList(List<File> fileList){
+        totalTab=new StringBuilder();
+        resultViewController.createCalculationtab();
+        finalTotalComplexity=0;
+        StringBuilder content = new StringBuilder("");
+        fileList.forEach(file -> LOGGER.log(Level.INFO, "file:" + file.getName()));
+        fileList.stream().filter(file -> {if (file.getName().endsWith(".java")) return true; else return false;}).forEach(file -> {
+            System.out.println(file.getName());
+            int complexity =getCalcualationForFile(file,content);
+            appendToTotal(file.getName(),complexity,totalTab);
+            finalTotalComplexity+=complexity;
+        });
+        setTotalComplexity(null,finalTotalComplexity,totalTab);
+
+    }
 }
