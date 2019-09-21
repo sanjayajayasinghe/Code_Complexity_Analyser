@@ -51,6 +51,7 @@ public class ComplexityDueToSize implements ComplexityBySize {
             updateScoreMap(line, 1);
         }
 
+        //TODO ISSUE HERE
         FieldDeclaration[] fieldDeclarations = JavaParser.getClassAttributes(this.codeFile);
         for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
             JavaParser.UsedItems usedAttributeNames = JavaParser.getUsedAttributeNames(fieldDeclaration);
@@ -120,15 +121,16 @@ public class ComplexityDueToSize implements ComplexityBySize {
             for (String line : FileUtilities.convertToLisOfStrings(this.codeFile)) {
                 int lineCs = 0;
                 for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
-                    if (isWordShouldBeConsidered(word)) {
-                        lineCs += 1;
-                        updateScoreMap(i, lineCs);
+                    if(!word.startsWith("//")) {
+                        if (isWordShouldBeConsidered(word)) {
+                            lineCs += 1;
+                            updateScoreMap(i, lineCs);
+                        }
+                        if (isSpecialKeywordsAvailable(word)) {
+                            lineCs += 2;
+                            updateScoreMap(i, lineCs);
+                        }
                     }
-                    if (isSpecialKeywordsAvailable(word)) {
-                        lineCs += 2;
-                        updateScoreMap(i, lineCs);
-                    }
-
                 }
                 i++;
                 this.Cs += lineCs;
