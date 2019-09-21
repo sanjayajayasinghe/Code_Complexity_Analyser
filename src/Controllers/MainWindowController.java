@@ -115,7 +115,7 @@ public class MainWindowController implements Initializable {
                             setTotalComplexity(currentlyOpenedFile, complexity, totalTab);
 
                         } else {
-                            //eror
+                            Dialog.alert("Please Select The File");
                         }
                         break;
                     case "runOnFileList":
@@ -127,20 +127,21 @@ public class MainWindowController implements Initializable {
                         if (fileList != null) {
                             runOnFileList(fileList);
                         } else {
-                            System.out.println("alert file list");
+                            Dialog.alert("Please Select The File List");
                         }
                         break;
 
                     case "runOnProject":
-                        LocalState.getInstance().clearTableData();
-                        LocalState.getInstance().clearTotalCompexity();
-                        LocalState.getInstance().clearComplexityForClasses();
-                        List<File> projectFiles = new ArrayList<>();
-                        FileUtilities.listLeafFiles(LocalState.getInstance().getLastProject(), projectFiles);
+
                         if (LocalState.getInstance().getLastProject() != null) {
+                            LocalState.getInstance().clearTableData();
+                            LocalState.getInstance().clearTotalCompexity();
+                            LocalState.getInstance().clearComplexityForClasses();
+                            List<File> projectFiles = new ArrayList<>();
+                            FileUtilities.listLeafFiles(LocalState.getInstance().getLastProject(), projectFiles);
                             runOnFileList(projectFiles);
                         } else {
-                            System.out.println("alert file list");
+                            Dialog.alert("Please Select The Project");
                         }
                         System.out.println("run on project");
                         break;
@@ -156,7 +157,7 @@ public class MainWindowController implements Initializable {
                             dialogStage2.initModality(Modality.WINDOW_MODAL);
                             Dialog.findDialog(getClass(), "/UI/reportView.fxml");
                         }else {
-                            //eror
+                            Dialog.alert("Please Run the Analyser");
                         }
                         break;
                 }
