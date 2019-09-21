@@ -3,6 +3,7 @@ package Controllers;
 
 import Models.ScoreObject;
 import actions.CheckOverallCodeComplexityAction;
+import com.sun.javafx.binding.StringFormatter;
 import coreFunctions.ComplexityDueToSize;
 import coreFunctions.InheritanceComplexityImpl;
 import javafx.fxml.FXML;
@@ -42,6 +43,8 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private ResultViewController resultViewController;
+
+    private Integer totalComplexity=0;
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -89,20 +92,46 @@ public class MainWindowController implements Initializable {
                 // TODO Auto-generated method stub
                 switch (action) {
                     case "runOnFile":
+                        resultViewController.createCalculationtab();
                         String curentFile = LocalState.getInstance().getCurrentOpenfile() == null ? "none file"
                                 : LocalState.getInstance().getCurrentOpenfile().getName();
                         File currentlyOpenedFile = LocalState.getInstance().getCurrentOpenfile();
-                        CheckOverallCodeComplexityAction checkOverallCodeComplexityAction =new CheckOverallCodeComplexityAction(currentlyOpenedFile);
-                        try {
-                            Map<Integer, ScoreObject> scoreMap = checkOverallCodeComplexityAction.getScoreMap();
+                        if(currentlyOpenedFile!=null) {
+                            CheckOverallCodeComplexityAction checkOverallCodeComplexityAction = new CheckOverallCodeComplexityAction(currentlyOpenedFile);
 
+                            try {
 
-                        resultViewController.setSampletabContent(getAnalyzedResult(currentlyOpenedFile));
-                        resultViewController.setLuckytabContent("lucky:" + curentFile);
-                        resultViewController.setGihantabContent("Gihan:" + curentFile);
-                        resultViewController.setNishtabContent("nish:" + curentFile);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                                Map<Integer, ScoreObject> scoreMap = checkOverallCodeComplexityAction.getScoreMap();
+                                StringBuilder calculationcontent = new StringBuilder(String.format("for %s file\n",currentlyOpenedFile.getName()));
+
+                                scoreMap.forEach((key, value) -> {
+                                    calculationcontent.append(String.format("\tline %d->CS:%d\tCNC:%d\tCI:%d\tTW:%d\tCPS:%d\tCR:%d\n", key, value.getCS(), value.getCNC(), value.getCI(), value.getTW(), value.getCPS(), value.getCR()));
+                                    resultViewController.setCalculationtabContent(calculationcontent.toString());
+                                    if (value.getCR() > 0) {
+                                        totalComplexity += value.getCR();
+                                    } else {
+                                        totalComplexity += value.getCPS();
+                                    }
+                                    resultViewController.setTotaltabContent(String.format("%s file\n\tTotal:%d",currentlyOpenedFile.getName(), totalComplexity));
+                                });
+
+//                            private int CS = 0;
+//                            private int CNC = 0;
+//                            private int CI = 0 ;
+//                            private int TW = 0;
+//                            private int CPS = 0;
+//                            private int CR = 0;
+//                            int lineNo;
+
+                                // resultViewController.setSampletabContent(getAnalyzedResult(currentlyOpenedFile));
+                                //resultViewController.setCalculationtabContent(calculationcontent.toString());
+                                // resultViewController.setGihantabContent("Gihan:" + curentFile);
+                                // resultViewController.setNishtabContent("nish:" + curentFile);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            //eror
                         }
                         break;
                     case "runOnFileList":
@@ -111,8 +140,8 @@ public class MainWindowController implements Initializable {
                             StringBuilder content = new StringBuilder("");
                             LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> LOGGER.log(Level.INFO, "file:" + file.getName()));
                             LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> content.append(file.getName() + "\n"));
-                            resultViewController.setGihantabContent(content.toString());
-                            resultViewController.setNishtabContent(getFindInheritanceClassesAnalysedResult(LocalState.getInstance().getCurrentSelectedFiles().get(0)));
+                            //resultViewController.setGihantabContent(content.toString());
+                           // resultViewController.setNishtabContent(getFindInheritanceClassesAnalysedResult(LocalState.getInstance().getCurrentSelectedFiles().get(0)));
                         } else {
                             System.out.println("alert file list");
                         }

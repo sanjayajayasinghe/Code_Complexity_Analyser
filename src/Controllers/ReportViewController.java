@@ -19,13 +19,7 @@ public class ReportViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        AnchorPane anchorPane=new AnchorPane();
-        HBox hBox=new HBox();
-        anchorPane.getChildren().add(hBox);
-        Tab tab=new Tab("new tab",anchorPane);
-        tabPane.getTabs().add(tab);
-        TableView<Data> tableView=new TableView<Data>();
-        hBox.getChildren().add(tableView);
+
 
     }
 }
