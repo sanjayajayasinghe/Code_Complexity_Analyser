@@ -51,6 +51,7 @@ public class ComplexityDueToSize implements ComplexityBySize {
             updateScoreMap(line, 1);
         }
 
+        //TODO ISSUE HERE
         FieldDeclaration[] fieldDeclarations = JavaParser.getClassAttributes(this.codeFile);
         for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
             JavaParser.UsedItems usedAttributeNames = JavaParser.getUsedAttributeNames(fieldDeclaration);
