@@ -1,9 +1,11 @@
 package utilities;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import Models.LocalData;
+import Models.TableData;
 import Models.TestObjectSerialize;
 import javafx.scene.control.TreeItem;
 
@@ -14,7 +16,9 @@ public class LocalState  implements Serializable{
     private File lastProject;
     private File currentOpenfile;
     private TreeItem<String> currentRoot;
+    private List<TableData> tableData;
     private List<File> currentSelectedFiles;
+
 
     public TreeItem<String> getCurrentRoot() {
         return currentRoot;
@@ -63,6 +67,18 @@ public class LocalState  implements Serializable{
 
     public void setCurrentOpenfile(File currentOpenfile) {
         this.currentOpenfile = currentOpenfile;
+    }
+
+    public List<TableData> getTableData() {
+        return tableData;
+    }
+
+    public void clearTableData() {
+        tableData=new ArrayList<>();
+    }
+
+    public void setTableData(List<TableData> tableData) {
+        this.tableData = tableData;
     }
 
     public List<File> getCurrentSelectedFiles() {

@@ -2,6 +2,7 @@ package Controllers;
 
 
 import Models.ScoreObject;
+import Models.TableData;
 import actions.CheckOverallCodeComplexityAction;
 import com.sun.javafx.binding.StringFormatter;
 import coreFunctions.ComplexityDueToSize;
@@ -47,7 +48,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private ResultViewController resultViewController;
 
-    private Integer finalTotalComplexity=0;
+    private Integer finalTotalComplexity = 0;
 
     private StringBuilder totalTab;
 
@@ -97,16 +98,16 @@ public class MainWindowController implements Initializable {
                 // TODO Auto-generated method stub
                 switch (action) {
                     case "runOnFile":
-                         totalTab=new StringBuilder();
+                        totalTab = new StringBuilder();
                         resultViewController.createCalculationtab();
                         String curentFile = LocalState.getInstance().getCurrentOpenfile() == null ? "none file"
                                 : LocalState.getInstance().getCurrentOpenfile().getName();
                         File currentlyOpenedFile = LocalState.getInstance().getCurrentOpenfile();
                         if (currentlyOpenedFile != null) {
-                            int complexity=getCalcualationForFile(currentlyOpenedFile,new StringBuilder());
+                            int complexity = getCalcualationForFile(currentlyOpenedFile, new StringBuilder());
                             //setTotalComplexity(currentlyOpenedFile, ));
-                            appendToTotal(currentlyOpenedFile.getName(),complexity,totalTab);
-                            setTotalComplexity(currentlyOpenedFile,complexity,totalTab);
+                            appendToTotal(currentlyOpenedFile.getName(), complexity, totalTab);
+                            setTotalComplexity(currentlyOpenedFile, complexity, totalTab);
 
                         } else {
                             //eror
@@ -114,18 +115,18 @@ public class MainWindowController implements Initializable {
                         break;
                     case "runOnFileList":
                         LOGGER.log(Level.INFO, "run on file selected");
-                        List<File> fileList=LocalState.getInstance().getCurrentSelectedFiles();
+                        List<File> fileList = LocalState.getInstance().getCurrentSelectedFiles();
                         if (fileList != null) {
-                           runOnFileList(fileList);
+                            runOnFileList(fileList);
                         } else {
                             System.out.println("alert file list");
                         }
                         break;
 
                     case "runOnProject":
-                        List<File> projectFiles =new ArrayList<>();
-                                FileUtilities.listLeafFiles(LocalState.getInstance().getLastProject(),projectFiles);
-                        if (LocalState.getInstance().getLastProject()!= null) {
+                        List<File> projectFiles = new ArrayList<>();
+                        FileUtilities.listLeafFiles(LocalState.getInstance().getLastProject(), projectFiles);
+                        if (LocalState.getInstance().getLastProject() != null) {
                             runOnFileList(projectFiles);
                         } else {
                             System.out.println("alert file list");
@@ -192,6 +193,7 @@ public class MainWindowController implements Initializable {
                 Integer key = entry.getKey();
                 ScoreObject value = entry.getValue();
                 calculationcontent.append(String.format("\tline\t%d\t->\tCS:\t%d\tCNC:\t%d\tCI:\t%d\tTW:\t%d\tCPS:\t%d\tCR:\t%d\n", key, value.getCS(), value.getCNC(), value.getCI(), value.getTW(), value.getCPS(), value.getCR()));
+                TableData tableData=new TableData(currentlyOpenedFile.getName(),key,value.getCS(),value.getCNC(),value.getCI(),value.getTW(),value.getCPS(),value.getCR());
                 resultViewController.setCalculationtabContent(calculationcontent.toString());
                 if (value.getCR() > 0) {
                     totalComplexity += value.getCR();
@@ -211,32 +213,37 @@ public class MainWindowController implements Initializable {
 
     }
 
-    public void setTotalComplexity(File ProjectOrFile,Integer totalComplexity,StringBuilder oneFileText) {
-        StringBuilder lastAppend=new StringBuilder();
-        lastAppend.append(String.format("%s \n\tTotal Complexity:%d\n", ProjectOrFile==null?"Selected File List":ProjectOrFile.getName(), totalComplexity));
+    public void setTotalComplexity(File ProjectOrFile, Integer totalComplexity, StringBuilder oneFileText) {
+        StringBuilder lastAppend = new StringBuilder();
+        lastAppend.append(String.format("%s \n\tTotal Complexity:%d\n", ProjectOrFile == null ? "Selected File List" : ProjectOrFile.getName(), totalComplexity));
         lastAppend.append(oneFileText);
         resultViewController.setTotaltabContent(lastAppend.toString());
 
     }
 
-    public void appendToTotal(String fileName,Integer complexity,StringBuilder totalTabText){
-        totalTabText.append(String.format("\t\t%s:\t%d\n",fileName,complexity));
+    public void appendToTotal(String fileName, Integer complexity, StringBuilder totalTabText) {
+        totalTabText.append(String.format("\t\t%s:\t%d\n", fileName, complexity));
     }
 
 
-    public void runOnFileList(List<File> fileList){
-        totalTab=new StringBuilder();
+    public void runOnFileList(List<File> fileList) {
+        totalTab = new StringBuilder();
         resultViewController.createCalculationtab();
-        finalTotalComplexity=0;
+        finalTotalComplexity = 0;
         StringBuilder content = new StringBuilder("");
         fileList.forEach(file -> LOGGER.log(Level.INFO, "file:" + file.getName()));
-        fileList.stream().filter(file -> {if (file.getName().endsWith(".java")) return true; else return false;}).forEach(file -> {
+        fileList.stream().filter(file -> {
+                    if (file.getName().endsWith(".java") || file.getName().endsWith(".cpp")) return true;
+                    else return false;
+                }
+
+        ).forEach(file -> {
             System.out.println(file.getName());
-            int complexity =getCalcualationForFile(file,content);
-            appendToTotal(file.getName(),complexity,totalTab);
-            finalTotalComplexity+=complexity;
+            int complexity = getCalcualationForFile(file, content);
+            appendToTotal(file.getName(), complexity, totalTab);
+            finalTotalComplexity += complexity;
         });
-        setTotalComplexity(null,finalTotalComplexity,totalTab);
+        setTotalComplexity(null, finalTotalComplexity, totalTab);
 
     }
 }
