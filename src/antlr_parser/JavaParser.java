@@ -47,6 +47,30 @@ public class JavaParser {
 
     }
 
+    public static UsedItems getUsedAttributeNames(FieldDeclaration fieldDeclaration){
+        UsedItems usedItems = new UsedItems();
+        List fragments = fieldDeclaration.fragments();
+
+        for(Object vdf : fragments){
+            if (vdf instanceof VariableDeclarationFragment) {
+                String variableName = ((VariableDeclarationFragment) vdf).getName().toString();
+                usedItems.getUsedVariables().add(variableName);
+                Expression initializer = ((VariableDeclarationFragment) vdf).getInitializer();
+                if (initializer != null) {
+                    if (initializer instanceof NumberLiteral) {
+                        usedItems.getUsedNumericValues().add(((NumberLiteral) initializer).getToken());
+                    }
+                    if (initializer instanceof InfixExpression) {
+                        usedItems.getUsedVariables().addAll(getInnerVariables((InfixExpression) initializer));
+                        usedItems.getUsedNumericValues().addAll(getInnerNumerals((InfixExpression) initializer));
+                    }
+                }
+            }
+        }
+
+        return usedItems;
+    }
+
     public static UsedItems getUsedVariableNames(Statement statement) {
 
         UsedItems usedItems = new UsedItems();
