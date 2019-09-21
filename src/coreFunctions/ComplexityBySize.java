@@ -18,12 +18,18 @@
 
 package coreFunctions;
 
+import java.io.IOException;
+import java.util.Map;
+
 /**
  * @author gisilk
  *
  */
 public interface ComplexityBySize extends CodeComplexity {
 
+
+    //numeric
+    Map<Integer, Integer> getCreatedScoreMap() throws IOException;
 
     boolean isArithmeticOperatorAvailable(String word);
 

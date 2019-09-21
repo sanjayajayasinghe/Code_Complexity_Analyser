@@ -1,14 +1,11 @@
 package coreFunctions;
 
 import antlr_parser.JavaParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 //import com.github.javaparser.ast.Node;
 

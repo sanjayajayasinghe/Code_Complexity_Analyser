@@ -16,7 +16,7 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
     private Map<Integer, Integer> scoremap = new HashMap<>();
 
     @Override
-    public int calculateComplexityForControlStructures(File file) throws IOException {
+    public Map<Integer, Integer> calculateComplexityForControlStructures(File file) throws IOException {
 
         MethodDeclaration[] methods = JavaParser.getMethods(file);
         for (MethodDeclaration m : methods) {
@@ -45,7 +45,7 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
                 checkNestingLevels(forSt, file);
             }
         }
-        return 0;
+        return scoremap;
     }
 
     private void checks(Block body, File file) {

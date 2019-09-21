@@ -1,6 +1,8 @@
 package test.resources;
 
 public class FibonacciMain {
+
+    private static int n=5;
     public static int fibonacci(long number) {
 
         switch ((int) number){

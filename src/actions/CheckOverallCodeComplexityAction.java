@@ -1,56 +1,58 @@
-//package actions;
-//
-//import antlr_parser.JavaParser;
-//import coreFunctions.ComplexityDueToControlStructures;
-//import coreFunctions.ComplexityDueToSize;
-//import coreFunctions.InheritanceComplexityImpl;
-//import org.eclipse.jdt.core.dom.MethodDeclaration;
-//import org.eclipse.jdt.core.dom.Statement;
-//
-//import java.io.File;
-//import java.io.IOException;
-//import java.util.HashMap;
-//import java.util.Map;
-//
-////TODO-javaparser.getLineNo-line number of each line
-////todo-method to iterate through each statement
-//
-//public class CheckOverallCodeComplexityAction {
-//
-//    private File file;
-//
-//
-//    public CheckOverallCodeComplexityAction(File file) {
-//        this.file = file;
-//    }
-//
-//    public File getFile() {
-//        return file;
-//    }
-//
-//    public void setFile(File file) {
-//        this.file = file;
-//    }
-//
+package actions;
+
+import Models.ScoreObject;
+import antlr_parser.JavaParser;
+import coreFunctions.ComplexityDueToControlStructures;
+import coreFunctions.ComplexityDueToSize;
+import coreFunctions.InheritanceComplexityImpl;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Statement;
+import utilities.FileUtilities;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+
+public class CheckOverallCodeComplexityAction {
+
+    private File file;
+    private Map<Integer, ScoreObject> scoreMap = new HashMap<>();
+
+    public CheckOverallCodeComplexityAction(File file) {
+        this.file = file;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
 //    public int getControlStructureComplexity() throws IOException {
 //        return new ComplexityDueToControlStructures().calculateComplexityForControlStructures(this.file);
 //    }
-//
-//
-//    public int getSizeComplexity() throws IOException {
-//        return new ComplexityDueToSize(this.file).calculateComplexity();
-//    }
-//
-//
-//    public int getInheritanceComplexity() throws IOException {
-//        return new InheritanceComplexityImpl().findInheritanceComplexityForFile(this.file);
-//    }
-//
-//
-//    public Map<Integer, Integer> getTWScoreMap() throws IOException {
-//
+
+
+    public int getSizeComplexity() throws IOException {
+        return new ComplexityDueToSize(this.file).calculateComplexity();
+    }
+
+
+    public int getInheritanceComplexity() throws IOException {
+        return new InheritanceComplexityImpl().findInheritanceComplexityForFile(this.file);
+    }
+
+
+    public Map<Integer, ScoreObject> getScoreMap() throws IOException {
+
 //        Map<Integer, Integer> totalComplexityMap = new HashMap<>();
-//        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(getFile());
+//      MethodDeclaration[] methodDeclarations = JavaParser.getMethods(getFile());
 //
 //        ComplexityDueToControlStructures complexityDueToControlStructures = new ComplexityDueToControlStructures();
 //        Map<Integer, Integer> complexityScoreMap = complexityDueToControlStructures.getCreatedScoreMap(getFile());
@@ -69,8 +71,57 @@
 //
 //        }
 //        return totalComplexityMap;
-//    }
-//
+
+
+        ComplexityDueToControlStructures complexityDueToControlStructures = new ComplexityDueToControlStructures();
+        final Map<Integer, Integer> controlStructures = complexityDueToControlStructures.calculateComplexityForControlStructures(file);
+
+        ComplexityDueToSize complexityDueToSize=new ComplexityDueToSize(getFile());
+        final Map<Integer, Integer> sizeComplexityMap = complexityDueToSize.getSizeComplexityMap();
+
+
+        InheritanceComplexityImpl inheritanceComplexity = new InheritanceComplexityImpl();
+        final Map<Integer, Integer> inheritanceCompMap = inheritanceComplexity.getCreatedScoreMap(getFile());
+
+        initializeMap();
+
+        for(Integer line : controlStructures.keySet()){
+            ScoreObject scoreObject = scoreMap.get(line);
+            scoreObject.setCNC(controlStructures.get(line));
+            scoreMap.put(line,scoreObject);
+        }
+
+        for(Integer line : sizeComplexityMap.keySet()){
+            ScoreObject scoreObject = scoreMap.get(line);
+            scoreObject.setCS(sizeComplexityMap.get(line));
+            scoreMap.put(line,scoreObject);
+        }
+
+        for(Integer line : inheritanceCompMap.keySet()){
+            ScoreObject scoreObject = scoreMap.get(line);
+            scoreObject.setCI(inheritanceCompMap.get(line));
+            scoreMap.put(line,scoreObject);
+        }
+
+        for(Integer line : scoreMap.keySet()){
+            ScoreObject scoreObject = scoreMap.get(line);
+            scoreObject.setTW(scoreObject.getCI() + scoreObject.getCNC());
+            scoreObject.setCPS(scoreObject.getCS() * scoreObject.getTW());
+            scoreMap.put(line,scoreObject);
+        }
+
+    return scoreMap;
+    }
+
+    private void initializeMap() throws IOException {
+        List<String> strings = FileUtilities.convertToLisOfStrings(getFile());
+        int i = 1;
+        for(String s : strings){
+            scoreMap.put(i,new ScoreObject());
+            i++;
+        }
+    }
+
 //    public Map<Integer, Integer> getCPSScoreMap() throws IOException {
 //
 //        Map<Integer, Integer> CPSComplexityMap = new HashMap<>();
@@ -96,8 +147,8 @@
 //        return CPSComplexityMap;
 //
 //    }
-//
-//
+
+
 //    public Map<Integer, Integer> getCRMap() throws IOException {
 //
 //        Map<Integer, Integer> recursionScoreMap = new HashMap<>();
@@ -126,7 +177,7 @@
 //        }
 //        return recursionScoreMap;
 //    }
-//
+
 //    public int calculateTotalValue() throws IOException {
 //        int total = 0;
 //        for (int line : getCRMap().keySet()) {
@@ -134,6 +185,6 @@
 //        }
 //        return total;
 //    }
-//
-//
-//}
+
+
+}

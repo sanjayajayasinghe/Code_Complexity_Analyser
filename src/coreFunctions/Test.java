@@ -1,5 +1,6 @@
 package coreFunctions;
 
+import actions.CheckOverallCodeComplexityAction;
 import antlr_parser.JavaParser;
 import org.eclipse.jdt.core.dom.*;
 
@@ -15,8 +16,16 @@ public class Test {
     public static void main(String[] args) throws IOException {
 
        File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
-       ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
-       complexityDueToControlStructures.calculateComplexityForControlStructures(testFile);
+
+
+        CheckOverallCodeComplexityAction c = new CheckOverallCodeComplexityAction(testFile);
+        c.getScoreMap();
+        System.out.println();
+
+
+
+//       ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
+//       complexityDueToControlStructures.calculateComplexityForControlStructures(testFile);
 //       ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
 //       complexityDueToControlStructures.getCreatedScoreMap(testFile);
 //       for(int lineno: complexityDueToControlStructures.getCreatedScoreMap(testFile).keySet()){
