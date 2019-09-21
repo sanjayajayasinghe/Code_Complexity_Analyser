@@ -112,7 +112,7 @@ public class MainWindowController implements Initializable {
                                     } else {
                                         totalComplexity += value.getCPS();
                                     }
-                                    resultViewController.setTotaltabContent(String.format("%s file\n\tTotal:%d",currentlyOpenedFile.getName(), totalComplexity));
+                                    resultViewController.setTotaltabContent(String.format("%s file\n\tTotal Complexity:%d",currentlyOpenedFile.getName(), totalComplexity));
                                 });
 
 //                            private int CS = 0;
@@ -123,10 +123,7 @@ public class MainWindowController implements Initializable {
 //                            private int CR = 0;
 //                            int lineNo;
 
-                                // resultViewController.setSampletabContent(getAnalyzedResult(currentlyOpenedFile));
-                                //resultViewController.setCalculationtabContent(calculationcontent.toString());
-                                // resultViewController.setGihantabContent("Gihan:" + curentFile);
-                                // resultViewController.setNishtabContent("nish:" + curentFile);
+
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -140,8 +137,6 @@ public class MainWindowController implements Initializable {
                             StringBuilder content = new StringBuilder("");
                             LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> LOGGER.log(Level.INFO, "file:" + file.getName()));
                             LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> content.append(file.getName() + "\n"));
-                            //resultViewController.setGihantabContent(content.toString());
-                           // resultViewController.setNishtabContent(getFindInheritanceClassesAnalysedResult(LocalState.getInstance().getCurrentSelectedFiles().get(0)));
                         } else {
                             System.out.println("alert file list");
                         }
