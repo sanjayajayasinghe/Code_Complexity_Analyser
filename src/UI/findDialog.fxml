@@ -9,39 +9,46 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="390.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.FindDialogController">
+<AnchorPane prefHeight="390.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.FindDialogController">
     <children>
         <VBox layoutX="1.0" prefHeight="390.0" prefWidth="500.0">
             <children>
                 <HBox prefHeight="26.0" prefWidth="500.0">
                     <opaqueInsets>
-                        <Insets right="10.0"/>
+                        <Insets right="10.0" />
                     </opaqueInsets>
                     <VBox.margin>
-                        <Insets top="20.0"/>
+                        <Insets top="20.0" />
                     </VBox.margin>
                     <children>
-                        <TextField HBox.hgrow="ALWAYS" id="findText" fx:id="findText"/>
-                        <Button mnemonicParsing="false" text="find " id="find" fx:id="find" HBox.hgrow="ALWAYS"/>
+                        <TextField id="findText" fx:id="findText" HBox.hgrow="ALWAYS" />
+                        <Button id="find" fx:id="find" mnemonicParsing="false" text="find " HBox.hgrow="ALWAYS" />
                     </children>
                     <padding>
-                        <Insets left="20.0" right="20.0"/>
+                        <Insets left="20.0" right="20.0" />
                     </padding>
                 </HBox>
                 <Label prefHeight="31.0" prefWidth="502.0" text="File List:">
                     <padding>
-                        <Insets left="20.0" right="20.0"/>
+                        <Insets left="20.0" right="20.0" />
                     </padding>
                 </Label>
-                <ListView id="listView" fx:id="listView" prefHeight="313.0" prefWidth="500.0">
+                <ListView id="listView" fx:id="listView" prefHeight="265.0" prefWidth="460.0">
                     <padding>
-                        <Insets left="20.0"/>
+                        <Insets left="20.0" />
                     </padding>
                     <VBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0"/>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
                     </VBox.margin>
                 </ListView>
+            <Button fx:id="okButton" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" text="OK" textAlignment="CENTER" VBox.vgrow="NEVER">
+               <opaqueInsets>
+                  <Insets left="50.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets bottom="20.0" left="390.0" />
+               </VBox.margin>
+            </Button>
             </children>
         </VBox>
     </children>

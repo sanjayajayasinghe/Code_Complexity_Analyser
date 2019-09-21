@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import Models.FindData;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -19,8 +21,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import uiListners.ClickEventListner;
 import uiListners.FileSelectListner;
+import utilities.Dialog;
 import utilities.FileUtilities;
 import utilities.LocalState;
 
@@ -29,6 +33,9 @@ public class FindDialogController implements Initializable {
 
     @FXML
     private Button find;
+
+    @FXML
+    private Button okButton;
 
     @FXML
     private TextField findText;
@@ -55,12 +62,32 @@ public class FindDialogController implements Initializable {
                 if(LocalState.getInstance().getLastProject()!=null) {
                     fileList = FileUtilities.findFilesByWords(keyword, LocalState.getInstance().getLastProject());
 
-                    listView.getItems().addAll(fileList.stream().map((data) -> MessageFormat.format("{0}    line{1}", data.getFile().getName(), data.getLine())).collect(Collectors.toList()));
+                    listView.getItems().addAll(fileList.stream().map((data) -> MessageFormat.format("{0}    line{1}", data.getFile().getPath(), data.getLine())).collect(Collectors.toList()));
                 }else{
-                    System.out.println("no project selected!!");
+                    Dialog.alert("No Project Selected");
                 }
             }
         });
+
+        okButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage stage=(Stage) okButton.getScene().getWindow();
+                stage.close();
+
+            }
+        });
+
+        listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println("new value:"+newValue.split("line")[0].trim());
+                File file  =new File(newValue.split("line")[0].trim());
+                LocalState.getInstance().setCurrentOpenfile(file);
+
+            }
+        });
+
     }
 
 

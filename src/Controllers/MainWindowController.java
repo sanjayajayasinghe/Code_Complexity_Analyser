@@ -150,6 +150,7 @@ public class MainWindowController implements Initializable {
                         Stage dialogStage = new Stage();
                         dialogStage.initModality(Modality.WINDOW_MODAL);
                         Dialog.findDialog(getClass(), "/UI/findDialog.fxml");
+                        System.out.println("finddialog");
                         break;
                     case "generateReport":
                         if(LocalState.getInstance().getTotalCompexity()!=null) {
