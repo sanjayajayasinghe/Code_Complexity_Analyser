@@ -121,12 +121,10 @@ public class ComplexityDueToSize implements ComplexityBySize {
                 int lineCs = 0;
                 for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
                     if (isWordShouldBeConsidered(word)) {
-                        System.out.println(word + " in" + line);
                         lineCs += 1;
                         updateScoreMap(i, lineCs);
                     }
                     if (isSpecialKeywordsAvailable(word)) {
-                        System.out.println("2" + word);
                         lineCs += 2;
                         updateScoreMap(i, lineCs);
                     }
