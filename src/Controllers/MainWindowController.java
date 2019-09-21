@@ -44,7 +44,9 @@ public class MainWindowController implements Initializable {
     @FXML
     private ResultViewController resultViewController;
 
-    private Integer totalComplexity=0;
+    private Integer finalTotalComplexity=0;
+
+    private StringBuilder totalTab;
 
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
@@ -88,55 +90,40 @@ public class MainWindowController implements Initializable {
         menuBarNavController.setClickEventListner(new ClickEventListner() {
 
             @Override
-            public void click(String action)  {
+            public void click(String action) {
                 // TODO Auto-generated method stub
                 switch (action) {
                     case "runOnFile":
+                         totalTab=new StringBuilder();
                         resultViewController.createCalculationtab();
                         String curentFile = LocalState.getInstance().getCurrentOpenfile() == null ? "none file"
                                 : LocalState.getInstance().getCurrentOpenfile().getName();
                         File currentlyOpenedFile = LocalState.getInstance().getCurrentOpenfile();
-                        if(currentlyOpenedFile!=null) {
-                            CheckOverallCodeComplexityAction checkOverallCodeComplexityAction = new CheckOverallCodeComplexityAction(currentlyOpenedFile);
+                        if (currentlyOpenedFile != null) {
+                            int complexity=getCalcualationForFile(currentlyOpenedFile,new StringBuilder());
+                            //setTotalComplexity(currentlyOpenedFile, ));
+                            appendToTotal(currentlyOpenedFile.getName(),complexity,totalTab);
+                            setTotalComplexity(currentlyOpenedFile,complexity,totalTab);
 
-                            try {
-
-                                Map<Integer, ScoreObject> scoreMap = checkOverallCodeComplexityAction.getScoreMap();
-                                StringBuilder calculationcontent = new StringBuilder(String.format("for %s file\n",currentlyOpenedFile.getName()));
-
-                                scoreMap.forEach((key, value) -> {
-                                    calculationcontent.append(String.format("\tline %d->CS:%d\tCNC:%d\tCI:%d\tTW:%d\tCPS:%d\tCR:%d\n", key, value.getCS(), value.getCNC(), value.getCI(), value.getTW(), value.getCPS(), value.getCR()));
-                                    resultViewController.setCalculationtabContent(calculationcontent.toString());
-                                    if (value.getCR() > 0) {
-                                        totalComplexity += value.getCR();
-                                    } else {
-                                        totalComplexity += value.getCPS();
-                                    }
-                                    resultViewController.setTotaltabContent(String.format("%s file\n\tTotal Complexity:%d",currentlyOpenedFile.getName(), totalComplexity));
-                                });
-
-//                            private int CS = 0;
-//                            private int CNC = 0;
-//                            private int CI = 0 ;
-//                            private int TW = 0;
-//                            private int CPS = 0;
-//                            private int CR = 0;
-//                            int lineNo;
-
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }else {
+                        } else {
                             //eror
                         }
                         break;
                     case "runOnFileList":
                         LOGGER.log(Level.INFO, "run on file selected");
                         if (LocalState.getInstance().getCurrentSelectedFiles() != null) {
+                           totalTab=new StringBuilder();
+                            resultViewController.createCalculationtab();
+                                finalTotalComplexity=0;
                             StringBuilder content = new StringBuilder("");
                             LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> LOGGER.log(Level.INFO, "file:" + file.getName()));
-                            LocalState.getInstance().getCurrentSelectedFiles().forEach(file -> content.append(file.getName() + "\n"));
+                            LocalState.getInstance().getCurrentSelectedFiles().stream().filter(file -> {if (file.getName().endsWith(".java")) return true; else return false;}).forEach(file -> {
+                                System.out.println(file.getName());
+                                int complexity =getCalcualationForFile(file,content);
+                                appendToTotal(file.getName(),complexity,totalTab);
+                                finalTotalComplexity+=complexity;
+                            });
+                            setTotalComplexity(null,finalTotalComplexity,totalTab);
                         } else {
                             System.out.println("alert file list");
                         }
@@ -149,12 +136,12 @@ public class MainWindowController implements Initializable {
                     case "find":
                         Stage dialogStage = new Stage();
                         dialogStage.initModality(Modality.WINDOW_MODAL);
-                        Dialog.findDialog(getClass(),"/UI/findDialog.fxml");
+                        Dialog.findDialog(getClass(), "/UI/findDialog.fxml");
                         break;
                     case "generateReport":
                         Stage dialogStage2 = new Stage();
                         dialogStage2.initModality(Modality.WINDOW_MODAL);
-                        Dialog.findDialog(getClass(),"/UI/reportView.fxml");
+                        Dialog.findDialog(getClass(), "/UI/reportView.fxml");
                         break;
                 }
 
@@ -193,5 +180,47 @@ public class MainWindowController implements Initializable {
 
     }
 
+    public Integer getCalcualationForFile(File currentlyOpenedFile, StringBuilder calculationcontent) {
+        Integer totalComplexity = 0;
+        try {
+            CheckOverallCodeComplexityAction checkOverallCodeComplexityAction = new CheckOverallCodeComplexityAction(currentlyOpenedFile);
+
+            Map<Integer, ScoreObject> scoreMap = checkOverallCodeComplexityAction.getScoreMap();
+            calculationcontent.append(String.format("for %s file\n", currentlyOpenedFile.getName()));
+
+            for (Map.Entry<Integer, ScoreObject> entry : scoreMap.entrySet()) {
+                Integer key = entry.getKey();
+                ScoreObject value = entry.getValue();
+                calculationcontent.append(String.format("\tline\t%d\t->\tCS:\t%d\tCNC:\t%d\tCI:\t%d\tTW:\t%d\tCPS:\t%d\tCR:\t%d\n", key, value.getCS(), value.getCNC(), value.getCI(), value.getTW(), value.getCPS(), value.getCR()));
+                resultViewController.setCalculationtabContent(calculationcontent.toString());
+                if (value.getCR() > 0) {
+                    totalComplexity += value.getCR();
+                } else {
+                    totalComplexity += value.getCPS();
+                }
+            }
+
+
+        } catch (IOException io) {
+            totalComplexity = 0;
+            io.printStackTrace();
+        } finally {
+            return totalComplexity;
+        }
+
+
+    }
+
+    public void setTotalComplexity(File ProjectOrFile,Integer totalComplexity,StringBuilder oneFileText) {
+        StringBuilder lastAppend=new StringBuilder();
+        lastAppend.append(String.format("%s \n\tTotal Complexity:%d\n", ProjectOrFile==null?"Selected File List":ProjectOrFile.getName(), totalComplexity));
+        lastAppend.append(oneFileText);
+        resultViewController.setTotaltabContent(lastAppend.toString());
+
+    }
+
+    public void appendToTotal(String fileName,Integer complexity,StringBuilder totalTabText){
+        totalTabText.append(String.format("\t\t%s:\t%d\n",fileName,complexity));
+    }
 
 }
