@@ -1,6 +1,8 @@
 package Controllers;
 
 
+import Models.ScoreObject;
+import actions.CheckOverallCodeComplexityAction;
 import coreFunctions.ComplexityDueToSize;
 import coreFunctions.InheritanceComplexityImpl;
 import javafx.fxml.FXML;
@@ -17,8 +19,10 @@ import utilities.Dialog;
 import utilities.LocalState;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,18 +85,25 @@ public class MainWindowController implements Initializable {
         menuBarNavController.setClickEventListner(new ClickEventListner() {
 
             @Override
-            public void click(String action) {
+            public void click(String action)  {
                 // TODO Auto-generated method stub
                 switch (action) {
                     case "runOnFile":
                         String curentFile = LocalState.getInstance().getCurrentOpenfile() == null ? "none file"
                                 : LocalState.getInstance().getCurrentOpenfile().getName();
                         File currentlyOpenedFile = LocalState.getInstance().getCurrentOpenfile();
+                        CheckOverallCodeComplexityAction checkOverallCodeComplexityAction =new CheckOverallCodeComplexityAction(currentlyOpenedFile);
+                        try {
+                            Map<Integer, ScoreObject> scoreMap = checkOverallCodeComplexityAction.getScoreMap();
+
 
                         resultViewController.setSampletabContent(getAnalyzedResult(currentlyOpenedFile));
                         resultViewController.setLuckytabContent("lucky:" + curentFile);
                         resultViewController.setGihantabContent("Gihan:" + curentFile);
                         resultViewController.setNishtabContent("nish:" + curentFile);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case "runOnFileList":
                         LOGGER.log(Level.INFO, "run on file selected");
@@ -105,6 +116,10 @@ public class MainWindowController implements Initializable {
                         } else {
                             System.out.println("alert file list");
                         }
+                        break;
+
+                    case "runOnProject":
+                        System.out.println("run on project");
                         break;
 
                     case "find":
