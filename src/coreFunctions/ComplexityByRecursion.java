@@ -1,11 +1,10 @@
 package coreFunctions;
 
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public interface ComplexityByRecursion extends CodeComplexity {
 
-    int getRecursionLines(File file) throws IOException;
+    Map<Integer, Boolean> getRecursionLines(File file) throws IOException;
 }

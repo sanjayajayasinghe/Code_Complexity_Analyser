@@ -3,53 +3,32 @@ package antlr_parser;
 import org.eclipse.jdt.core.dom.*;
 import utilities.FileUtilities;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 public class JavaParser {
 
+    public static UsedItems getParameterValues(MethodDeclaration method) {
+        UsedItems usedItems = new UsedItems();
+        List parameters = method.parameters();
+        for (Object ob : parameters) {
+            if (ob instanceof SingleVariableDeclaration) {
+                String name = ((SingleVariableDeclaration) ob).getName().toString();
+                String type = ((SingleVariableDeclaration) ob).getType().toString();
+                usedItems.getUsedVariables().add(name);
+                usedItems.getUsedNumericValues().add(type);
 
-//    public static List<Statement> getInnerStatementsRecursively(Block body) {
-//
-//        List<Statement> statements = new ArrayList<>();
-//
-//        body.accept(new ASTVisitor() {
-//            @Override
-//            public boolean visit(IfStatement node) {
-//                System.out.println(node.toString());
-//                return super.visit(node);
-//            }
-//        });
-//        List statements1 = body.statements();
-//        if (statements1 != null && statements1.size() > 0) {
-//            for(Object st : statements1){
-//                statements.add((Statement) st);
-//
-//                if(st instanceof WhileStatement){
-//                    statements.addAll(getInnerStatementsRecursively((Block) ((WhileStatement) st).getBody()));
-//                }
-//                if(st instanceof ForStatement){
-//                    statements.addAll(getInnerStatementsRecursively((Block) ((ForStatement) st).getBody()));
-//                }
-//
-//            }
-//        }
-//
-//        return statements;
-//
-//    }
-
-    public static void getClassLevelAttributes(File file){
-
+            }
+        }
+        return usedItems;
     }
 
-    public static UsedItems getUsedAttributeNames(FieldDeclaration fieldDeclaration){
+    public static UsedItems getUsedAttributeNames(FieldDeclaration fieldDeclaration) {
         UsedItems usedItems = new UsedItems();
         List fragments = fieldDeclaration.fragments();
 
-        for(Object vdf : fragments){
+        for (Object vdf : fragments) {
             if (vdf instanceof VariableDeclarationFragment) {
                 String variableName = ((VariableDeclarationFragment) vdf).getName().toString();
                 usedItems.getUsedVariables().add(variableName);
@@ -262,6 +241,19 @@ public class JavaParser {
         return operators;
     }
 
+    public static Map<String, Integer> getLinesInside(MethodDeclaration method, File file) {
+
+        Map<String, Integer> lines = new HashMap<>();
+
+        int start = getLineNumberForAny(method.getStartPosition(), file);
+        int end = getLineNumberForAny(method.getStartPosition() + method.getLength(), file) - 2;
+
+        lines.put("start", start);
+        lines.put("end", end);
+
+        return lines;
+    }
+
     public static int getNumberOfLinesInBlock(Block body) {
 
         String[] split = body.toString().replaceAll("\\{", "").replaceAll("\\}", "").trim().split("\n");
@@ -290,7 +282,7 @@ public class JavaParser {
         return false;
     }
 
-    public static int getLineNumberForAny(int startPosition,File file){
+    public static int getLineNumberForAny(int startPosition, File file) {
         ASTParser parser = ASTParser.newParser(AST.JLS3);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
         String fileText = FileUtilities.filesToString(file);
@@ -333,13 +325,13 @@ public class JavaParser {
         return "";
     }
 
-    public static Map<Integer,String> getAvailableClassNames(File file) throws IOException {
+    public static Map<Integer, String> getAvailableClassNames(File file) throws IOException {
 
-        Map<Integer,String> classNames = new HashMap<>();
+        Map<Integer, String> classNames = new HashMap<>();
         List parse = parse(file);
         for (Object p : parse) {
             TypeDeclaration type = (TypeDeclaration) p;
-            classNames.put(getLineNumberForAny(type.getStartPosition(),file),type.getName().toString());
+            classNames.put(getLineNumberForAny(type.getStartPosition(), file), type.getName().toString());
         }
         return classNames;
     }
@@ -354,10 +346,10 @@ public class JavaParser {
 
         List<FieldDeclaration> fd = new ArrayList<>();
         List parse = parse(file);
-        for(Object p : parse){
-           if(p instanceof  TypeDeclaration){
-               fd.addAll(Arrays.asList(((TypeDeclaration) p).getFields()));
-           }
+        for (Object p : parse) {
+            if (p instanceof TypeDeclaration) {
+                fd.addAll(Arrays.asList(((TypeDeclaration) p).getFields()));
+            }
         }
 
         return fd.toArray(new FieldDeclaration[0]);
@@ -371,7 +363,6 @@ public class JavaParser {
         return modifierList;
     }
 
-    //here
     public static List<String> getOperatorsInForLoopCondition(ForStatement forStatement) {
         List<String> operators = new ArrayList<>();
         if (forStatement.getExpression() != null) {
@@ -461,8 +452,6 @@ public class JavaParser {
         }
         return doStatements;
     }
-
-
 
 
     public static List<IfStatement> getIfConditionsRecursively(Block body) {

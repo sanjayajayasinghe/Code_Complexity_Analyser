@@ -20,12 +20,12 @@ package coreFunctions;
 
 import antlr_parser.JavaParser;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import utilities.FileUtilities;
 import utilities.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -47,8 +47,8 @@ public class ComplexityDueToSize implements ComplexityBySize {
     public void getComplexityAnalysisUsingParser() throws IOException {
 
         Map<Integer, String> availableClassNames = JavaParser.getAvailableClassNames(this.codeFile);
-        for(Integer line:availableClassNames.keySet()){
-            updateScoreMap(line,1);
+        for (Integer line : availableClassNames.keySet()) {
+            updateScoreMap(line, 1);
         }
 
         FieldDeclaration[] fieldDeclarations = JavaParser.getClassAttributes(this.codeFile);
@@ -58,6 +58,13 @@ public class ComplexityDueToSize implements ComplexityBySize {
             int lineNo = JavaParser.getLineNumberForAny(fieldDeclaration.getStartPosition(), this.codeFile);
             updateScoreMap(lineNo, usedAttributeNames.getUsedNumericValues().size() + usedAttributeNames.getUsedVariables().size());
 
+        }
+
+        MethodDeclaration[] methods = JavaParser.getMethods(this.codeFile);
+        for (MethodDeclaration methodDeclaration : methods) {
+            JavaParser.UsedItems parameterValues = JavaParser.getParameterValues(methodDeclaration);
+            int lineNo = JavaParser.getLineNumberForAny(methodDeclaration.getStartPosition(), this.codeFile);
+            updateScoreMap(lineNo, parameterValues.getUsedNumericValues().size() + parameterValues.getUsedVariables().size());
         }
     }
 
@@ -105,58 +112,6 @@ public class ComplexityDueToSize implements ComplexityBySize {
         return result.toString();
     }
 
-//    public Map<Integer, Integer> getCreatedScoreMap() throws IOException {
-//
-//        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(this.codeFile);
-//        for (MethodDeclaration methodDeclaration : methodDeclarations) {
-//            List statements = methodDeclaration.getBody().statements();
-//
-//            for (Object st : statements) {
-//                Statement s = (Statement) st;
-//                int lineCs = 0;
-//                for(String word : TextUtils.getWordsDevidedFromSpaces(st.toString())){
-//                    if (isWordShouldBeConsidered(word)) {
-//                        lineCs += 1;
-//                        scoremap.put(JavaParser.getLineNumber(s, this.codeFile), lineCs);
-//                    }
-//                    if (isSpecialKeywordsAvailable(word)) {
-//                        lineCs += 2;
-//                        scoremap.put(JavaParser.getLineNumber(s, this.codeFile), lineCs);
-//                    }
-//                }
-//                this.Cs += lineCs;
-//
-//                JavaParser.UsedItems usedItems=JavaParser.getUsedVariableNames((Statement) st);
-//                scoremap.put(JavaParser.getLineNumber(s, this.codeFile),this.Cs=+usedItems.getUsedVariables().size());
-//                scoremap.put(JavaParser.getLineNumber(s, this.codeFile),this.Cs=+usedItems.getUsedNumericValues().size());
-//
-//            }
-//
-//              //TODO get class names statement by statement
-////            List<String> classNames = JavaParser.getAvailableClassNames(this.codeFile);
-////            for (String className : classNames) {
-////                this.Cs += 1;
-////            }
-////
-////            MethodDeclaration[] methodDeclarations = JavaParser.getMethods(this.codeFile);
-////            for (MethodDeclaration methodDeclaration : methodDeclarations) {
-////                this.Cs += 1;
-////
-////                List statements = methodDeclaration.getBody().statements();
-////                for (Object st : statements) {
-////                    JavaParser.UsedItems usedItems = JavaParser.getUsedVariableNames((Statement) st);
-////                    this.Cs+= usedItems.getUsedNumericValues().size()+ usedItems.getUsedNumericValues().size();
-////
-////                }
-////
-////            }
-//        }
-//
-//
-//        return scoremap;
-//    }
-
-
     @Override
     public Map<Integer, Integer> getCreatedScoreMap() throws IOException {
 
@@ -166,10 +121,12 @@ public class ComplexityDueToSize implements ComplexityBySize {
                 int lineCs = 0;
                 for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
                     if (isWordShouldBeConsidered(word)) {
+                        System.out.println(word + " in" + line);
                         lineCs += 1;
                         updateScoreMap(i, lineCs);
                     }
                     if (isSpecialKeywordsAvailable(word)) {
+                        System.out.println("2" + word);
                         lineCs += 2;
                         updateScoreMap(i, lineCs);
                     }
@@ -182,33 +139,20 @@ public class ComplexityDueToSize implements ComplexityBySize {
             e.printStackTrace();
         }
 
-        //        List<String> classNames = JavaParser.getAvailableClassNames(this.codeFile);
-//        for (String className : classNames) {
-//            this.Cs += 1;
-//        }
-//
-//        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(this.codeFile);
-//        for (MethodDeclaration methodDeclaration : methodDeclarations) {
-//            this.Cs += 1;
-//
-//            List statements = methodDeclaration.getBody().statements();
-//            for (Object st : statements) {
-//                JavaParser.UsedItems usedItems = JavaParser.getUsedVariableNames((Statement) st);
-//                this.Cs+= usedItems.getUsedNumericValues().size()+ usedItems.getUsedVariables().size();
-//
-//            }
         return scoremap;
     }
-
-    //return this.Cs;
 
 
     @Override
     public boolean isArithmeticOperatorAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.ARITHMETIC_OPERATORS).contains(word)) {
-                return true;
+
+            for (String s : JavaKeywords.ARITHMETIC_OPERATORS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
+
         }
         return false;
     }
@@ -216,9 +160,14 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isRelationalOperatorAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.RELATIONAL_OPERATORS).contains(word)) {
-                return true;
+
+
+            for (String s : JavaKeywords.RELATIONAL_OPERATORS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
+
         }
         return false;
     }
@@ -226,8 +175,12 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isLogicalOperatorAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.LOGICAL_OPERATORS).contains(word)) {
-                return true;
+
+
+            for (String s : JavaKeywords.LOGICAL_OPERATORS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -236,8 +189,12 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isBitwiseOperatorAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.BITWISE_OPERATORS).contains(word)) {
-                return true;
+
+
+            for (String s : JavaKeywords.BITWISE_OPERATORS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -246,8 +203,11 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isMiscellaneousOperatorAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.MISCELLANEOUS_OPERATORS).contains(word)) {
-                return true;
+
+            for (String s : JavaKeywords.MISCELLANEOUS_OPERATORS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -256,8 +216,11 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isAssignmentOperatorsAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.ASSIGNMENT_OPERATORS).contains(word)) {
-                return true;
+
+            for (String s : JavaKeywords.ASSIGNMENT_OPERATORS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -266,8 +229,10 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isKeywordsAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.ALL_KEYWORDS).contains(word)) {
-                return true;
+            for (String s : JavaKeywords.ALL_KEYWORDS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -276,8 +241,10 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isManipulatorKeywordsAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.MANIPULATOR_KEYWORDS).contains(word)) {
-                return true;
+            for (String s : JavaKeywords.MANIPULATOR_KEYWORDS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -293,8 +260,10 @@ public class ComplexityDueToSize implements ComplexityBySize {
     @Override
     public boolean isSpecialKeywordsAvailable(String word) {
         if (codeFile.getName().endsWith(".java")) {
-            if (Arrays.asList(JavaKeywords.SPECIAL_KEYWORDS).contains(word)) {
-                return true;
+            for (String s : JavaKeywords.SPECIAL_KEYWORDS) {
+                if (word.contains(s)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -315,8 +284,8 @@ public class ComplexityDueToSize implements ComplexityBySize {
     }
 
     public Map<Integer, Integer> getSizeComplexityMap() throws IOException {
-        getComplexityAnalysisUsingParser();
         getCreatedScoreMap();
+        getComplexityAnalysisUsingParser();
 
         return scoremap;
     }

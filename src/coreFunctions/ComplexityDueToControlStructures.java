@@ -73,7 +73,7 @@ public class ComplexityDueToControlStructures implements ComplexityByControlStru
         ASTNode parent = statement.getParent();
         while (parent != null && parent instanceof Statement) {
             if (isControlStructre((Statement) parent)) {
-                score++;//TODO CHECK SCORE if while for
+                score++;
             }
             parent = parent.getParent();
 
