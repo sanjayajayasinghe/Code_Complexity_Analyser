@@ -3,53 +3,17 @@ package antlr_parser;
 import org.eclipse.jdt.core.dom.*;
 import utilities.FileUtilities;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 public class JavaParser {
 
-
-//    public static List<Statement> getInnerStatementsRecursively(Block body) {
-//
-//        List<Statement> statements = new ArrayList<>();
-//
-//        body.accept(new ASTVisitor() {
-//            @Override
-//            public boolean visit(IfStatement node) {
-//                System.out.println(node.toString());
-//                return super.visit(node);
-//            }
-//        });
-//        List statements1 = body.statements();
-//        if (statements1 != null && statements1.size() > 0) {
-//            for(Object st : statements1){
-//                statements.add((Statement) st);
-//
-//                if(st instanceof WhileStatement){
-//                    statements.addAll(getInnerStatementsRecursively((Block) ((WhileStatement) st).getBody()));
-//                }
-//                if(st instanceof ForStatement){
-//                    statements.addAll(getInnerStatementsRecursively((Block) ((ForStatement) st).getBody()));
-//                }
-//
-//            }
-//        }
-//
-//        return statements;
-//
-//    }
-
-    public static void getClassLevelAttributes(File file) {
-
-    }
-
-    public static UsedItems getParameterValues(MethodDeclaration method){
+    public static UsedItems getParameterValues(MethodDeclaration method) {
         UsedItems usedItems = new UsedItems();
         List parameters = method.parameters();
-        for(Object ob : parameters){
-            if(ob instanceof  SingleVariableDeclaration){
+        for (Object ob : parameters) {
+            if (ob instanceof SingleVariableDeclaration) {
                 String name = ((SingleVariableDeclaration) ob).getName().toString();
                 String type = ((SingleVariableDeclaration) ob).getType().toString();
                 usedItems.getUsedVariables().add(name);
@@ -399,7 +363,6 @@ public class JavaParser {
         return modifierList;
     }
 
-    //here
     public static List<String> getOperatorsInForLoopCondition(ForStatement forStatement) {
         List<String> operators = new ArrayList<>();
         if (forStatement.getExpression() != null) {
@@ -489,8 +452,6 @@ public class JavaParser {
         }
         return doStatements;
     }
-
-
 
 
     public static List<IfStatement> getIfConditionsRecursively(Block body) {

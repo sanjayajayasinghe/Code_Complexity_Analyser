@@ -91,7 +91,6 @@ public class FileUtilities {
 
     public static void listFilesForFolder(final File folder) {
         for (final File fileEntry : folder.listFiles()) {
-            //System.out.println(fileEntry.getParent());
             System.out.println(fileEntry.getPath());
             if (fileEntry.isDirectory()) {
                 listFilesForFolder(fileEntry);
@@ -133,18 +132,6 @@ public class FileUtilities {
 
         }
 
-
-//		try (Stream<Path> walk = Files.walk(Paths.get("C:\\projects"))) {
-//
-//			List<File> result = walk.filter(Files::isRegularFile).map((path)->new File(path.toString()))
-//					.collect(Collectors.toList());
-//
-//			result.forEach(System.out::println);
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
     }
 
     public static void listLeafFiles(final File folder, List<File> fileList) {
@@ -160,17 +147,6 @@ public class FileUtilities {
         List<File> leafFileList = new ArrayList<>();
         List<FindData> findDataList = new ArrayList<>();
         listLeafFiles(folder, leafFileList);
-
-
-//		foundFileList=leafFileList.stream().filter((file)->{
-//			try {
-//				return convertToLisOfStrings(file).contains(keyWords);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//				return false;
-//			}
-//		}).collect(Collectors.toList());
 
         leafFileList.forEach(file -> {
 
@@ -204,7 +180,7 @@ public class FileUtilities {
         fileList = findFilesByWords("c", new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX"));
         fileList.forEach(file -> System.out.println("file:" + file.getFile().getName()));
 
-        //	System.out.println(convertToLisOfStrings(new File("C:\\Users\\sanjaya jayasinghe\\Desktop\\ditributedSystem\\it17012966\\javaFX\\src\\javaFX\\HelloWorld.java")));
+
     }
 
     public List<String> find(String keyWord) {

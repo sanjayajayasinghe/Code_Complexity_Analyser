@@ -1,8 +1,6 @@
 package coreFunctions;
 
 import antlr_parser.JavaParser;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.Statement;
 import utilities.FileUtilities;
 import utilities.TextUtils;
 
@@ -137,11 +135,11 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     public Map<Integer, Integer> getCreatedScoreMap(File file) throws IOException {
 
-        int inheritanceComplexity=findInheritanceComplexityForFile(file);
-        List<String> strings=FileUtilities.convertToLisOfStrings(file);
-        int x=1;
-        for(String s:strings){
-            scoremap.put(x,inheritanceComplexity );
+        int inheritanceComplexity = findInheritanceComplexityForFile(file);
+        List<String> strings = FileUtilities.convertToLisOfStrings(file);
+        int x = 1;
+        for (String s : strings) {
+            scoremap.put(x, inheritanceComplexity);
             x++;
         }
 
