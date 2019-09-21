@@ -1,6 +1,7 @@
 package Controllers;
 
 
+import Models.ComplexityForClass;
 import Models.ScoreObject;
 import Models.TableData;
 import actions.CheckOverallCodeComplexityAction;
@@ -98,6 +99,10 @@ public class MainWindowController implements Initializable {
                 // TODO Auto-generated method stub
                 switch (action) {
                     case "runOnFile":
+                        LocalState.getInstance().clearTableData();
+                        LocalState.getInstance().clearTotalCompexity();
+                        LocalState.getInstance().clearComplexityForClasses();
+
                         totalTab = new StringBuilder();
                         resultViewController.createCalculationtab();
                         String curentFile = LocalState.getInstance().getCurrentOpenfile() == null ? "none file"
@@ -114,6 +119,9 @@ public class MainWindowController implements Initializable {
                         }
                         break;
                     case "runOnFileList":
+                        LocalState.getInstance().clearTableData();
+                        LocalState.getInstance().clearTotalCompexity();
+                        LocalState.getInstance().clearComplexityForClasses();
                         LOGGER.log(Level.INFO, "run on file selected");
                         List<File> fileList = LocalState.getInstance().getCurrentSelectedFiles();
                         if (fileList != null) {
@@ -124,6 +132,9 @@ public class MainWindowController implements Initializable {
                         break;
 
                     case "runOnProject":
+                        LocalState.getInstance().clearTableData();
+                        LocalState.getInstance().clearTotalCompexity();
+                        LocalState.getInstance().clearComplexityForClasses();
                         List<File> projectFiles = new ArrayList<>();
                         FileUtilities.listLeafFiles(LocalState.getInstance().getLastProject(), projectFiles);
                         if (LocalState.getInstance().getLastProject() != null) {
@@ -140,9 +151,13 @@ public class MainWindowController implements Initializable {
                         Dialog.findDialog(getClass(), "/UI/findDialog.fxml");
                         break;
                     case "generateReport":
-                        Stage dialogStage2 = new Stage();
-                        dialogStage2.initModality(Modality.WINDOW_MODAL);
-                        Dialog.findDialog(getClass(), "/UI/reportView.fxml");
+                        if(LocalState.getInstance().getTotalCompexity()!=null) {
+                            Stage dialogStage2 = new Stage();
+                            dialogStage2.initModality(Modality.WINDOW_MODAL);
+                            Dialog.findDialog(getClass(), "/UI/reportView.fxml");
+                        }else {
+                            //eror
+                        }
                         break;
                 }
 
@@ -194,6 +209,7 @@ public class MainWindowController implements Initializable {
                 ScoreObject value = entry.getValue();
                 calculationcontent.append(String.format("\tline\t%d\t->\tCS:\t%d\tCNC:\t%d\tCI:\t%d\tTW:\t%d\tCPS:\t%d\tCR:\t%d\n", key, value.getCS(), value.getCNC(), value.getCI(), value.getTW(), value.getCPS(), value.getCR()));
                 TableData tableData=new TableData(currentlyOpenedFile.getName(),key,value.getCS(),value.getCNC(),value.getCI(),value.getTW(),value.getCPS(),value.getCR());
+                LocalState.getInstance().getTableData().add(tableData);
                 resultViewController.setCalculationtabContent(calculationcontent.toString());
                 if (value.getCR() > 0) {
                     totalComplexity += value.getCR();
@@ -216,6 +232,7 @@ public class MainWindowController implements Initializable {
     public void setTotalComplexity(File ProjectOrFile, Integer totalComplexity, StringBuilder oneFileText) {
         StringBuilder lastAppend = new StringBuilder();
         lastAppend.append(String.format("%s \n\tTotal Complexity:%d\n", ProjectOrFile == null ? "Selected File List" : ProjectOrFile.getName(), totalComplexity));
+        LocalState.getInstance().setTotalCompexity(totalComplexity);
         lastAppend.append(oneFileText);
         resultViewController.setTotaltabContent(lastAppend.toString());
 
@@ -223,6 +240,8 @@ public class MainWindowController implements Initializable {
 
     public void appendToTotal(String fileName, Integer complexity, StringBuilder totalTabText) {
         totalTabText.append(String.format("\t\t%s:\t%d\n", fileName, complexity));
+        ComplexityForClass complexityForClass=new ComplexityForClass(fileName,complexity);
+        LocalState.getInstance().getComplexityForClasses().add(complexityForClass);
     }
 
 

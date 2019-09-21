@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import Models.ComplexityForClass;
 import Models.LocalData;
 import Models.TableData;
 import Models.TestObjectSerialize;
@@ -16,8 +17,10 @@ public class LocalState  implements Serializable{
     private File lastProject;
     private File currentOpenfile;
     private TreeItem<String> currentRoot;
-    private List<TableData> tableData;
+    private List<TableData> tableData =new ArrayList<>();
     private List<File> currentSelectedFiles;
+    private Integer totalCompexity;
+    private List<ComplexityForClass> complexityForClasses=new ArrayList<>();;
 
 
     public TreeItem<String> getCurrentRoot() {
@@ -79,6 +82,32 @@ public class LocalState  implements Serializable{
 
     public void setTableData(List<TableData> tableData) {
         this.tableData = tableData;
+    }
+
+    public Integer getTotalCompexity() {
+        return totalCompexity;
+    }
+
+    public void setTotalCompexity(Integer totalCompexity) {
+        this.totalCompexity = totalCompexity;
+    }
+
+    public void clearTotalCompexity() {
+        totalCompexity=0;
+    }
+
+
+
+    public List<ComplexityForClass> getComplexityForClasses() {
+        return complexityForClasses;
+    }
+
+    public void setComplexityForClasses(List<ComplexityForClass> complexityForClasses) {
+        this.complexityForClasses = complexityForClasses;
+    }
+
+    public void clearComplexityForClasses() {
+        this.complexityForClasses=new ArrayList<>();
     }
 
     public List<File> getCurrentSelectedFiles() {
