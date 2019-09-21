@@ -41,15 +41,15 @@ public class JavaParser {
 //
 //    }
 
-    public static void getClassLevelAttributes(File file){
+    public static void getClassLevelAttributes(File file) {
 
     }
 
-    public static UsedItems getUsedAttributeNames(FieldDeclaration fieldDeclaration){
+    public static UsedItems getUsedAttributeNames(FieldDeclaration fieldDeclaration) {
         UsedItems usedItems = new UsedItems();
         List fragments = fieldDeclaration.fragments();
 
-        for(Object vdf : fragments){
+        for (Object vdf : fragments) {
             if (vdf instanceof VariableDeclarationFragment) {
                 String variableName = ((VariableDeclarationFragment) vdf).getName().toString();
                 usedItems.getUsedVariables().add(variableName);
@@ -262,6 +262,19 @@ public class JavaParser {
         return operators;
     }
 
+    public static Map<String, Integer> getLinesInside(MethodDeclaration method, File file) {
+
+        Map<String, Integer> lines = new HashMap<>();
+
+        int start = getLineNumberForAny(method.getStartPosition(), file);
+        int end = getLineNumberForAny(method.getStartPosition() + method.getLength(), file) - 2;
+
+        lines.put("start", start);
+        lines.put("end", end);
+
+        return lines;
+    }
+
     public static int getNumberOfLinesInBlock(Block body) {
 
         String[] split = body.toString().replaceAll("\\{", "").replaceAll("\\}", "").trim().split("\n");
@@ -290,7 +303,7 @@ public class JavaParser {
         return false;
     }
 
-    public static int getLineNumberForAny(int startPosition,File file){
+    public static int getLineNumberForAny(int startPosition, File file) {
         ASTParser parser = ASTParser.newParser(AST.JLS3);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
         String fileText = FileUtilities.filesToString(file);
@@ -333,13 +346,13 @@ public class JavaParser {
         return "";
     }
 
-    public static Map<Integer,String> getAvailableClassNames(File file) throws IOException {
+    public static Map<Integer, String> getAvailableClassNames(File file) throws IOException {
 
-        Map<Integer,String> classNames = new HashMap<>();
+        Map<Integer, String> classNames = new HashMap<>();
         List parse = parse(file);
         for (Object p : parse) {
             TypeDeclaration type = (TypeDeclaration) p;
-            classNames.put(getLineNumberForAny(type.getStartPosition(),file),type.getName().toString());
+            classNames.put(getLineNumberForAny(type.getStartPosition(), file), type.getName().toString());
         }
         return classNames;
     }
@@ -354,10 +367,10 @@ public class JavaParser {
 
         List<FieldDeclaration> fd = new ArrayList<>();
         List parse = parse(file);
-        for(Object p : parse){
-           if(p instanceof  TypeDeclaration){
-               fd.addAll(Arrays.asList(((TypeDeclaration) p).getFields()));
-           }
+        for (Object p : parse) {
+            if (p instanceof TypeDeclaration) {
+                fd.addAll(Arrays.asList(((TypeDeclaration) p).getFields()));
+            }
         }
 
         return fd.toArray(new FieldDeclaration[0]);
