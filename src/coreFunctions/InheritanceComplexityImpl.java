@@ -137,16 +137,12 @@ public class InheritanceComplexityImpl implements InheritanceComplexity {
 
     public Map<Integer, Integer> getCreatedScoreMap(File file) throws IOException {
 
-        MethodDeclaration[] methodDeclarations = JavaParser.getMethods(file);
-        for (MethodDeclaration methodDeclaration : methodDeclarations) {
-
-
-            List statements = methodDeclaration.getBody().statements();
-
-            for (Object st : statements) {
-                scoremap.put(JavaParser.getLineNumber((Statement) st, file), findInheritanceComplexityForFile(file));
-            }
-
+        int inheritanceComplexity=findInheritanceComplexityForFile(file);
+        List<String> strings=FileUtilities.convertToLisOfStrings(file);
+        int x=1;
+        for(String s:strings){
+            scoremap.put(x,inheritanceComplexity );
+            x++;
         }
 
         return scoremap;

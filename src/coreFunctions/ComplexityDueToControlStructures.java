@@ -1,135 +1,138 @@
 package coreFunctions;
 
 import antlr_parser.JavaParser;
+import org.eclipse.jdt.core.dom.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jdt.core.dom.*;
-
 public class ComplexityDueToControlStructures implements ComplexityByControlStructures {
 
-    private File file;
+
     private Map<Integer, Integer> scoremap = new HashMap<>();
+
     @Override
     public int calculateComplexityForControlStructures(File file) throws IOException {
 
-        int complexityTotal = 0;
-        int nestingComplexity = 0;
-
         MethodDeclaration[] methods = JavaParser.getMethods(file);
-
         for (MethodDeclaration m : methods) {
-
-            List<IfStatement> ifBlocks = JavaParser.getIfConditionsRecursively(m.getBody());
-            List<ForStatement> forStatements = JavaParser.getForBlocksRecursively(m.getBody());
-            List<WhileStatement> whileStatements = JavaParser.getWhileBlocksRecursively(m.getBody());
-            List<DoStatement> doWhileStatements = JavaParser.getDoWhileBlocks(m.getBody());
-
-
-            for (Object statement : m.getBody().statements()) {
-                Statement s = (Statement) statement;
-                if(s instanceof IfStatement ){
-                    complexityTotal += 1;
-                    scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                    List<String> conditionList = JavaParser.getOperatorsInsideIfCondition((IfStatement) s);
-                    if (conditionList.contains("==")) {
-                        conditionList.remove("==");
-                    } else if (conditionList.contains("&&") || conditionList.contains("||") || conditionList.contains("|") || conditionList.contains("&")) {
-                        for (String condition : conditionList) {
-                            complexityTotal += 1;
-                            scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                        }
-                    }
-
-                }else if(s instanceof ForStatement){
-                    complexityTotal += 2;
-                    scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                    List<String> conditionList = JavaParser.getOperatorsInForLoopCondition((ForStatement) s);
-                    if (conditionList.contains("==")) {
-                        conditionList.remove("==");
-                    } else if (conditionList.contains("&&") || conditionList.contains("||") || conditionList.contains("|") || conditionList.contains("&")) {
-                        for (String condition : conditionList) {
-                            complexityTotal += 2;
-                            scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                        }
-                    }
-
-                }else if (s instanceof WhileStatement){
-                    complexityTotal += 2;
-                    scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                    List<String> conditionList = JavaParser.getWhileLoopConditionOperators((WhileStatement) s);
-                    if (conditionList.contains("==")) {
-                        conditionList.remove("==");
-                    } else if (conditionList.contains("&&") || conditionList.contains("||") || conditionList.contains("|") || conditionList.contains("&")) {
-                        for (String condition : conditionList) {
-                            complexityTotal += 2;
-                            scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                        }
-                    }
-
-
-                }else if (s instanceof DoStatement){
-                    complexityTotal += 2;
-                    scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                    List<String> conditionList = JavaParser.getDoWhileLoopConditionOperators((DoStatement) s);
-                    if (conditionList.contains("==")) {
-                        conditionList.remove("==");
-                    } else if (conditionList.contains("&&") || conditionList.contains("||") || conditionList.contains("|") || conditionList.contains("&")) {
-                        for (String condition : conditionList) {
-                            complexityTotal += 2;
-                            scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                        }
-                    }
-
-                }else if(s instanceof TryStatement){
-                    List<CatchClause> catchClauses = JavaParser.getCatchClauses((TryStatement) s);
-                    for (CatchClause catchClause : catchClauses) {
-                        complexityTotal += 1;
-                        scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                    }
-                }else if(s instanceof SwitchStatement){
-                    List<SwitchCase> switchCases = JavaParser.getCaseStatements((SwitchStatement) s);
-                    for (SwitchCase caseStatement : switchCases)
-                        complexityTotal += 1;
-                    scoremap.put(JavaParser.getLineNumber(s, file), complexityTotal);
-                }
-
+            List<SwitchStatement> switchBlocks = JavaParser.getSwitchBlocks(m.getBody());
+            for (SwitchStatement st : switchBlocks) {
+                List<SwitchCase> caseStatements = JavaParser.getCaseStatements(st);
+                int lineNo = JavaParser.getLineNumber(st, file);
+                updateScoreMap(lineNo + 1, caseStatements.size());
             }
 
-            //nesting levels
-            for (int i = 0; i < ifBlocks.size(); i++) {
-                nestingComplexity += i;
-                scoremap.put(JavaParser.getLineNumber(ifBlocks.get(i),file),nestingComplexity);
-            }
 
-            for (int i = 0; i < forStatements.size(); i++) {
-                nestingComplexity += i;
-                scoremap.put(JavaParser.getLineNumber(forStatements.get(i),file),nestingComplexity);
+            for (IfStatement ifs : JavaParser.getIfConditionsRecursively(m.getBody())) {
+                checks((Block) ifs.getThenStatement(), file);
+                checkNestingLevels(ifs, file);
             }
-
-            for (int i = 0; i < whileStatements.size(); i++) {
-                nestingComplexity += i;
-                scoremap.put(JavaParser.getLineNumber(whileStatements.get(i),file),nestingComplexity);
+            for (WhileStatement whi : JavaParser.getWhileBlocksRecursively(m.getBody())) {
+                checks((Block) whi.getBody(), file);
+                checkNestingLevels(whi, file);
             }
-
-            for (int i = 0; i < doWhileStatements.size(); i++) {
-                nestingComplexity += i;
-                scoremap.put(JavaParser.getLineNumber(doWhileStatements.get(i),file),nestingComplexity);
+            for (DoStatement doSt : JavaParser.getDoWhileBlocksRecursively(m.getBody())) {
+                checks((Block) doSt.getBody(), file);
+                checkNestingLevels(doSt, file);
             }
-
+            for (ForStatement forSt : JavaParser.getForBlocksRecursively(m.getBody())) {
+                checks((Block) forSt.getBody(), file);
+                checkNestingLevels(forSt, file);
             }
-
-        return complexityTotal+nestingComplexity;
+        }
+        return 0;
     }
 
-   public Map<Integer,Integer> getCreatedScoreMap(File file) throws IOException {
-       calculateComplexityForControlStructures(file);
-        return scoremap;
-   }
+    private void checks(Block body, File file) {
+        for (WhileStatement whi : JavaParser.getWhileBlocksRecursively(body)) {
+            checkNestingLevels(whi, file);
+        }
+        for (DoStatement doSt : JavaParser.getDoWhileBlocksRecursively(body)) {
+            checkNestingLevels(doSt, file);
+
+        }
+        for (ForStatement forSt : JavaParser.getForBlocksRecursively(body)) {
+            checkNestingLevels(forSt, file);
+            checks((Block) forSt.getBody(), file);
+        }
+        for (IfStatement ifSt : JavaParser.getIfConditionsRecursively(body)) {
+            checkNestingLevels(ifSt, file);
+        }
+    }
+
+    public void checkNestingLevels(Statement statement, File file) {
+
+        int score = 1;
+        int lineNumber = JavaParser.getLineNumber(statement, file);
+
+        ASTNode parent = statement.getParent();
+        while (parent != null && parent instanceof Statement) {
+            if (isControlStructre((Statement) parent)) {
+                score++;//TODO CHECK SCORE if while for
+            }
+            parent = parent.getParent();
+
+        }
+
+        updateScoreMap(lineNumber + 1, score + getConditionsScore(statement));
+    }
+
+    private int getConditionsScore(Statement statement) {
+
+
+        List<String> op = null;
+        int score = 0;
+
+        if (statement instanceof IfStatement) {
+            op = JavaParser.getOperatorsInsideIfCondition((IfStatement) statement);
+            for (String s : op) {
+                if (Arrays.asList(JavaKeywords.CONDITION_OPERATORS).contains(s)) {
+                    score++;
+                }
+            }
+        } else {
+            if (statement instanceof WhileStatement) {
+                op = JavaParser.getWhileLoopConditionOperators((WhileStatement) statement);
+            } else if (statement instanceof ForStatement) {
+                op = JavaParser.getOperatorsInForLoopCondition((ForStatement) statement);
+            } else if (statement instanceof DoStatement) {
+                op = JavaParser.getDoWhileLoopConditionOperators((DoStatement) statement);
+            }
+            for (String s : op) {
+                if (Arrays.asList(JavaKeywords.CONDITION_OPERATORS).contains(s)) {
+                    score += 2;
+                }
+            }
+        }
+
+        return score;
+    }
+
+
+    private boolean isControlStructre(Statement st) {
+
+        return st instanceof IfStatement
+                || st instanceof WhileStatement
+                || st instanceof ForStatement
+                || st instanceof DoStatement
+                || st instanceof SwitchStatement;
+
+    }
+
+    private void updateScoreMap(int line, int score) {
+        if (scoremap.containsKey(line)) {
+            Integer oldScore = scoremap.get(line);
+            scoremap.put(line, oldScore + score);
+        } else {
+            scoremap.put(line, score);
+        }
+    }
+
     @Override
     public int calculateComplexity() throws IOException {
         return 0;

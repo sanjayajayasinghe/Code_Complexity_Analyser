@@ -16,10 +16,16 @@ public class Test {
 
        File testFile = new File(RELATIVE_DIR_PATH.concat(FIBONACCI_MAIN));
        ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
-       complexityDueToControlStructures.getCreatedScoreMap(testFile);
-       for(int lineno: complexityDueToControlStructures.getCreatedScoreMap(testFile).keySet()){
-           System.out.println(lineno);
-       }
+       complexityDueToControlStructures.calculateComplexityForControlStructures(testFile);
+//       ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
+//       complexityDueToControlStructures.getCreatedScoreMap(testFile);
+//       for(int lineno: complexityDueToControlStructures.getCreatedScoreMap(testFile).keySet()){
+//           System.out.println(lineno);
+//       }
+
+
+
+
 
 ////        ComplexityDueToControlStructures complexityDueToControlStructures=new ComplexityDueToControlStructures();
 ////        System.out.println(complexityDueToControlStructures

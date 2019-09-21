@@ -109,7 +109,7 @@ public class FileUtilities {
             String line;
             while ((line = reader.readLine()) != null) {
                 code.append(line + "\n");
-                System.out.println(line);
+                //System.out.println(line);
             }
 
 

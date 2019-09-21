@@ -419,6 +419,8 @@ public class JavaParser {
     }
 
 
+
+
     public static List<IfStatement> getIfConditionsRecursively(Block body) {
         List<IfStatement> ifStatements = new ArrayList<>();
         List statements = body.statements();
@@ -426,7 +428,7 @@ public class JavaParser {
             Statement s = (Statement) statement;
             if (s instanceof IfStatement) {
                 ifStatements.add((IfStatement) s);
-                ifStatements.addAll(getInnerIfStatements((IfStatement) s));
+                ifStatements.addAll(getIfConditionsRecursively((Block) ((IfStatement) s).getThenStatement()));
             }
         }
         return ifStatements;

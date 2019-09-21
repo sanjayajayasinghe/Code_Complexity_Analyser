@@ -27,7 +27,7 @@ public final class JavaKeywords {
     ,"for","while","do","do-while","switch","case","foreach","else if","else","char","byte","short","long","double","Double","Integer","Long",
      "exception","Exception","catch"};
     public static final String[] MANIPULATOR_KEYWORDS=new String[]{"\'endl\'","'\n'","\\n"};
-
+    public static final String[] CONDITION_OPERATORS =new String[]{"&&","||","&","|"};
     //two points
     public static final String[] SPECIAL_KEYWORDS = new String[]{"&", "*", "new", "delete", "throw", "throws"};
 
