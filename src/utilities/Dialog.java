@@ -46,7 +46,7 @@ public class Dialog {
 
     public static void alert(String Content){
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, Content, ButtonType.OK);
+        Alert alert = new Alert(Alert.AlertType.WARNING, Content, ButtonType.OK);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.show();
     }
