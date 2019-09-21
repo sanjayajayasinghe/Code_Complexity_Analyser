@@ -157,10 +157,8 @@ public class ComplexityDueToSize implements ComplexityBySize {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<String> classNames = JavaParser.getAvailableClassNames(this.codeFile);
-        for (String className : classNames) {
-            this.Cs += 1;
-        }
+        Map<Integer,String> classNames = JavaParser.getAvailableClassNames(this.codeFile);
+        this.Cs += classNames.size();
 
         MethodDeclaration[] methodDeclarations = JavaParser.getMethods(this.codeFile);
         for (MethodDeclaration methodDeclaration : methodDeclarations) {

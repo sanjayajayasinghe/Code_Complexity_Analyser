@@ -6,9 +6,7 @@ import utilities.FileUtilities;
 import javax.jws.soap.SOAPBinding;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class JavaParser {
 
@@ -335,13 +333,13 @@ public class JavaParser {
         return "";
     }
 
-    public static List<String> getAvailableClassNames(File file) throws IOException {
+    public static Map<Integer,String> getAvailableClassNames(File file) throws IOException {
 
-        List<String> classNames = new ArrayList<>();
+        Map<Integer,String> classNames = new HashMap<>();
         List parse = parse(file);
         for (Object p : parse) {
             TypeDeclaration type = (TypeDeclaration) p;
-            classNames.add(type.getName().toString());
+            classNames.put(getLineNumberForAny(type.getStartPosition(),file),type.getName().toString());
         }
         return classNames;
     }
