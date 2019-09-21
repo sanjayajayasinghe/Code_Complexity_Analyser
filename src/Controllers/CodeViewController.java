@@ -25,6 +25,15 @@ public class CodeViewController implements Initializable {
 
     public void setText(String text) {
 
+        StringBuilder builder = new StringBuilder();
+        String[] split = text.split("\n");
+        int i = 1;
+        for(String s : split){
+            builder.append(i).append("\t").append(s).append("\n");
+            i++;
+        }
+
+
         String htmlString = "<!DOCTYPE html>\n"
                 + "<html>\n"
                 + "<head>"
@@ -34,7 +43,7 @@ public class CodeViewController implements Initializable {
                 + "<body>\n"
                 + "<pre>"
                 + " <code class=\"language-java\">\n"
-                + text
+                + builder.toString()
                 + "</code>\n"
                 + "</pre>\n"
                 + "</body>\n"
