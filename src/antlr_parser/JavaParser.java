@@ -7,6 +7,7 @@ import javax.jws.soap.SOAPBinding;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JavaParser {
@@ -41,6 +42,10 @@ public class JavaParser {
 //        return statements;
 //
 //    }
+
+    public static void getClassLevelAttributes(File file){
+
+    }
 
     public static UsedItems getUsedVariableNames(Statement statement) {
 
@@ -263,6 +268,16 @@ public class JavaParser {
         return false;
     }
 
+    public static int getLineNumberForAny(int startPosition,File file){
+        ASTParser parser = ASTParser.newParser(AST.JLS3);
+        parser.setKind(ASTParser.K_COMPILATION_UNIT);
+        String fileText = FileUtilities.filesToString(file);
+        parser.setSource(fileText.toCharArray());
+        parser.setResolveBindings(true);
+        CompilationUnit compilationUnit = (CompilationUnit) parser.createAST(null);
+        return compilationUnit.getLineNumber(startPosition);
+    }
+
     public static int getLineNumber(Statement statement, File sourceFile) {
         ASTParser parser = ASTParser.newParser(AST.JLS3);
         parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -314,9 +329,16 @@ public class JavaParser {
     }
 
     public static FieldDeclaration[] getClassAttributes(File file) throws IOException {
+
+        List<FieldDeclaration> fd = new ArrayList<>();
         List parse = parse(file);
-        TypeDeclaration p = (TypeDeclaration) parse.get(0);
-        return p.getFields();
+        for(Object p : parse){
+           if(p instanceof  TypeDeclaration){
+               fd.addAll(Arrays.asList(((TypeDeclaration) p).getFields()));
+           }
+        }
+
+        return fd.toArray(new FieldDeclaration[0]);
     }
 
     public static List<String> getAttributeModifiers(FieldDeclaration field) {
