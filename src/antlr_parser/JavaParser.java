@@ -45,6 +45,21 @@ public class JavaParser {
 
     }
 
+    public static UsedItems getParameterValues(MethodDeclaration method){
+        UsedItems usedItems = new UsedItems();
+        List parameters = method.parameters();
+        for(Object ob : parameters){
+            if(ob instanceof  SingleVariableDeclaration){
+                String name = ((SingleVariableDeclaration) ob).getName().toString();
+                String type = ((SingleVariableDeclaration) ob).getType().toString();
+                usedItems.getUsedVariables().add(name);
+                usedItems.getUsedNumericValues().add(type);
+
+            }
+        }
+        return usedItems;
+    }
+
     public static UsedItems getUsedAttributeNames(FieldDeclaration fieldDeclaration) {
         UsedItems usedItems = new UsedItems();
         List fragments = fieldDeclaration.fragments();
