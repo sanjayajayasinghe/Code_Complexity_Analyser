@@ -119,8 +119,10 @@ public class ComplexityDueToSize implements ComplexityBySize {
         try {
             for (String line : FileUtilities.convertToLisOfStrings(this.codeFile)) {
                 int lineCs = 0;
-                for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
-                    if(!word.startsWith("//")) {
+                if (!line.trim().startsWith("//")) {
+                    for (String word : TextUtils.getWordsDevidedFromSpaces(line)) {
+
+
                         if (isWordShouldBeConsidered(word)) {
                             lineCs += 1;
                             scoremap.put(i, lineCs);
