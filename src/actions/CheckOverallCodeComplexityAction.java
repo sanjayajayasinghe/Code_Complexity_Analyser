@@ -40,6 +40,8 @@ public class CheckOverallCodeComplexityAction {
 
     public Map<Integer, ScoreObject> getScoreMap() throws IOException {
 
+
+
         ComplexityDueToControlStructures complexityDueToControlStructures = new ComplexityDueToControlStructures();
         final Map<Integer, Integer> controlStructures = complexityDueToControlStructures.calculateComplexityForControlStructures(file);
 
@@ -93,7 +95,9 @@ public class CheckOverallCodeComplexityAction {
         List<String> strings = FileUtilities.convertToLisOfStrings(getFile());
         int i = 1;
         for (String s : strings) {
-            scoreMap.put(i, new ScoreObject());
+            ScoreObject scoreObject = new ScoreObject();
+            scoreObject.setLine(s);
+            scoreMap.put(i, scoreObject);
             i++;
         }
     }

@@ -4,6 +4,7 @@ public class TableData {
 
     private String ClassName;
     int lineNo;
+    String line;
     private int CS = 0;
     private int CNC = 0;
     private int CI = 0 ;
@@ -11,15 +12,24 @@ public class TableData {
     private int CPS = 0;
     private int CR = 0;
 
-    public TableData(String className, int lineNo, int CS, int CNC, int CI, int TW, int CPS, int CR) {
+    public TableData(String className, int lineNo,String line, int CS, int CNC, int CI, int TW, int CPS, int CR) {
         ClassName = className;
         this.lineNo = lineNo;
+        this.line = line;
         this.CS = CS;
         this.CNC = CNC;
         this.CI = CI;
         this.TW = TW;
         this.CPS = CPS;
         this.CR = CR;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
     }
 
     public String getClassName() {

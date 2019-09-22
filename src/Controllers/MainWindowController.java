@@ -210,7 +210,7 @@ public class MainWindowController implements Initializable {
                 Integer key = entry.getKey();
                 ScoreObject value = entry.getValue();
                 calculationcontent.append(String.format("\tline\t%d\t->\tCS:\t%d\tCNC:\t%d\tCI:\t%d\tTW:\t%d\tCPS:\t%d\tCR:\t%d\n", key, value.getCS(), value.getCNC(), value.getCI(), value.getTW(), value.getCPS(), value.getCR()));
-                TableData tableData=new TableData(currentlyOpenedFile.getName(),key,value.getCS(),value.getCNC(),value.getCI(),value.getTW(),value.getCPS(),value.getCR());
+                TableData tableData=new TableData(currentlyOpenedFile.getName(),key,value.getLine(),value.getCS(),value.getCNC(),value.getCI(),value.getTW(),value.getCPS(),value.getCR());
                 LocalState.getInstance().getTableData().add(tableData);
                 resultViewController.setCalculationtabContent(calculationcontent.toString());
                 if (value.getCR() > 0) {

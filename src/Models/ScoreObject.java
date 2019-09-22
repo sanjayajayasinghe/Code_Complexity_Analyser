@@ -2,6 +2,7 @@ package Models;
 
 public class ScoreObject {
 
+    String line = "";
     private int CS = 0;
     private int CNC = 0;
     private int CI = 0 ;
@@ -9,6 +10,14 @@ public class ScoreObject {
     private int CPS = 0;
     private int CR = 0;
     int lineNo;
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
 
     public int getCS() {
         return CS;

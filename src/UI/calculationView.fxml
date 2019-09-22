@@ -16,6 +16,7 @@
                     <columns>
                         <TableColumn fx:id="ClassName" prefWidth="191.0" text=" Class Name" />
                         <TableColumn fx:id="lineNo" minWidth="0.0" prefWidth="64.0" text=" Line No" />
+                        <TableColumn fx:id="line" minWidth="0.0" prefWidth="512.0" text=" Line" />
                   <TableColumn fx:id="CS" prefWidth="46.0" text="CS" />
                   <TableColumn fx:id="CNC" minWidth="5.0" prefWidth="60.0" text="CNC" />
                   <TableColumn fx:id="CI" prefWidth="49.0" text="CI" />

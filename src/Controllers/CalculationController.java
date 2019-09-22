@@ -24,6 +24,9 @@ public class CalculationController implements Initializable {
     private TableColumn<TableData,Integer> lineNo;
 
     @FXML
+    private TableColumn<TableData,String> line;
+
+    @FXML
     private TableColumn<TableData,Integer> CS;
 
     @FXML
@@ -46,9 +49,12 @@ public class CalculationController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
+
         ClassName.setCellValueFactory(new PropertyValueFactory<TableData,String>("ClassName"));
         lineNo.setCellValueFactory(new PropertyValueFactory<TableData,Integer>("lineNo"));
-
+        line.setCellValueFactory(new PropertyValueFactory<TableData,String>("line"));
         CS.setCellValueFactory(new PropertyValueFactory<TableData,Integer>("CS"));
         CNC.setCellValueFactory(new PropertyValueFactory<TableData,Integer>("CNC"));
         CI.setCellValueFactory(new PropertyValueFactory<TableData,Integer>("CI"));
