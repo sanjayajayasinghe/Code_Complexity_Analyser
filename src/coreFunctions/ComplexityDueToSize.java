@@ -51,7 +51,6 @@ public class ComplexityDueToSize implements ComplexityBySize {
             updateScoreMap(line, 1);
         }
 
-        //TODO ISSUE HERE
         FieldDeclaration[] fieldDeclarations = JavaParser.getClassAttributes(this.codeFile);
         for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
             JavaParser.UsedItems usedAttributeNames = JavaParser.getUsedAttributeNames(fieldDeclaration);
@@ -124,11 +123,11 @@ public class ComplexityDueToSize implements ComplexityBySize {
                     if(!word.startsWith("//")) {
                         if (isWordShouldBeConsidered(word)) {
                             lineCs += 1;
-                            updateScoreMap(i, lineCs);
+                            scoremap.put(i, lineCs);
                         }
                         if (isSpecialKeywordsAvailable(word)) {
                             lineCs += 2;
-                            updateScoreMap(i, lineCs);
+                            scoremap.put(i, lineCs);
                         }
                     }
                 }
@@ -284,8 +283,9 @@ public class ComplexityDueToSize implements ComplexityBySize {
     }
 
     public Map<Integer, Integer> getSizeComplexityMap() throws IOException {
-        getCreatedScoreMap();
+
         getComplexityAnalysisUsingParser();
+        getCreatedScoreMap();
 
         return scoremap;
     }
